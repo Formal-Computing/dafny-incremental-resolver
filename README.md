@@ -63,3 +63,18 @@ Do **not** claim performance gains or semantic correctness before executing cont
 - [ProgramResolver.cs](https://github.com/dafny-lang/dafny/blob/de36f2ec1f9c530080eff7929ae28229f45da069/Source/DafnyCore/Resolver/ProgramResolver.cs)
 - [ModuleDecl.cs](https://github.com/dafny-lang/dafny/blob/de36f2ec1f9c530080eff7929ae28229f45da069/Source/DafnyCore/AST/Modules/ModuleDecl.cs)
 - [DafnyLangSymbolResolver.cs](https://github.com/dafny-lang/dafny/blob/de36f2ec1f9c530080eff7929ae28229f45da069/Source/DafnyLanguageServer/Language/Symbols/DafnyLangSymbolResolver.cs)
+
+
+## Automated Dafny integration checks
+
+A separate workflow, `.github/workflows/dafny-integration.yml`, does **not** run automatically on each push. Launch it explicitly from GitHub Actions (`Dafny resolver integration`) or with:
+
+```sh
+gh workflow run 'Dafny resolver integration' --ref main
+```
+
+The job clones a pinned upstream Dafny revision, applies the experimental patch, injects an xUnit regression method into upstream `CachingTest`, and runs the same edit sequence twice in separate testhost processes (baseline and experimental). The existing upstream cache regression suite is also run.
+
+This targets a documented upstream limitation: `CachingTest.ResolutionInSingleFileIsCached` is currently skipped with the reason *need hashing on modules to work*. Our new test uses valid Dafny function declarations and verifies the independent same-file module scenario before attempting a larger optimization.
+
+See `docs/evaluation-protocol.md` for the acceptance criteria. An upstream patch compiling successfully is not itself evidence of correct incremental semantic resolution.
