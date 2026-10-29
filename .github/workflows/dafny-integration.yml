@@ -58,6 +58,7 @@ jobs:
           --logger 'console;verbosity=normal'
 
       - name: Experimental cache test
+        if: always()
         working-directory: dafny
         env:
           DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
@@ -68,6 +69,7 @@ jobs:
           --logger 'console;verbosity=normal'
 
       - name: Existing caching tests (experimental mode)
+        if: always()
         working-directory: dafny
         env:
           DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
