@@ -1,4 +1,4 @@
-# Incremental Resolution for Dafny — Research Prototype v0.1
+# Incremental Resolution for Dafny — Research Prototype v0.2
 
 **Research team (proposed):** Dragoș-Andrei Bobu and Ștefan-Alexandru Mercaș  
 **Supervision:** Prof. Ștefan Ciobâcă
@@ -15,10 +15,12 @@ This repository investigates whether dependency-aware, position-sensitive *conte
 | --- | --- | --- |
 | `src/IncrementalResolver.Core` | Pure C# dependency-graph, revision-diff and cache-key reference model | Implemented; independent of Dafny |
 | `tests/IncrementalResolver.SmokeTests` | Zero-NuGet executable checks for adds, changes, invalidation and reuse | **11/11 checks passed** on Paradis Windows (.NET SDK 9, October 29, 2026) |
-| `patches/0001-experimental-module-token-hashing.patch` | Experimental opt-in patch for Dafny `CachingResolver` | Patch application checked against the inspected source; **not yet built with Dafny** |
+| `patches/0001-experimental-module-token-hashing.patch` | Experimental opt-in patch for Dafny `CachingResolver` | **Built and tested** on pinned Dafny commit; safety still under investigation |
 | `examples/two-modules.dfy` | Two modules in one file, for IDE testing | Prepared |
 | `docs/architecture.md` | Architectural analysis, threat model and acceptance criteria | Prepared |
 | `docs/research-brief.md` | Suggested paper/project framing | Prepared |
+| `docs/ci-results-2026-10-29.md` | Reproducible upstream build and test evidence | **PASS:** 2 targeted experiments; 8 upstream tests; 1 skipped upstream |
+| `docs/code-review-guide.md` | Source-reading route and review questions | Prepared |
 
 The pure C# cache **does not contain Dafny's parser or semantic resolver** and must not be reported as a working full incremental Dafny resolver. The patch is a genuine integration candidate against Dafny's existing module-level caching; it is **experimental and not proven safe**. This separation is deliberate for review.
 
