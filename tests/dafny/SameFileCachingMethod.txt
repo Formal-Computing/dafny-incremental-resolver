@@ -20,6 +20,9 @@ module Beta {
     var before = sink.Snapshot().LogEvents.Count();
     // Same-length edit: changes Beta while keeping Alpha's source span fixed.
     ApplyChange(ref documentItem, ((4, 26), (4, 28)), "22");
+    // GetLastDiagnostics waits for the new publication; asking again below
+    // would wait for a second event that will never be emitted.
+    var diagnostics = await GetLastDiagnostics(documentItem);
     await client.WaitForNotificationCompletionAsync(documentItem.Uri, CancellationToken);
 
     var newLogMessages = sink.Snapshot().LogEvents.Skip(before)
@@ -37,6 +40,5 @@ module Beta {
       Assert.True(alphaMiss, "CloneId baseline should conservatively invalidate Alpha.");
     }
 
-    var diagnostics = await GetLastDiagnostics(documentItem);
     Assert.Empty(diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error));
   }
