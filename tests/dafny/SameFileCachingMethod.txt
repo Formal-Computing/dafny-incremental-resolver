@@ -1,0 +1,42 @@
+  /// <summary>
+  /// An edit in Beta must not invalidate the independent Alpha module.
+  /// The experimental cache should reuse Alpha; the conservative baseline
+  /// invalidates Alpha because the containing source file changed.
+  /// </summary>
+  [Fact]
+  public async Task SameFileIndependentModuleEdit() {
+    var source = @"module Alpha {
+  function Value(): int { 11 }
+}
+module Beta {
+  function Value(): int { 21 }
+}
+";
+    var testFiles = Path.Combine(Directory.GetCurrentDirectory(), "Synchronization/TestFiles");
+    var documentItem = CreateTestDocument(source, Path.Combine(testFiles, $"incremental-{Guid.NewGuid():N}.dfy"));
+    await client.OpenDocumentAndWaitAsync(documentItem, CancellationToken);
+    await AssertNoDiagnosticsAreComing(CancellationToken);
+
+    var before = sink.Snapshot().LogEvents.Count();
+    // Same-length edit: changes Beta while keeping Alpha's source span fixed.
+    ApplyChange(ref documentItem, ((4, 26), (4, 28)), "22");
+    await client.WaitForNotificationCompletionAsync(documentItem.Uri, CancellationToken);
+
+    var newLogMessages = sink.Snapshot().LogEvents.Skip(before)
+      .Select(e => e.MessageTemplate.Text).ToArray();
+    var alphaHit = newLogMessages.Any(m => m.Contains("Resolution cache hit") && m.Contains("Alpha"));
+    var alphaMiss = newLogMessages.Any(m => m.Contains("Resolution cache miss") && m.Contains("Alpha"));
+    var betaMiss = newLogMessages.Any(m => m.Contains("Resolution cache miss") && m.Contains("Beta"));
+
+    Assert.True(betaMiss, "Edited Beta must cause a resolution cache miss.");
+    if (Environment.GetEnvironmentVariable("DAFNY_EXPERIMENTAL_CONTENT_HASH") == "1") {
+      Assert.True(alphaHit, "Unchanged Alpha should be reused with content hashing.");
+      Assert.False(alphaMiss, "Unchanged Alpha was unnecessarily invalidated.");
+    } else {
+      Assert.False(alphaHit, "CloneId baseline should not reuse Alpha after same-file edit.");
+      Assert.True(alphaMiss, "CloneId baseline should conservatively invalidate Alpha.");
+    }
+
+    var diagnostics = await GetLastDiagnostics(documentItem);
+    Assert.Empty(diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error));
+  }

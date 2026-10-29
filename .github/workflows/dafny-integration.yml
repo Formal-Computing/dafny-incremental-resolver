@@ -1,0 +1,72 @@
+name: Dafny resolver integration
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-compare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - name: Checkout prototype
+        uses: actions/checkout@v4
+        with:
+          path: prototype
+      - name: Checkout Dafny at pinned commit
+        uses: actions/checkout@v4
+        with:
+          repository: dafny-lang/dafny
+          ref: de36f2ec1f9c530080eff7929ae28229f45da069
+          submodules: recursive
+          path: dafny
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Apply experimental resolver patch
+        run: |
+          git -C dafny apply --check ../prototype/patches/0001-experimental-module-token-hashing.patch
+          git -C dafny apply ../prototype/patches/0001-experimental-module-token-hashing.patch
+          git -C dafny diff --check
+
+      - name: Add same-file cache test
+        run: python3 prototype/scripts/install_integration_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
+
+      - name: Restore Dafny tools
+        working-directory: dafny
+        run: dotnet tool restore
+
+      - name: Build language server test project
+        working-directory: dafny
+        run: dotnet build Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj -c Debug --nologo
+      - name: Baseline cache test
+        working-directory: dafny
+        env:
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '0'
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit'
+          --logger 'console;verbosity=normal'
+
+      - name: Experimental cache test
+        working-directory: dafny
+        env:
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit'
+          --logger 'console;verbosity=normal'
+
+      - name: Existing caching tests (experimental mode)
+        working-directory: dafny
+        env:
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest&FullyQualifiedName!~SameFileIndependentModuleEdit'
+          --logger 'console;verbosity=normal'
