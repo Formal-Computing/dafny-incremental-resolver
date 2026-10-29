@@ -5,3 +5,6 @@
 .vscode/
 *.user
 *.suo
+
+__pycache__/
+*.pyc
