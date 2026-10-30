@@ -1,0 +1,26 @@
+{
+  "mode": "experimental",
+  "scenario": "independent",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module Alpha {\n function Value(): int { 11 }\n}\nmodule Beta {\n function Value(): int { 21 }\n}\n",
+      "diagnostics": []
+    },
+    {
+      "revision": 1,
+      "source": "module Alpha {\n function Value(): int { 11 }\n}\nmodule Beta {\n function Value(): int { 22 }\n}\n",
+      "diagnostics": []
+    },
+    {
+      "revision": 2,
+      "source": "module Alpha {\n function Value(): int { 11 }\n}\nmodule Beta {\n function Value(): int { 222 }\n}\n",
+      "diagnostics": []
+    },
+    {
+      "revision": 3,
+      "source": "\nmodule Alpha {\n function Value(): int { 11 }\n}\nmodule Beta {\n function Value(): int { 222 }\n}\n",
+      "diagnostics": []
+    }
+  ]
+}
