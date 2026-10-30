@@ -3,7 +3,8 @@ from pathlib import Path
 import sys
 dest=Path(sys.argv[1])
 text=dest.read_text(encoding="utf-8-sig")
-method=(Path(__file__).resolve().parent.parent/"tests/dafny/ResearchDifferentialMethod.txt").read_text()
+base=Path(__file__).resolve().parent.parent
+method=(base/"tests/dafny/ResearchDifferentialMethod.txt").read_text() + "\n" + (base/"tests/dafny/ResearchBenchmarkMethod.txt").read_text()
 anchor="  [Fact]\n  public async Task ChangedImportAffectsExport() {"
 assert "ResearchDifferentialTrace" not in text
 assert anchor in text

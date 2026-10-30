@@ -69,13 +69,13 @@
       var normalized = diagnostics.Select(d => new {
         message = d.Message,
         severity = d.Severity?.ToString(),
-        code = d.Code?.ToString(),
+        code = d.Code.HasValue ? (d.Code.Value.IsString ? d.Code.Value.String : d.Code.Value.Long.ToString()) : null,
         source = d.Source,
         from = new[] { d.Range.Start.Line, d.Range.Start.Character },
         to = new[] { d.Range.End.Line, d.Range.End.Character },
         related = d.RelatedInformation == null ? Array.Empty<string>() :
           d.RelatedInformation.Select(r => r.Message + "@" +
-            r.Location.Uri.ToString().Split('/').Last() + ":" +
+            r.Location.Uri.ToString() + ":" +
             r.Location.Range.Start.Line + ":" + r.Location.Range.Start.Character).ToArray()
       }).OrderBy(d => d.from[0]).ThenBy(d => d.from[1])
         .ThenBy(d => d.message).ToArray();

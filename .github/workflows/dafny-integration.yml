@@ -50,7 +50,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency'
 
       - name: Fresh, non-caching semantic oracle
         working-directory: dafny
@@ -61,7 +61,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency'
 
       - name: Apply experiment patch
         run: |
@@ -82,7 +82,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency'
 
       - name: Experimental differential traces and cache regression
         working-directory: dafny
@@ -93,10 +93,16 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency'
 
       - name: Compare diagnostics to fresh oracle
         run: python3 prototype/scripts/compare_differential.py research-results
+
+      - name: Summarize exploratory persistent-LSP update timing
+        run: python3 prototype/scripts/summarize_benchmark.py research-results
+
+      - name: Calibrate differential oracle on intentionally corrupted diagnostics
+        run: python3 prototype/scripts/calibrate_differential.py research-results
 
       - name: Upstream caching regression suite
         working-directory: dafny
@@ -105,7 +111,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest&FullyQualifiedName!~ResearchDifferentialTrace&FullyQualifiedName!~SameFileIndependentModuleEdit'
+          --filter 'FullyQualifiedName~CachingTest&FullyQualifiedName!~ResearchDifferentialTrace&FullyQualifiedName!~ResearchPersistentEditLatency&FullyQualifiedName!~SameFileIndependentModuleEdit'
 
       - name: C# reference-model checks
         working-directory: prototype

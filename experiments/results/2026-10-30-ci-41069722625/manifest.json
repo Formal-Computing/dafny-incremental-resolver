@@ -1,0 +1,14 @@
+{
+  "name": "2026-10-30-dafny-differential-v1",
+  "upstream_commit": "de36f2ec1f9c530080eff7929ae28229f45da069",
+  "research_commit": "8d374e75c959809744474f874383a2fa4ab608e2",
+  "github_actions_run": "https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41069722625",
+  "environment": {"os": "ubuntu-24.04", "dotnet": "8.0.x", "z3": "apt"},
+  "scenarios": 5,
+  "revisions": 18,
+  "comparison_modes": ["original", "patched-baseline", "experimental"],
+  "oracle": "fresh: ProgramResolver with UseCaching=false, one persistent LSP test session per scenario",
+  "diagnostic_comparisons": 54,
+  "differences": 0,
+  "scope": "Extracted LSP diagnostics (not complete semantic binding, verification or performance equivalence)"
+}
