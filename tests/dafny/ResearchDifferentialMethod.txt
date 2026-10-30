@@ -50,14 +50,22 @@
     var document = CreateTestDocument(revisions[0], path);
     await client.OpenDocumentAndWaitAsync(document, CancellationToken);
     var records = new System.Collections.Generic.List<object>();
+    Diagnostic[] lastPublishedDiagnostics = Array.Empty<Diagnostic>();
     string mode = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_MODE") ?? "unconfigured";
     for (int index = 0; index < revisions.Length; index++) {
       if (index != 0) {
         var oldLines = revisions[index - 1].Split('\n');
         ApplyChange(ref document, new Range(0, 0, oldLines.Length - 1,
           oldLines[oldLines.Length - 1].Length), revisions[index]);
+        await client.WaitForNotificationCompletionAsync(document.Uri, CancellationToken);
       }
-      var diagnostics = await GetLastDiagnostics(document, DiagnosticSeverity.Hint);
+      // A valid edit may publish no new diagnostics; do not block waiting for one.
+      // Preserve the last published diagnostic snapshot when no event is emitted.
+      var published = diagnosticsReceiver.GetLatestAndClearQueue(d => d.Uri == document.Uri);
+      if (published != null) {
+        lastPublishedDiagnostics = published.Diagnostics.ToArray();
+      }
+      var diagnostics = lastPublishedDiagnostics;
       var normalized = diagnostics.Select(d => new {
         message = d.Message,
         severity = d.Severity?.ToString(),
