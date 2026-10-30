@@ -6,13 +6,14 @@ on:
 jobs:
   build-and-compare:
     runs-on: ubuntu-24.04
-    timeout-minutes: 50
+    timeout-minutes: 90
     steps:
       - name: Checkout prototype
         uses: actions/checkout@v4
         with:
           path: prototype
-      - name: Checkout Dafny at pinned commit
+
+      - name: Checkout pinned upstream Dafny
         uses: actions/checkout@v4
         with:
           repository: dafny-lang/dafny
@@ -20,61 +21,100 @@ jobs:
           submodules: recursive
           path: dafny
 
-      - name: Install .NET
+      - name: Set up .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
-      - name: Apply experimental resolver patch
+      - name: Install regression and differential tests
+        run: |
+          python3 prototype/scripts/install_integration_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
+          python3 prototype/scripts/install_differential_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
+
+      - name: Restore tools and install Z3
+        run: |
+          (cd dafny && dotnet tool restore)
+          sudo apt-get update -qq
+          sudo apt-get install -y z3
+
+      - name: Build unmodified upstream
+        working-directory: dafny
+        run: dotnet build Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj -c Debug --nologo
+
+      - name: Unmodified upstream differential traces
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: original
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '0'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace'
+
+      - name: Fresh, non-caching semantic oracle
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: fresh
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '0'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace'
+
+      - name: Apply experiment patch
         run: |
           git -C dafny apply --check ../prototype/patches/0001-experimental-module-token-hashing.patch
           git -C dafny apply ../prototype/patches/0001-experimental-module-token-hashing.patch
           git -C dafny diff --check
 
-      - name: Add same-file cache test
-        run: python3 prototype/scripts/install_integration_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
-
-      - name: Restore Dafny tools
-        working-directory: dafny
-        run: dotnet tool restore
-
-      - name: Build language server test project
+      - name: Build patched language-server tests
         working-directory: dafny
         run: dotnet build Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj -c Debug --nologo
-      - name: Install SMT solver for language-server verification
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y z3
-          z3 --version
 
-      - name: Baseline cache test
+      - name: Patched baseline differential traces and cache regression
         working-directory: dafny
         env:
+          DAFNY_RESEARCH_MODE: patched-baseline
           DAFNY_EXPERIMENTAL_CONTENT_HASH: '0'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit'
-          --logger 'console;verbosity=normal'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit'
 
-      - name: Experimental cache test
-        if: always()
+      - name: Experimental differential traces and cache regression
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: experimental
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit'
+
+      - name: Compare diagnostics to fresh oracle
+        run: python3 prototype/scripts/compare_differential.py research-results
+
+      - name: Upstream caching regression suite
         working-directory: dafny
         env:
           DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit'
-          --logger 'console;verbosity=normal'
+          --filter 'FullyQualifiedName~CachingTest&FullyQualifiedName!~ResearchDifferentialTrace&FullyQualifiedName!~SameFileIndependentModuleEdit'
 
-      - name: Existing caching tests (experimental mode)
+      - name: C# reference-model checks
+        working-directory: prototype
+        run: dotnet run --project tests/IncrementalResolver.SmokeTests/IncrementalResolver.SmokeTests.csproj
+
+      - name: Save diagnostic traces, including failing cases
         if: always()
-        working-directory: dafny
-        env:
-          DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
-        run: >
-          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
-          --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest&FullyQualifiedName!~SameFileIndependentModuleEdit'
-          --logger 'console;verbosity=normal'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dafny-research-traces-${{ github.sha }}
+          path: research-results/
+          if-no-files-found: warn
