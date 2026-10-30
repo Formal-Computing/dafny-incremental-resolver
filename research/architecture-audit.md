@@ -20,3 +20,18 @@ In disabled-experiment mode the upstream GetHash body is preserved verbatim. Exp
 ## Remaining source-level obligations
 
 Full negative-lookup tracking; name-binding changes across opened imports; resolution-affecting option and plugin state; rewrite side effects; safe aliasing of resolved AST/signatures; correct diagnostic source origins; include/nested/synthetic module behavior; cache lifecycle across project/environment updates. Until these are discharged, do not deploy the optimization as a production-safe replacement.
+
+## Detailed LSP update and cache lifecycle (verified source chain)
+
+1. `Source/DafnyLanguageServer/Handlers/DafnyTextDocumentHandler.cs:93-100` receives `DidChangeTextDocumentParams` and calls `projects.UpdateDocument`.
+2. `Source/DafnyLanguageServer/Workspace/ProjectManagerDatabase.cs:54-65` updates the in-memory filesystem then dispatches to the owning `ProjectManager`.
+3. `Source/DafnyLanguageServer/Workspace/ProjectManager.cs:130-163` begins a new compilation: increments version, migrates current IDE state, disposes old `Compilation`, creates and starts a new one, throttles state notifications and triggers verification. This is *not* a new language-server instance or newly allocated semantic cache.
+4. `Source/DafnyCore/Pipeline/TextDocumentLoader.cs:34-56` parses and then resolves on the large-stack scheduler; parse errors abort semantic resolution in `ResolveInternal`; this is why error-recovery traces must distinguish parse from resolution failures.
+5. `Source/DafnyLanguageServer/Language/DafnyLangParser.cs:27-49` chooses `CachingParser` vs `ProgramParser` based on `UseCaching`, and parses root files; `CachingParser.cs:32-55` applies file-level parse caching and defensive cloning.
+6. `Source/DafnyLanguageServer/Language/Symbols/DafnyLangSymbolResolver.cs:34-61` serializes semantic resolution behind a mutex and retains the `ResolutionCache` field; its resolver-selection option is used for the no-cache fresh oracle.
+7. `Source/DafnyLanguageServer/Caching/PruneIfNotUsedSinceLastPruneCache.cs:39-84` has a per-cache semaphore, marks accessed entries, and prunes entries unused during the last use/prune interval. It does *not* implement semantic-option-aware cache-key invalidation. `CacheExtensions.cs:12-21` wraps profiling and telemetry.
+8. `Source/DafnyCore/Pipeline/TextDocumentLoader.cs:62-84` derives verifiable symbols only after successful resolution, illustrating why diagnostic-only equivalence is weaker than verification-scope equivalence.
+
+**Important result-sharing hazard:** the cached `ModuleResolutionResult` is inserted into a new `Program` by `ProgramResolver.ProcessDeclarationResolutionResult`; reattached dictionaries, resolved syntax and reporter messages need a deliberate aliasing and provenance analysis. The current position-sensitive token hash addresses some source-origin shifts but not arbitrary rewriter or plugin mutations.
+
+**Configuration caveat:** `UseCaching=false` disables both the caching parser and caching resolver in the oracle (see `DafnyLangParser.cs:33-35` and `DafnyLangSymbolResolver.cs:51-54`). Therefore the current A/B/C versus fresh comparison is observationally useful but includes a different parse-cache policy. A future oracle could retain parse caching while forcing fresh semantic resolution to isolate the resolver boundary.

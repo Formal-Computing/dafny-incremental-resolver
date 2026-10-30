@@ -1,0 +1,169 @@
+{
+  "mode": "patched-baseline",
+  "kind": "end-to-end-lsp-update-completion",
+  "note": "Includes client scheduling/notification overhead; not resolver-only time",
+  "dotnet": "8.0.33",
+  "os": "Ubuntu 24.04.5 LTS",
+  "samples": [
+    {
+      "iteration": 0,
+      "warmup": true,
+      "milliseconds": 19.3195,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 1,
+      "warmup": true,
+      "milliseconds": 12.0603,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 2,
+      "warmup": true,
+      "milliseconds": 11.478,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 3,
+      "warmup": false,
+      "milliseconds": 11.7885,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 4,
+      "warmup": false,
+      "milliseconds": 10.9402,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 5,
+      "warmup": false,
+      "milliseconds": 34.7136,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 6,
+      "warmup": false,
+      "milliseconds": 19.3919,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 7,
+      "warmup": false,
+      "milliseconds": 11.2327,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 8,
+      "warmup": false,
+      "milliseconds": 8.7173,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 9,
+      "warmup": false,
+      "milliseconds": 26.9937,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 10,
+      "warmup": false,
+      "milliseconds": 13.7106,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 11,
+      "warmup": false,
+      "milliseconds": 15.5914,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 12,
+      "warmup": false,
+      "milliseconds": 8.5359,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 13,
+      "warmup": false,
+      "milliseconds": 21.6383,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 14,
+      "warmup": false,
+      "milliseconds": 13.7501,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 15,
+      "warmup": false,
+      "milliseconds": 9.0812,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 16,
+      "warmup": false,
+      "milliseconds": 8.9372,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 17,
+      "warmup": false,
+      "milliseconds": 26.1465,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 18,
+      "warmup": false,
+      "milliseconds": 10.7499,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    },
+    {
+      "iteration": 19,
+      "warmup": false,
+      "milliseconds": 12.3859,
+      "alphaHit": false,
+      "alphaMiss": true,
+      "betaMiss": true
+    }
+  ]
+}

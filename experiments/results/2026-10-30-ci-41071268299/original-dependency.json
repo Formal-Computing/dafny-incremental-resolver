@@ -1,0 +1,58 @@
+{
+  "mode": "original",
+  "scenario": "dependency",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module Provider { function Value(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Value() } }\n",
+      "diagnostics": []
+    },
+    {
+      "revision": 1,
+      "source": "module Provider { function Value(): bool { true } }\nmodule User { import opened Provider function Result(): int { Value() } }\n",
+      "diagnostics": [
+        {
+          "message": "Function body type mismatch (expected int, got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            1,
+            46
+          ],
+          "to": [
+            1,
+            52
+          ],
+          "related": []
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "source": "module Provider { function Value(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Value() } }\n",
+      "diagnostics": []
+    },
+    {
+      "revision": 3,
+      "source": "module Provider { function Renamed(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Value() } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: Value",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            1,
+            62
+          ],
+          "to": [
+            1,
+            67
+          ],
+          "related": []
+        }
+      ]
+    }
+  ]
+}

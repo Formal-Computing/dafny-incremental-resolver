@@ -1,0 +1,10 @@
+{
+  "upstream": "de36f2ec1f9c530080eff7929ae28229f45da069",
+  "research_commit": "b484785e3b313391f3bdd1e4a8135db87ce4e757",
+  "run": "https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41071268299",
+  "environment": {"runner": "ubuntu-24.04", "dotnet": "8.0.x", "z3": "apt"},
+  "differential": {"scenarios": 5, "revisions": 18, "diagnostic_comparisons": 54, "mismatches": 0},
+  "benchmark": {"trace": "alternating two-character changes in independent Beta", "repetitions": 20, "warmups": 3, "measured_repetitions_per_mode": 17, "metric": "end-to-end LSP document update completion (includes scheduling/harness)", "isolated_semantic_resolution": false, "randomized_mode_order": false, "speedup_claim_permitted": false},
+  "fault_calibration": "mutating one experimental diagnostic makes scripts/compare_differential.py fail; no faulty resolver injection",
+  "scope": "Exploratory benchmark and extracted LSP diagnostic equivalence, no general soundness proof"
+}
