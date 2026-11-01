@@ -71,6 +71,8 @@ jobs:
         run: |
           git -C dafny apply --check ../prototype/patches/0001-experimental-module-token-hashing.patch
           git -C dafny apply ../prototype/patches/0001-experimental-module-token-hashing.patch
+          git -C dafny apply --check ../prototype/patches/0002-opt-in-resolver-regions.patch
+          git -C dafny apply ../prototype/patches/0002-opt-in-resolver-regions.patch
           git -C dafny diff --check
 
       - name: Build patched language-server tests
@@ -81,6 +83,7 @@ jobs:
         working-directory: dafny
         env:
           DAFNY_RESEARCH_MODE: patched-baseline
+          DAFNY_RESEARCH_PROFILE_RESOLVER: '1'
           DAFNY_EXPERIMENTAL_CONTENT_HASH: '0'
           DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
         run: >
@@ -92,6 +95,7 @@ jobs:
         working-directory: dafny
         env:
           DAFNY_RESEARCH_MODE: experimental
+          DAFNY_RESEARCH_PROFILE_RESOLVER: '1'
           DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
           DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
         run: >
