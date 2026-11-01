@@ -8,3 +8,9 @@
 - Acar, Blelloch, Harper, *Adaptive Functional Programming*, TOPLAS 2006: foundational automatic change propagation.
 
 No originality claim is made for content hashing, transitive invalidation or memoization per se. The emerging contribution is a Dafny-specific, source-audited caching boundary, controlled four-mode LSP differential diagnostics, transparent fallback restrictions and reproducible artifacts. A final novelty claim depends on broader soundness testing and performance measurements. See BibTeX in the manuscript archive.
+
+## Direct prior art: Mercaș undergraduate thesis (July 2026)
+
+Ștefan-Alexandru Mercaș, *Incremental Resolution and Interactive Proof Mode Support for Dafny*, UAIC bachelor thesis defense presentation, supervised by Ștefan Ciobâcă. [Primary source](https://profs.info.uaic.ro/stefan.ciobaca/bsc-theses/bsc-defense-stefan-mercas.pdf).
+
+The thesis already studies incremental resolution with reuse subject to dependency reuse and moves DIPS proof obligations into generated modules to localize invalidation. It identifies finer per-module incremental resolution as future work. Our experimental patch targets existing Language Server CachingResolver module keys and position-sensitive diagnostic observables. This is a narrower engineering and validation research boundary, not a claim that incremental Dafny resolution was previously absent. Compare implementation code before asserting algorithmic novelty.

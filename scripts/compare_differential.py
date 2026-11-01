@@ -3,7 +3,7 @@
 import json, pathlib, sys
 root=pathlib.Path(sys.argv[1])
 modes=("original","patched-baseline","experimental","fresh")
-scenarios=("independent","dependency","shadowing","roster","recovery")
+scenarios=("independent","dependency","shadowing","roster","recovery","negative","fault_probe")
 report=[]
 for scenario in scenarios:
     traces={}
@@ -26,6 +26,12 @@ for scenario in scenarios:
             report.append({"scenario":scenario,"revision":i,"mode":mode,
               "status":"MATCH" if got==wanted else "DIFFERENCE",
               "actual":got if got!=wanted else None,"oracle":wanted if got!=wanted else None})
+        for mode in ("original","patched-baseline","experimental"):
+            got_sem=traces[mode][i].get("semantic")
+            wanted_sem=oracle.get("semantic")
+            if got_sem is not None or wanted_sem is not None:
+                report.append({"scenario":scenario,"revision":i,"mode":mode+"-semantic",
+                  "status":"MATCH" if got_sem==wanted_sem else "DIFFERENCE"})
         if traces["patched-baseline"][i]["diagnostics"]!=traces["original"][i]["diagnostics"]:
             report.append({"scenario":scenario,"revision":i,"mode":"baseline-equivalence","status":"DIFFERENCE"})
 result={"schema":"dafny-differential-v1","comparison":report}

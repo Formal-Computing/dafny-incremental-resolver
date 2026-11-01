@@ -43,6 +43,17 @@
         "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { 21 } }\n",
         "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { true } }\n"
       },
+      "negative" => new[] {
+        "module Provider { function Existing(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n",
+        "module Provider { function Existing(): int { 1 } function Missing(): int { 2 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n",
+        "module Provider { function Existing(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n",
+        "module Provider { function Existing(): int { 1 } function Missing(): int { 3 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n"
+      },
+      "fault_probe" => new[] {
+        "module Beta { function Value(): int { 1 } }\nmodule User { import opened Beta function Result(): int { Value() } }\n",
+        "module Beta { function Value(): bool { true } }\nmodule User { import opened Beta function Result(): int { Value() } }\n",
+        "module Beta { function Value(): int { 1 } }\nmodule User { import opened Beta function Result(): int { Value() } }\n"
+      },
       _ => throw new ArgumentException(scenario)
     };
     var path = Path.Combine(Directory.GetCurrentDirectory(),
@@ -79,7 +90,36 @@
             r.Location.Range.Start.Line + ":" + r.Location.Range.Start.Character).ToArray()
       }).OrderBy(d => d.from[0]).ThenBy(d => d.from[1])
         .ThenBy(d => d.message).ToArray();
-      records.Add(new { revision = index, source = revisions[index], diagnostics = normalized });
+      object? semantic = null;
+      string? target = scenario switch {
+        "dependency" or "shadowing" or "fault_probe" => "Value()",
+        "negative" => "Missing()",
+        _ => null
+      };
+      if (target != null) {
+        int offset = revisions[index].LastIndexOf(target, StringComparison.Ordinal);
+        Assert.True(offset >= 0, "Missing semantic query target");
+        var prefix = revisions[index][..offset];
+        var position = new Position(prefix.Count(c => c == '\n'),
+          offset - prefix.LastIndexOf('\n') - 1);
+        var definitions = await RequestDefinition(document, position);
+        var hover = await client.RequestHover(
+          new HoverParams { TextDocument = document.Uri, Position = position },
+          CancellationToken);
+        semantic = new {
+          definitions = definitions.Select(d => new {
+            uri = d.Location?.Uri.ToString(),
+            from = d.Location == null ? (int[]?)null :
+              new[] { d.Location.Range.Start.Line, d.Location.Range.Start.Character },
+            to = d.Location == null ? (int[]?)null :
+              new[] { d.Location.Range.End.Line, d.Location.Range.End.Character }
+          }).OrderBy(d => d.uri).ThenBy(d => d.from == null ? -1 : d.from[0])
+            .ThenBy(d => d.from == null ? -1 : d.from[1]).ToArray(),
+          hover = hover?.Contents.MarkupContent?.Value
+        };
+      }
+      records.Add(new { revision = index, source = revisions[index],
+        diagnostics = normalized, semantic });
     }
     var output = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_OUTPUT_DIR");
     if (string.IsNullOrWhiteSpace(output)) {
