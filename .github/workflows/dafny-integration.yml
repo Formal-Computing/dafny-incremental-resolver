@@ -140,5 +140,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dafny-research-traces-${{ github.sha }}
-          path: research-results/
+          path: |
+            research-results/
+            faulty-results/
           if-no-files-found: warn

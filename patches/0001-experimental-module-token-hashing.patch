@@ -44,7 +44,7 @@
 +  private byte[] GetExperimentalHash(ModuleDecl decl) {
 +    // Deliberately unsound TEST-ONLY cache key, gated behind explicit opt-in.
 +    if (Environment.GetEnvironmentVariable("DAFNY_RESEARCH_INJECT_STALE_BETA") == "1"
-+        && decl.FullName == "Beta") {
++        && decl.FullName.Contains("Beta", StringComparison.Ordinal)) {
 +      return hashes[decl] = SHA256.HashData(
 +        System.Text.Encoding.UTF8.GetBytes("research-stale-Beta-v1"));
 +    }
