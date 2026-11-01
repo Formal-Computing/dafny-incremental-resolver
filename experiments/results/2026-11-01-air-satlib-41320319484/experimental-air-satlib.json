@@ -1,0 +1,200 @@
+{
+  "mode": "experimental",
+  "kind": "typed-Dafny-AIR-SATLIB-clause-corpus",
+  "source": "Formal-Computing/cdcl-sat-solver@88247ab",
+  "input": {
+    "variablesAcrossInstances": 100,
+    "clauses": 298,
+    "modules": [
+      "AirUF50",
+      "AirAIM50",
+      "AIR_Inspector"
+    ],
+    "sourceLines": 359
+  },
+  "note": "LSP client \u002B server elapsed time, not pure resolver. GC allocations are process-wide and confounded.",
+  "samples": [
+    {
+      "iteration": 0,
+      "edit": "same-length-RevisionTag",
+      "warmup": true,
+      "milliseconds": 2354.1483,
+      "allocationsAllProcessBytes": 798360872,
+      "resolutionHits": 7,
+      "resolutionMisses": 2,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AirAIM50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": true,
+          "miss": false
+        }
+      ]
+    },
+    {
+      "iteration": 1,
+      "edit": "same-length-RevisionTag",
+      "warmup": true,
+      "milliseconds": 7748.9005,
+      "allocationsAllProcessBytes": 2173266416,
+      "resolutionHits": 7,
+      "resolutionMisses": 2,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AirAIM50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": true,
+          "miss": false
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "edit": "same-length-RevisionTag",
+      "warmup": false,
+      "milliseconds": 5997.5781,
+      "allocationsAllProcessBytes": 2259778496,
+      "resolutionHits": 7,
+      "resolutionMisses": 2,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AirAIM50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": true,
+          "miss": false
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "edit": "same-length-RevisionTag",
+      "warmup": false,
+      "milliseconds": 6453.0759,
+      "allocationsAllProcessBytes": 2259280264,
+      "resolutionHits": 7,
+      "resolutionMisses": 2,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AirAIM50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": true,
+          "miss": false
+        }
+      ]
+    },
+    {
+      "iteration": 4,
+      "edit": "same-length-RevisionTag",
+      "warmup": false,
+      "milliseconds": 5675.742,
+      "allocationsAllProcessBytes": 2259643904,
+      "resolutionHits": 7,
+      "resolutionMisses": 2,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AirAIM50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": true,
+          "miss": false
+        }
+      ]
+    },
+    {
+      "iteration": 5,
+      "edit": "same-length-RevisionTag",
+      "warmup": false,
+      "milliseconds": 7283.1617,
+      "allocationsAllProcessBytes": 2259829016,
+      "resolutionHits": 7,
+      "resolutionMisses": 2,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AirAIM50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": true,
+          "miss": false
+        }
+      ]
+    },
+    {
+      "iteration": 6,
+      "edit": "prefix-insertion",
+      "warmup": false,
+      "milliseconds": 5571.8489,
+      "allocationsAllProcessBytes": 2292046456,
+      "resolutionHits": 1,
+      "resolutionMisses": 8,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AirAIM50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": false,
+          "miss": true
+        }
+      ]
+    }
+  ]
+}

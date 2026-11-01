@@ -1,0 +1,27 @@
+{
+  "source_repo": "Formal-Computing/cdcl-sat-solver",
+  "source_revision": "88247ab605ee0e3da2aca711885e3340eb78c782",
+  "sources": [
+    {
+      "file": "uf50-01.cnf",
+      "module": "AirUF50",
+      "variables": 50,
+      "clauses": 218,
+      "sha256": "cf33c163b99d2a10e25dff937fdc76db79e45079116c0890d130219666fd3ba5",
+      "expected": "SAT"
+    },
+    {
+      "file": "aim-50-1_6-no-1.cnf",
+      "module": "AirAIM50",
+      "variables": 50,
+      "clauses": 80,
+      "sha256": "17d42ca0ef48f3a0523a4a9f0a9f683da9acdc9a61f175dc9e143398e6532a86",
+      "expected": "UNSAT"
+    }
+  ],
+  "totals": {
+    "clauses": 298,
+    "variables": 100
+  },
+  "fixture_sha256": "15e2d5ecfe2f46795272221bb916202e8e1f3502c173c0b5bdf30361bc727d89"
+}
