@@ -13,6 +13,8 @@
   [InlineData("shadowing")]
   [InlineData("roster")]
   [InlineData("recovery")]
+  [InlineData("negative")]
+  [InlineData("fault_probe")]
   public async Task ResearchDifferentialTrace(string scenario) {
     string[] revisions = scenario switch {
       "independent" => new[] {
