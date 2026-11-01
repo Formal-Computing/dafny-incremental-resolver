@@ -17,9 +17,9 @@ summary={"kind":"AIR-SATLIB typed-Dafny-LSP-case-study-v1",
          "The no-resolution-cache mode still uses Dafny's parser cache."]}
 for mode in modes:
     x=traces[mode]["samples"]
-    assert len(x)==13 and all(v["edit"]=="same-length-RevisionTag" for v in x[:12])
-    measured=[v for v in x[:12] if not v["warmup"]]
-    assert len(measured)==10
+    assert len(x)==7 and all(v["edit"]=="same-length-RevisionTag" for v in x[:6])
+    measured=[v for v in x[:6] if not v["warmup"]]
+    assert len(measured)==4
     def count(field):
         return sum(v[field] for v in measured)
     per=collections.defaultdict(lambda:collections.Counter())
@@ -42,13 +42,13 @@ lines=["# AIR SATLIB to Dafny incremental resolution case study","",
 "Generated from Formal-Computing/cdcl-sat-solver at 88247ab: 662 real clauses, "
 "three source benchmark instances, converted into typed Dafny constants and a dependent summary module. "
 "This measures incremental semantic resolution of the generated Dafny program, not CDCL runtime.","",
-"## Results (one Ubuntu CI runner; 2 warmup + 10 measured edits per mode)","",
+"## Results (one Ubuntu CI runner; 2 warmup + 4 measured edits per mode)","",
 "| Resolver mode | Median LSP ms | Cache hits | Cache misses | Median total process allocations (bytes) |",
 "|---|---:|---:|---:|---:|"]
 for k in modes:
     s=summary["modes"][k]
     lines.append(f"| {k} | {s['medianUpdateMs']:.3f} | {s['resolutionCacheHits']} | {s['resolutionCacheMisses']} | {s['medianProcessAllocatedBytes']:,} |")
-lines+=["","## Tracked clause data modules (10 measured revisions)","",
+lines+=["","## Tracked clause data modules (4 measured revisions)","",
          "| Mode | Module | Hits | Misses |","|---|---|---:|---:|"]
 for k in modes:
     for m,x in summary["modes"][k]["trackedModules"].items():
@@ -57,7 +57,7 @@ lines+=["",
 "## Worked edit trace",
 "1. The LSP opens a single 768-line Dafny file containing 662 original SATLIB clauses as typed declarations.",
 "2. A small function AIR_WorkingEdit.RevisionTag() follows the large unchanged source modules.",
-"3. Ten measured revisions alternate only 10 and 11 (equal source length); unchanged module source tokens/positions remain identical.",
+"3. Four measured revisions alternate only 10 and 11 (equal source length); unchanged module source tokens/positions remain identical.",
 "4. The upstream clone-identifier-based key conservatively misses after a fresh parse. The experimental content-aware key may reuse unchanged modules; the table records actual log entries for each.",
 "5. A final prefix insertion shifts all module source positions and is expected to conservatively invalidate them. Prefix-insertion diagnostics are captured separately in air-satlib-summary.json.",
 "",

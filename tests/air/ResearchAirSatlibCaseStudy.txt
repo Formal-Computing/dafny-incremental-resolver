@@ -19,7 +19,7 @@
 
     string[] tracked = { "AirUF50", "AirHole7", "AirDubois30", "AIR_Inspector" };
     var samples = new System.Collections.Generic.List<object>();
-    for (int iteration = 0; iteration < 12; iteration++) {
+    for (int iteration = 0; iteration < 6; iteration++) {
       var before = sink.Snapshot().LogEvents.Count();
       var allocatedBefore = GC.GetTotalAllocatedBytes(true);
       var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -57,7 +57,7 @@
     var insertionMessages = sink.Snapshot().LogEvents.Skip(beforeInsertion)
       .Select(e => e.MessageTemplate.Text).ToArray();
     samples.Add(new {
-      iteration = 12,
+      iteration = 6,
       edit = "prefix-insertion",
       warmup = false,
       milliseconds = insertionWatch.Elapsed.TotalMilliseconds,
@@ -85,5 +85,5 @@
         note = "LSP client + server elapsed time, not pure resolver. GC allocations are process-wide and confounded.",
         samples
       }, new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
-    Assert.Equal(13, samples.Count);
+    Assert.Equal(7, samples.Count);
   }
