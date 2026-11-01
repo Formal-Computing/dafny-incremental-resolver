@@ -139,3 +139,26 @@ resources or a claimed speedup. Four measured edits are not representative
 of natural editing workloads.
 
 GitHub run: https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41320319484
+
+
+## Independent second CI replication: 41321007864 (commit 24c2f0d)
+
+The corrected full workflow is **green**:
+https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41321007864
+
+Results are archived at
+experiments/results/2026-11-01-air-satlib-41321007864/.
+
+| Mode | Hits/misses in BOTH runs | Run 41320319484 median | Run 41321007864 median |
+| --- | --- | ---: | ---: |
+| Original | 4 / 32 | 6,677 ms | 7,157 ms |
+| Patched baseline | 4 / 32 | 6,036 ms | 7,156 ms |
+| Experimental | **28 / 8** | 6,225 ms | 7,126 ms |
+| Fresh semantic resolution | no cache logs | 5,818 ms | 7,590 ms |
+
+Both runs recorded the same 24 fewer cache misses for four measured
+same-length edits and the same 12 targeted module hits. The median
+end-to-end timings change materially between two CI executions and
+their ranking changes. This reinforces the distinction: cache work
+avoidance is reproduced, but an end-to-end or memory speedup is
+**not yet established**.
