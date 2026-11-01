@@ -1,0 +1,639 @@
+{
+  "edits": [
+    {
+      "edit": "provider-value-changed",
+      "original": {
+        "hits": 1,
+        "misses": 8
+      },
+      "experimental": {
+        "hits": 5,
+        "misses": 4
+      },
+      "trackedExperimental": [
+        {
+          "name": "AirUF50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AirAIM50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": false,
+          "miss": true
+        }
+      ]
+    },
+    {
+      "edit": "provider-value-restored",
+      "original": {
+        "hits": 1,
+        "misses": 8
+      },
+      "experimental": {
+        "hits": 5,
+        "misses": 4
+      },
+      "trackedExperimental": [
+        {
+          "name": "AirUF50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AirAIM50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": false,
+          "miss": true
+        }
+      ]
+    },
+    {
+      "edit": "independent-suffix-insertion",
+      "original": {
+        "hits": 1,
+        "misses": 8
+      },
+      "experimental": {
+        "hits": 7,
+        "misses": 2
+      },
+      "trackedExperimental": [
+        {
+          "name": "AirUF50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AirAIM50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": true,
+          "miss": false
+        }
+      ]
+    },
+    {
+      "edit": "independent-suffix-restoration",
+      "original": {
+        "hits": 1,
+        "misses": 8
+      },
+      "experimental": {
+        "hits": 7,
+        "misses": 2
+      },
+      "trackedExperimental": [
+        {
+          "name": "AirUF50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AirAIM50",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": true,
+          "miss": false
+        }
+      ]
+    },
+    {
+      "edit": "prefix-position-shift",
+      "original": {
+        "hits": 1,
+        "misses": 8
+      },
+      "experimental": {
+        "hits": 1,
+        "misses": 8
+      },
+      "trackedExperimental": [
+        {
+          "name": "AirUF50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AirAIM50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": false,
+          "miss": true
+        }
+      ]
+    }
+  ],
+  "modes": {
+    "original": [
+      {
+        "edit": "provider-value-changed",
+        "elapsedMs": 229.0636,
+        "hits": 1,
+        "misses": 8,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 0
+      },
+      {
+        "edit": "provider-value-restored",
+        "elapsedMs": 462.12,
+        "hits": 1,
+        "misses": 8,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 0
+      },
+      {
+        "edit": "independent-suffix-insertion",
+        "elapsedMs": 4328.4524,
+        "hits": 1,
+        "misses": 8,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 0
+      },
+      {
+        "edit": "independent-suffix-restoration",
+        "elapsedMs": 4237.3689,
+        "hits": 1,
+        "misses": 8,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 0
+      },
+      {
+        "edit": "prefix-position-shift",
+        "elapsedMs": 4408.3188,
+        "hits": 1,
+        "misses": 8,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 0
+      }
+    ],
+    "fresh": [
+      {
+        "edit": "provider-value-changed",
+        "elapsedMs": 708.9714,
+        "hits": 0,
+        "misses": 0,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": false
+          }
+        ],
+        "resolverProfileEvents": 0
+      },
+      {
+        "edit": "provider-value-restored",
+        "elapsedMs": 5463.1994,
+        "hits": 0,
+        "misses": 0,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": false
+          }
+        ],
+        "resolverProfileEvents": 0
+      },
+      {
+        "edit": "independent-suffix-insertion",
+        "elapsedMs": 4048.2717,
+        "hits": 0,
+        "misses": 0,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": false
+          }
+        ],
+        "resolverProfileEvents": 0
+      },
+      {
+        "edit": "independent-suffix-restoration",
+        "elapsedMs": 4517.3814,
+        "hits": 0,
+        "misses": 0,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": false
+          }
+        ],
+        "resolverProfileEvents": 0
+      },
+      {
+        "edit": "prefix-position-shift",
+        "elapsedMs": 3842.8449,
+        "hits": 0,
+        "misses": 0,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": false
+          }
+        ],
+        "resolverProfileEvents": 0
+      }
+    ],
+    "patched-baseline": [
+      {
+        "edit": "provider-value-changed",
+        "elapsedMs": 794.8765,
+        "hits": 1,
+        "misses": 8,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 8
+      },
+      {
+        "edit": "provider-value-restored",
+        "elapsedMs": 6327.737,
+        "hits": 1,
+        "misses": 8,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 8
+      },
+      {
+        "edit": "independent-suffix-insertion",
+        "elapsedMs": 4242.4889,
+        "hits": 1,
+        "misses": 8,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 8
+      },
+      {
+        "edit": "independent-suffix-restoration",
+        "elapsedMs": 4021.2435,
+        "hits": 1,
+        "misses": 8,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 8
+      },
+      {
+        "edit": "prefix-position-shift",
+        "elapsedMs": 3911.4791,
+        "hits": 1,
+        "misses": 8,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 8
+      }
+    ],
+    "experimental": [
+      {
+        "edit": "provider-value-changed",
+        "elapsedMs": 701.2646,
+        "hits": 5,
+        "misses": 4,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": true,
+            "miss": false
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 8
+      },
+      {
+        "edit": "provider-value-restored",
+        "elapsedMs": 5666.6047,
+        "hits": 5,
+        "misses": 4,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": true,
+            "miss": false
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 8
+      },
+      {
+        "edit": "independent-suffix-insertion",
+        "elapsedMs": 4100.2269,
+        "hits": 7,
+        "misses": 2,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": true,
+            "miss": false
+          },
+          {
+            "name": "AirAIM50",
+            "hit": true,
+            "miss": false
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": true,
+            "miss": false
+          }
+        ],
+        "resolverProfileEvents": 8
+      },
+      {
+        "edit": "independent-suffix-restoration",
+        "elapsedMs": 3980.9163,
+        "hits": 7,
+        "misses": 2,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": true,
+            "miss": false
+          },
+          {
+            "name": "AirAIM50",
+            "hit": true,
+            "miss": false
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": true,
+            "miss": false
+          }
+        ],
+        "resolverProfileEvents": 8
+      },
+      {
+        "edit": "prefix-position-shift",
+        "elapsedMs": 4793.6178,
+        "hits": 1,
+        "misses": 8,
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ],
+        "resolverProfileEvents": 8
+      }
+    ]
+  },
+  "notes": [
+    "Original and experimental are different process runs, not paired CPU samples.",
+    "The parser cache stays enabled in fresh mode.",
+    "Synchronous profiler figures use current-thread allocations and inclusive regions, not exclusive CPU time."
+  ]
+}
