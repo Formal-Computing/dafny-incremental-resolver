@@ -33,6 +33,7 @@ jobs:
         run: |
           python3 prototype/scripts/install_integration_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
           python3 prototype/scripts/install_differential_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
+          python3 prototype/scripts/install_air_case_study.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
 
       - name: Restore tools and install Z3
         run: |
@@ -53,7 +54,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy'
 
       - name: Fresh, non-caching semantic oracle
         working-directory: dafny
@@ -64,7 +65,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy'
 
       - name: Apply experiment patch
         run: |
@@ -85,7 +86,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy'
 
       - name: Experimental differential traces and cache regression
         working-directory: dafny
@@ -96,7 +97,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy'
 
       - name: End-to-end faulty-cache probe (test-only)
         working-directory: dafny
@@ -115,6 +116,9 @@ jobs:
 
       - name: Compare diagnostics to fresh oracle
         run: python3 prototype/scripts/compare_differential.py research-results
+
+      - name: Summarize AIR SATLIB module resolution benchmark
+        run: python3 prototype/scripts/summarize_air_case_study.py research-results
 
       - name: Summarize exploratory persistent-LSP update timing
         run: python3 prototype/scripts/summarize_benchmark.py research-results

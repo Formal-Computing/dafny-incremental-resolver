@@ -1,0 +1,35 @@
+{
+  "source_repo": "Formal-Computing/cdcl-sat-solver",
+  "source_revision": "88247ab605ee0e3da2aca711885e3340eb78c782",
+  "sources": [
+    {
+      "file": "uf50-01.cnf",
+      "module": "AirUF50",
+      "variables": 50,
+      "clauses": 218,
+      "sha256": "cf33c163b99d2a10e25dff937fdc76db79e45079116c0890d130219666fd3ba5",
+      "expected": "SAT"
+    },
+    {
+      "file": "hole7.cnf",
+      "module": "AirHole7",
+      "variables": 56,
+      "clauses": 204,
+      "sha256": "225791cbb02429d71bae87f331460d456ee11fecc384a6af049813f42e6319ab",
+      "expected": "UNSAT"
+    },
+    {
+      "file": "dubois30.cnf",
+      "module": "AirDubois30",
+      "variables": 90,
+      "clauses": 240,
+      "sha256": "5ab95e48051afa9d7410d52fb07ead3e8a4ec97243d9f9c3f36aa0ebe78d4059",
+      "expected": "UNSAT"
+    }
+  ],
+  "totals": {
+    "clauses": 662,
+    "variables": 196
+  },
+  "fixture_sha256": "d0cd5efdb4d040a4c8dd3165aa3a90e10d21cc6f82a8fecf1f48d0d7c986a878"
+}
