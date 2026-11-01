@@ -1,5 +1,5 @@
   /// <summary>
-  /// AIR/SATLIB: 662 original clauses converted to typed Dafny const declarations.
+  /// AIR/SATLIB: 298 original clauses converted to typed Dafny const declarations.
   /// This measures LSP end-to-end update time and *actual resolver cache log counts*
   /// on a substantial same-file module graph. It does NOT measure SAT solving time.
   /// </summary>
@@ -17,7 +17,7 @@
     int line = source[..digitOffset].Count(c => c == '\n');
     int column = digitOffset - source.LastIndexOf('\n', digitOffset) - 1;
 
-    string[] tracked = { "AirUF50", "AirHole7", "AirDubois30", "AIR_Inspector" };
+    string[] tracked = { "AirUF50", "AirAIM50", "AIR_Inspector" };
     var samples = new System.Collections.Generic.List<object>();
     for (int iteration = 0; iteration < 6; iteration++) {
       var before = sink.Snapshot().LogEvents.Count();
@@ -80,7 +80,7 @@
       System.Text.Json.JsonSerializer.Serialize(new {
         mode, kind = "typed-Dafny-AIR-SATLIB-clause-corpus",
         source = "Formal-Computing/cdcl-sat-solver@88247ab",
-        input = new { variablesAcrossInstances = 196, clauses = 662,
+        input = new { variablesAcrossInstances = 100, clauses = 298,
           modules = tracked, sourceLines = source.Count(c => c == '\n') },
         note = "LSP client + server elapsed time, not pure resolver. GC allocations are process-wide and confounded.",
         samples

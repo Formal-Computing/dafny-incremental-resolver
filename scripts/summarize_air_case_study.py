@@ -39,8 +39,8 @@ for mode in modes:
     }
 (root/"air-satlib-summary.json").write_text(json.dumps(summary,indent=2)+"\n")
 lines=["# AIR SATLIB to Dafny incremental resolution case study","",
-"Generated from Formal-Computing/cdcl-sat-solver at 88247ab: 662 real clauses, "
-"three source benchmark instances, converted into typed Dafny constants and a dependent summary module. "
+"Generated from Formal-Computing/cdcl-sat-solver at 88247ab: 298 real clauses, "
+"two source benchmark instances, converted into typed Dafny constants and a dependent summary module. "
 "This measures incremental semantic resolution of the generated Dafny program, not CDCL runtime.","",
 "## Results (one Ubuntu CI runner; 2 warmup + 4 measured edits per mode)","",
 "| Resolver mode | Median LSP ms | Cache hits | Cache misses | Median total process allocations (bytes) |",
@@ -55,7 +55,7 @@ for k in modes:
         lines.append(f"| {k} | {m} | {x['hit']} | {x['miss']} |")
 lines+=["",
 "## Worked edit trace",
-"1. The LSP opens a single 768-line Dafny file containing 662 original SATLIB clauses as typed declarations.",
+"1. The LSP opens a single generated Dafny file containing 298 original SATLIB clauses as typed declarations.",
 "2. A small function AIR_WorkingEdit.RevisionTag() follows the large unchanged source modules.",
 "3. Four measured revisions alternate only 10 and 11 (equal source length); unchanged module source tokens/positions remain identical.",
 "4. The upstream clone-identifier-based key conservatively misses after a fresh parse. The experimental content-aware key may reuse unchanged modules; the table records actual log entries for each.",
