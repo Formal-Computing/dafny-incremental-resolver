@@ -97,3 +97,45 @@ The resulting fixture SHA-256 is recorded in `satlib_case_study.json`.
 ## Larger preserved stress input
 
 The original 662-clause 768-line translation from uf50-01, hole7, dubois30 is preserved as tests/air/satlib_stress_662.dfy with its manifest. It exceeded the pinned LSP test cancellation window and has **no validated resource-savings measurement**. Regenerate it with the generator and argument `stress`.
+
+
+## Observed result: CI run 41320319484 (commit dbba8ae)
+
+The first four-mode measurement completed successfully in CI on 1 November 2026.
+The aggregate workflow was initially red only because its generic caching-regression
+filter included this research test with no mode or output path; that filter has since
+been corrected. Reproducible raw JSON and the CI-produced Markdown summary are under
+experiments/results/2026-11-01-air-satlib-41320319484/.
+
+| Mode | 4 measured revisions: hits | Misses | Median LSP edit-to-completion |
+| --- | ---: | ---: | ---: |
+| Original upstream | 4 | 32 | 6,677 ms |
+| Patched baseline (flag off) | 4 | 32 | 6,036 ms |
+| Experimental content-aware | 28 | 8 | 6,225 ms |
+| No semantic cache (parser cache remains) | 0 log events | 0 log events | 5,818 ms |
+
+**Actual avoided work:** 24 fewer resolution-cache misses (32 to 8)
+relative to either baseline over the four measured same-length edits, with
+24 corresponding new cache hits. All three tracked source modules (AirUF50,
+AirAIM50, AIR_Inspector) had four cache hits each under the experiment and
+four misses each under both caching baselines: 12 specifically observed
+module resolutions avoided in named modules. A same-length edit to a small
+unrelated function leaves all three source modules unchanged. The original
+file-level CloneId invalidates them conservatively, whereas the experimental
+fingerprints identify the original token ranges.
+
+**Negative control:** after a length-changing comment is inserted at the
+beginning, all three named modules conservatively miss in the experimental
+mode, confirming that position-sensitive caching does not falsely reuse
+their old source positions for this trace.
+
+**Important:** The experiment does NOT establish end-to-end speedup or memory
+savings. Experimental median LSP update time is *higher* than patched baseline,
+and fresh non-caching resolution is fastest in this small, sequential run.
+The GC allocation metric covers the entire client/server test process,
+not isolated semantic-resolution memory. Avoided resolution-cache misses
+are a measured saving of repeated work, NOT evidence of saved wall-clock
+resources or a claimed speedup. Four measured edits are not representative
+of natural editing workloads.
+
+GitHub run: https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41320319484

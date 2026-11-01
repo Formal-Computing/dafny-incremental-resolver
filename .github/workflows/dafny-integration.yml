@@ -133,7 +133,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest&FullyQualifiedName!~ResearchDifferentialTrace&FullyQualifiedName!~ResearchPersistentEditLatency&FullyQualifiedName!~SameFileIndependentModuleEdit'
+          --filter 'FullyQualifiedName~CachingTest&FullyQualifiedName!~ResearchDifferentialTrace&FullyQualifiedName!~ResearchPersistentEditLatency&FullyQualifiedName!~ResearchAirSatlibCaseStudy&FullyQualifiedName!~SameFileIndependentModuleEdit'
 
       - name: C# reference-model checks
         working-directory: prototype
