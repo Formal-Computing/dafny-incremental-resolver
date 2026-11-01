@@ -54,7 +54,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits'
 
       - name: Fresh, non-caching semantic oracle
         working-directory: dafny
@@ -65,12 +65,14 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits'
 
       - name: Apply experiment patch
         run: |
           git -C dafny apply --check ../prototype/patches/0001-experimental-module-token-hashing.patch
           git -C dafny apply ../prototype/patches/0001-experimental-module-token-hashing.patch
+          git -C dafny apply --check ../prototype/patches/0002-opt-in-resolver-regions.patch
+          git -C dafny apply ../prototype/patches/0002-opt-in-resolver-regions.patch
           git -C dafny diff --check
 
       - name: Build patched language-server tests
@@ -81,23 +83,25 @@ jobs:
         working-directory: dafny
         env:
           DAFNY_RESEARCH_MODE: patched-baseline
+          DAFNY_RESEARCH_PROFILE_RESOLVER: '1'
           DAFNY_EXPERIMENTAL_CONTENT_HASH: '0'
           DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits'
 
       - name: Experimental differential traces and cache regression
         working-directory: dafny
         env:
           DAFNY_RESEARCH_MODE: experimental
+          DAFNY_RESEARCH_PROFILE_RESOLVER: '1'
           DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
           DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits'
 
       - name: End-to-end faulty-cache probe (test-only)
         working-directory: dafny
@@ -120,6 +124,9 @@ jobs:
       - name: Summarize AIR SATLIB module resolution benchmark
         run: python3 prototype/scripts/summarize_air_case_study.py research-results
 
+      - name: Summarize controlled AIR mixed edits
+        run: python3 prototype/scripts/summarize_air_mixed.py research-results
+
       - name: Summarize exploratory persistent-LSP update timing
         run: python3 prototype/scripts/summarize_benchmark.py research-results
 
@@ -133,7 +140,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest&FullyQualifiedName!~ResearchDifferentialTrace&FullyQualifiedName!~ResearchPersistentEditLatency&FullyQualifiedName!~ResearchAirSatlibCaseStudy&FullyQualifiedName!~SameFileIndependentModuleEdit'
+          --filter 'FullyQualifiedName~CachingTest&FullyQualifiedName!~ResearchDifferentialTrace&FullyQualifiedName!~ResearchPersistentEditLatency&FullyQualifiedName!~ResearchAirSatlibCaseStudy&FullyQualifiedName!~ResearchAirMixedEdits&FullyQualifiedName!~SameFileIndependentModuleEdit'
 
       - name: C# reference-model checks
         working-directory: prototype

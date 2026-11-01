@@ -1,0 +1,127 @@
+{
+  "mode": "original",
+  "corpus": "AIR-SATLIB-298",
+  "note": "Five controlled edits (not a natural editing-trace distribution)",
+  "samples": [
+    {
+      "edit": "provider-value-changed",
+      "milliseconds": 229.0636,
+      "resolutionHits": 1,
+      "resolutionMisses": 8,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AirAIM50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": false,
+          "miss": true
+        }
+      ],
+      "profile": []
+    },
+    {
+      "edit": "provider-value-restored",
+      "milliseconds": 462.12,
+      "resolutionHits": 1,
+      "resolutionMisses": 8,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AirAIM50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": false,
+          "miss": true
+        }
+      ],
+      "profile": []
+    },
+    {
+      "edit": "independent-suffix-insertion",
+      "milliseconds": 4328.4524,
+      "resolutionHits": 1,
+      "resolutionMisses": 8,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AirAIM50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": false,
+          "miss": true
+        }
+      ],
+      "profile": []
+    },
+    {
+      "edit": "independent-suffix-restoration",
+      "milliseconds": 4237.3689,
+      "resolutionHits": 1,
+      "resolutionMisses": 8,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AirAIM50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": false,
+          "miss": true
+        }
+      ],
+      "profile": []
+    },
+    {
+      "edit": "prefix-position-shift",
+      "milliseconds": 4408.3188,
+      "resolutionHits": 1,
+      "resolutionMisses": 8,
+      "trackedModules": [
+        {
+          "name": "AirUF50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AirAIM50",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "AIR_Inspector",
+          "hit": false,
+          "miss": true
+        }
+      ],
+      "profile": []
+    }
+  ]
+}

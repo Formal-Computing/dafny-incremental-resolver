@@ -26,8 +26,21 @@ for mode in modes:
     for v in measured:
         for item in v["trackedModules"]:
             per[item["name"]].update(hit=int(item["hit"]),miss=int(item["miss"]))
+    profiles=[entry for edit in measured for entry in edit.get("profile",[])]
+    profile_misses=[e for e in profiles if e["disposition"]=="MISS"]
+    profile_hits=[e for e in profiles if e["disposition"]=="HIT"]
+    profile_stats={
+       "events":len(profiles),
+       "misses":len(profile_misses),
+       "hits":len(profile_hits),
+       "inclusiveResolveBodyWallMicroseconds":round(sum(e["resolutionBodyMicroseconds"] for e in profile_misses),3),
+       "inclusiveResolveBodyThreadAllocatedBytes":sum(e["resolutionBodyThreadAllocatedBytes"] for e in profile_misses),
+       "hashWallMicroseconds":round(sum(e["hashMicroseconds"] for e in profiles),3),
+       "hashThreadAllocatedBytes":sum(e["hashThreadAllocatedBytes"] for e in profiles)
+    } if profiles else None
     summary["modes"][mode]={
        "iterations":len(measured),
+       "resolverProfile":profile_stats,
        "medianUpdateMs":round(statistics.median(v["milliseconds"] for v in measured),3),
        "minUpdateMs":round(min(v["milliseconds"] for v in measured),3),
        "maxUpdateMs":round(max(v["milliseconds"] for v in measured),3),
@@ -53,6 +66,15 @@ lines+=["","## Tracked clause data modules (4 measured revisions)","",
 for k in modes:
     for m,x in summary["modes"][k]["trackedModules"].items():
         lines.append(f"| {k} | {m} | {x['hit']} | {x['miss']} |")
+if all(summary["modes"][k]["resolverProfile"] for k in ("patched-baseline","experimental")):
+    lines+=["","## Synchronous resolver regions (instrumented patch, 4 edits)","",
+      "| Mode | Profiled hits/misses | Inclusive resolution body (ms) | Inclusive thread allocations (MiB) | Hash work (ms) |",
+      "|---|---:|---:|---:|---:|"]
+    for k in ("patched-baseline","experimental"):
+        s=summary["modes"][k]["resolverProfile"]
+        lines.append(f"| {k} | {s['hits']} / {s['misses']} | {s['inclusiveResolveBodyWallMicroseconds']/1000:.2f} | {s['inclusiveResolveBodyThreadAllocatedBytes']/1048576:.2f} | {s['hashWallMicroseconds']/1000:.2f} |")
+    lines+=["","**These are synchronous wall-clock regions, not CPU samples.** Body times/allocations are inclusive and can double count nested work. Both modes used the same opt-in measurement patch; absolute values include instrumentation overhead. Source positions must be identical for reuse."]
+
 lines+=["",
 "## Worked edit trace",
 "1. The LSP opens a single generated Dafny file containing 298 original SATLIB clauses as typed declarations.",
