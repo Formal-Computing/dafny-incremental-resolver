@@ -1,0 +1,482 @@
+{
+  "mode": "patched-baseline",
+  "experiment": "proof-bearing-handwritten-five-revisions",
+  "parserCacheStillEnabledInFreshMode": true,
+  "samples": [
+    {
+      "revision": 0,
+      "stage": "open",
+      "source": "// Purpose-built proof-bearing Dafny project (not a converted CNF).\n// Dependency graph: Arithmetic, Search, Provider -\u003E Client; Independent is unrelated.\nmodule Arithmetic {\n  method CountUp(n: nat) returns (count: nat)\n    ensures count == n\n  {\n    var i: nat := 0;\n    count := 0;\n    while i \u003C n\n      invariant i \u003C= n\n      invariant count == i\n      decreases n - i\n    {\n      i := i \u002B 1;\n      count := count \u002B 1;\n    }\n  }\n\n  function SumPrefix(a: array\u003Cint\u003E, n: nat): int\n    requires n \u003C= a.Length\n    reads a\n    decreases n\n  {\n    if n == 0 then 0 else SumPrefix(a, n - 1) \u002B a[n - 1]\n  }\n\n  method SumArray(a: array\u003Cint\u003E) returns (sum: int)\n    ensures sum == SumPrefix(a, a.Length)\n  {\n    var i: nat := 0;\n    sum := 0;\n    while i \u003C a.Length\n      invariant i \u003C= a.Length\n      invariant sum == SumPrefix(a, i)\n      decreases a.Length - i\n    {\n      sum := sum \u002B a[i];\n      i := i \u002B 1;\n    }\n  }\n}\n\nmodule Search {\n  method FindFirst(a: array\u003Cint\u003E, target: int) returns (index: int)\n    ensures -1 \u003C= index \u003C a.Length\n    ensures index \u003E= 0 ==\u003E a[index] == target\n    ensures index == -1 ==\u003E forall k :: 0 \u003C= k \u003C a.Length ==\u003E a[k] != target\n  {\n    var i: nat := 0;\n    while i \u003C a.Length\n      invariant i \u003C= a.Length\n      invariant forall k :: 0 \u003C= k \u003C i ==\u003E a[k] != target\n      decreases a.Length - i\n    {\n      if a[i] == target {\n        return i;\n      }\n      i := i \u002B 1;\n    }\n    return -1;\n  }\n}\n\nmodule Provider {\n  function Offset(x: int): int { x \u002B 1 }\n\n  method Increment(x: int) returns (result: int)\n    ensures result == Offset(x)\n  {\n    result := x \u002B 1;\n  }\n}\n\nmodule Client {\n  import P = Provider\n  import A = Arithmetic\n  import S = Search\n\n  method CheckProvider(x: int) {\n    assert P.Offset(x) == x \u002B 1;\n  }\n\n  method CheckCounter(n: nat) {\n    var count := A.CountUp(n);\n    assert count == n;\n  }\n\n  method CheckSearch(a: array\u003Cint\u003E, needle: int) {\n    var index := S.FindFirst(a, needle);\n    assert index \u003C 0 || a[index] == needle;\n  }\n}\n\nmodule Independent {\n  function RevisionTag(): int { 10 }\n\n  method Abs(x: int) returns (y: nat)\n    ensures y \u003E= 0\n    ensures x \u003E= 0 ==\u003E y == x\n    ensures x \u003C 0 ==\u003E y == -x\n  {\n    if x \u003E= 0 { y := x; }\n    else { y := -x; }\n  }\n\n  method Triangle(a: int, b: int, c: int)\n    requires 0 \u003C= a \u0026\u0026 0 \u003C= b \u0026\u0026 0 \u003C= c\n    requires a \u002B b \u003E= c \u0026\u0026 b \u002B c \u003E= a \u0026\u0026 a \u002B c \u003E= b\n  {\n    assert a \u002B b \u003E= c;\n    assert b \u002B c \u003E= a;\n  }\n}\n",
+      "milliseconds": 0.0002,
+      "diagnostics": [
+        {
+          "message": "auto-accumulator tail recursive",
+          "code": "",
+          "severity": "Hint",
+          "source": "Resolver",
+          "from": [
+            18,
+            11
+          ],
+          "to": [
+            18,
+            20
+          ]
+        },
+        {
+          "message": "Selected triggers: {a[k]}",
+          "code": "0",
+          "severity": "Hint",
+          "source": "Rewriter",
+          "from": [
+            46,
+            28
+          ],
+          "to": [
+            46,
+            34
+          ]
+        },
+        {
+          "message": "Selected triggers: {a[k]}",
+          "code": "0",
+          "severity": "Hint",
+          "source": "Rewriter",
+          "from": [
+            51,
+            16
+          ],
+          "to": [
+            51,
+            22
+          ]
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-verified-algorithms.dfy",
+            "from": [
+              64,
+              11
+            ],
+            "to": [
+              64,
+              17
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction Offset(x: int): int\n\u0060\u0060\u0060"
+      },
+      "hits": 0,
+      "misses": 0,
+      "tracked": [
+        {
+          "name": "Provider",
+          "hit": false,
+          "miss": false
+        },
+        {
+          "name": "Client",
+          "hit": false,
+          "miss": false
+        },
+        {
+          "name": "Arithmetic",
+          "hit": false,
+          "miss": false
+        },
+        {
+          "name": "Search",
+          "hit": false,
+          "miss": false
+        },
+        {
+          "name": "Independent",
+          "hit": false,
+          "miss": false
+        }
+      ]
+    },
+    {
+      "revision": 1,
+      "stage": "independent-edit",
+      "source": "// Purpose-built proof-bearing Dafny project (not a converted CNF).\n// Dependency graph: Arithmetic, Search, Provider -\u003E Client; Independent is unrelated.\nmodule Arithmetic {\n  method CountUp(n: nat) returns (count: nat)\n    ensures count == n\n  {\n    var i: nat := 0;\n    count := 0;\n    while i \u003C n\n      invariant i \u003C= n\n      invariant count == i\n      decreases n - i\n    {\n      i := i \u002B 1;\n      count := count \u002B 1;\n    }\n  }\n\n  function SumPrefix(a: array\u003Cint\u003E, n: nat): int\n    requires n \u003C= a.Length\n    reads a\n    decreases n\n  {\n    if n == 0 then 0 else SumPrefix(a, n - 1) \u002B a[n - 1]\n  }\n\n  method SumArray(a: array\u003Cint\u003E) returns (sum: int)\n    ensures sum == SumPrefix(a, a.Length)\n  {\n    var i: nat := 0;\n    sum := 0;\n    while i \u003C a.Length\n      invariant i \u003C= a.Length\n      invariant sum == SumPrefix(a, i)\n      decreases a.Length - i\n    {\n      sum := sum \u002B a[i];\n      i := i \u002B 1;\n    }\n  }\n}\n\nmodule Search {\n  method FindFirst(a: array\u003Cint\u003E, target: int) returns (index: int)\n    ensures -1 \u003C= index \u003C a.Length\n    ensures index \u003E= 0 ==\u003E a[index] == target\n    ensures index == -1 ==\u003E forall k :: 0 \u003C= k \u003C a.Length ==\u003E a[k] != target\n  {\n    var i: nat := 0;\n    while i \u003C a.Length\n      invariant i \u003C= a.Length\n      invariant forall k :: 0 \u003C= k \u003C i ==\u003E a[k] != target\n      decreases a.Length - i\n    {\n      if a[i] == target {\n        return i;\n      }\n      i := i \u002B 1;\n    }\n    return -1;\n  }\n}\n\nmodule Provider {\n  function Offset(x: int): int { x \u002B 1 }\n\n  method Increment(x: int) returns (result: int)\n    ensures result == Offset(x)\n  {\n    result := x \u002B 1;\n  }\n}\n\nmodule Client {\n  import P = Provider\n  import A = Arithmetic\n  import S = Search\n\n  method CheckProvider(x: int) {\n    assert P.Offset(x) == x \u002B 1;\n  }\n\n  method CheckCounter(n: nat) {\n    var count := A.CountUp(n);\n    assert count == n;\n  }\n\n  method CheckSearch(a: array\u003Cint\u003E, needle: int) {\n    var index := S.FindFirst(a, needle);\n    assert index \u003C 0 || a[index] == needle;\n  }\n}\n\nmodule Independent {\n  function RevisionTag(): int { 11 }\n\n  method Abs(x: int) returns (y: nat)\n    ensures y \u003E= 0\n    ensures x \u003E= 0 ==\u003E y == x\n    ensures x \u003C 0 ==\u003E y == -x\n  {\n    if x \u003E= 0 { y := x; }\n    else { y := -x; }\n  }\n\n  method Triangle(a: int, b: int, c: int)\n    requires 0 \u003C= a \u0026\u0026 0 \u003C= b \u0026\u0026 0 \u003C= c\n    requires a \u002B b \u003E= c \u0026\u0026 b \u002B c \u003E= a \u0026\u0026 a \u002B c \u003E= b\n  {\n    assert a \u002B b \u003E= c;\n    assert b \u002B c \u003E= a;\n  }\n}\n",
+      "milliseconds": 28.144,
+      "diagnostics": [
+        {
+          "message": "auto-accumulator tail recursive",
+          "code": "",
+          "severity": "Hint",
+          "source": "Resolver",
+          "from": [
+            18,
+            11
+          ],
+          "to": [
+            18,
+            20
+          ]
+        },
+        {
+          "message": "Selected triggers: {a[k]}",
+          "code": "0",
+          "severity": "Hint",
+          "source": "Rewriter",
+          "from": [
+            46,
+            28
+          ],
+          "to": [
+            46,
+            34
+          ]
+        },
+        {
+          "message": "Selected triggers: {a[k]}",
+          "code": "0",
+          "severity": "Hint",
+          "source": "Rewriter",
+          "from": [
+            51,
+            16
+          ],
+          "to": [
+            51,
+            22
+          ]
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-verified-algorithms.dfy",
+            "from": [
+              64,
+              11
+            ],
+            "to": [
+              64,
+              17
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction Offset(x: int): int\n\u0060\u0060\u0060"
+      },
+      "hits": 1,
+      "misses": 9,
+      "tracked": [
+        {
+          "name": "Provider",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Client",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Arithmetic",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Search",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Independent",
+          "hit": false,
+          "miss": true
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "stage": "provider-contract-broken",
+      "source": "// Purpose-built proof-bearing Dafny project (not a converted CNF).\n// Dependency graph: Arithmetic, Search, Provider -\u003E Client; Independent is unrelated.\nmodule Arithmetic {\n  method CountUp(n: nat) returns (count: nat)\n    ensures count == n\n  {\n    var i: nat := 0;\n    count := 0;\n    while i \u003C n\n      invariant i \u003C= n\n      invariant count == i\n      decreases n - i\n    {\n      i := i \u002B 1;\n      count := count \u002B 1;\n    }\n  }\n\n  function SumPrefix(a: array\u003Cint\u003E, n: nat): int\n    requires n \u003C= a.Length\n    reads a\n    decreases n\n  {\n    if n == 0 then 0 else SumPrefix(a, n - 1) \u002B a[n - 1]\n  }\n\n  method SumArray(a: array\u003Cint\u003E) returns (sum: int)\n    ensures sum == SumPrefix(a, a.Length)\n  {\n    var i: nat := 0;\n    sum := 0;\n    while i \u003C a.Length\n      invariant i \u003C= a.Length\n      invariant sum == SumPrefix(a, i)\n      decreases a.Length - i\n    {\n      sum := sum \u002B a[i];\n      i := i \u002B 1;\n    }\n  }\n}\n\nmodule Search {\n  method FindFirst(a: array\u003Cint\u003E, target: int) returns (index: int)\n    ensures -1 \u003C= index \u003C a.Length\n    ensures index \u003E= 0 ==\u003E a[index] == target\n    ensures index == -1 ==\u003E forall k :: 0 \u003C= k \u003C a.Length ==\u003E a[k] != target\n  {\n    var i: nat := 0;\n    while i \u003C a.Length\n      invariant i \u003C= a.Length\n      invariant forall k :: 0 \u003C= k \u003C i ==\u003E a[k] != target\n      decreases a.Length - i\n    {\n      if a[i] == target {\n        return i;\n      }\n      i := i \u002B 1;\n    }\n    return -1;\n  }\n}\n\nmodule Provider {\n  function Offset(x: int): int { x \u002B 2 }\n\n  method Increment(x: int) returns (result: int)\n    ensures result == Offset(x)\n  {\n    result := x \u002B 1;\n  }\n}\n\nmodule Client {\n  import P = Provider\n  import A = Arithmetic\n  import S = Search\n\n  method CheckProvider(x: int) {\n    assert P.Offset(x) == x \u002B 1;\n  }\n\n  method CheckCounter(n: nat) {\n    var count := A.CountUp(n);\n    assert count == n;\n  }\n\n  method CheckSearch(a: array\u003Cint\u003E, needle: int) {\n    var index := S.FindFirst(a, needle);\n    assert index \u003C 0 || a[index] == needle;\n  }\n}\n\nmodule Independent {\n  function RevisionTag(): int { 11 }\n\n  method Abs(x: int) returns (y: nat)\n    ensures y \u003E= 0\n    ensures x \u003E= 0 ==\u003E y == x\n    ensures x \u003C 0 ==\u003E y == -x\n  {\n    if x \u003E= 0 { y := x; }\n    else { y := -x; }\n  }\n\n  method Triangle(a: int, b: int, c: int)\n    requires 0 \u003C= a \u0026\u0026 0 \u003C= b \u0026\u0026 0 \u003C= c\n    requires a \u002B b \u003E= c \u0026\u0026 b \u002B c \u003E= a \u0026\u0026 a \u002B c \u003E= b\n  {\n    assert a \u002B b \u003E= c;\n    assert b \u002B c \u003E= a;\n  }\n}\n",
+      "milliseconds": 32.2752,
+      "diagnostics": [
+        {
+          "message": "auto-accumulator tail recursive",
+          "code": "",
+          "severity": "Hint",
+          "source": "Resolver",
+          "from": [
+            18,
+            11
+          ],
+          "to": [
+            18,
+            20
+          ]
+        },
+        {
+          "message": "Selected triggers: {a[k]}",
+          "code": "0",
+          "severity": "Hint",
+          "source": "Rewriter",
+          "from": [
+            46,
+            28
+          ],
+          "to": [
+            46,
+            34
+          ]
+        },
+        {
+          "message": "Selected triggers: {a[k]}",
+          "code": "0",
+          "severity": "Hint",
+          "source": "Rewriter",
+          "from": [
+            51,
+            16
+          ],
+          "to": [
+            51,
+            22
+          ]
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-verified-algorithms.dfy",
+            "from": [
+              64,
+              11
+            ],
+            "to": [
+              64,
+              17
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction Offset(x: int): int\n\u0060\u0060\u0060"
+      },
+      "hits": 1,
+      "misses": 9,
+      "tracked": [
+        {
+          "name": "Provider",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Client",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Arithmetic",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Search",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Independent",
+          "hit": false,
+          "miss": true
+        }
+      ]
+    },
+    {
+      "revision": 3,
+      "stage": "provider-contract-restored",
+      "source": "// Purpose-built proof-bearing Dafny project (not a converted CNF).\n// Dependency graph: Arithmetic, Search, Provider -\u003E Client; Independent is unrelated.\nmodule Arithmetic {\n  method CountUp(n: nat) returns (count: nat)\n    ensures count == n\n  {\n    var i: nat := 0;\n    count := 0;\n    while i \u003C n\n      invariant i \u003C= n\n      invariant count == i\n      decreases n - i\n    {\n      i := i \u002B 1;\n      count := count \u002B 1;\n    }\n  }\n\n  function SumPrefix(a: array\u003Cint\u003E, n: nat): int\n    requires n \u003C= a.Length\n    reads a\n    decreases n\n  {\n    if n == 0 then 0 else SumPrefix(a, n - 1) \u002B a[n - 1]\n  }\n\n  method SumArray(a: array\u003Cint\u003E) returns (sum: int)\n    ensures sum == SumPrefix(a, a.Length)\n  {\n    var i: nat := 0;\n    sum := 0;\n    while i \u003C a.Length\n      invariant i \u003C= a.Length\n      invariant sum == SumPrefix(a, i)\n      decreases a.Length - i\n    {\n      sum := sum \u002B a[i];\n      i := i \u002B 1;\n    }\n  }\n}\n\nmodule Search {\n  method FindFirst(a: array\u003Cint\u003E, target: int) returns (index: int)\n    ensures -1 \u003C= index \u003C a.Length\n    ensures index \u003E= 0 ==\u003E a[index] == target\n    ensures index == -1 ==\u003E forall k :: 0 \u003C= k \u003C a.Length ==\u003E a[k] != target\n  {\n    var i: nat := 0;\n    while i \u003C a.Length\n      invariant i \u003C= a.Length\n      invariant forall k :: 0 \u003C= k \u003C i ==\u003E a[k] != target\n      decreases a.Length - i\n    {\n      if a[i] == target {\n        return i;\n      }\n      i := i \u002B 1;\n    }\n    return -1;\n  }\n}\n\nmodule Provider {\n  function Offset(x: int): int { x \u002B 1 }\n\n  method Increment(x: int) returns (result: int)\n    ensures result == Offset(x)\n  {\n    result := x \u002B 1;\n  }\n}\n\nmodule Client {\n  import P = Provider\n  import A = Arithmetic\n  import S = Search\n\n  method CheckProvider(x: int) {\n    assert P.Offset(x) == x \u002B 1;\n  }\n\n  method CheckCounter(n: nat) {\n    var count := A.CountUp(n);\n    assert count == n;\n  }\n\n  method CheckSearch(a: array\u003Cint\u003E, needle: int) {\n    var index := S.FindFirst(a, needle);\n    assert index \u003C 0 || a[index] == needle;\n  }\n}\n\nmodule Independent {\n  function RevisionTag(): int { 11 }\n\n  method Abs(x: int) returns (y: nat)\n    ensures y \u003E= 0\n    ensures x \u003E= 0 ==\u003E y == x\n    ensures x \u003C 0 ==\u003E y == -x\n  {\n    if x \u003E= 0 { y := x; }\n    else { y := -x; }\n  }\n\n  method Triangle(a: int, b: int, c: int)\n    requires 0 \u003C= a \u0026\u0026 0 \u003C= b \u0026\u0026 0 \u003C= c\n    requires a \u002B b \u003E= c \u0026\u0026 b \u002B c \u003E= a \u0026\u0026 a \u002B c \u003E= b\n  {\n    assert a \u002B b \u003E= c;\n    assert b \u002B c \u003E= a;\n  }\n}\n",
+      "milliseconds": 11.1939,
+      "diagnostics": [
+        {
+          "message": "auto-accumulator tail recursive",
+          "code": "",
+          "severity": "Hint",
+          "source": "Resolver",
+          "from": [
+            18,
+            11
+          ],
+          "to": [
+            18,
+            20
+          ]
+        },
+        {
+          "message": "Selected triggers: {a[k]}",
+          "code": "0",
+          "severity": "Hint",
+          "source": "Rewriter",
+          "from": [
+            46,
+            28
+          ],
+          "to": [
+            46,
+            34
+          ]
+        },
+        {
+          "message": "Selected triggers: {a[k]}",
+          "code": "0",
+          "severity": "Hint",
+          "source": "Rewriter",
+          "from": [
+            51,
+            16
+          ],
+          "to": [
+            51,
+            22
+          ]
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-verified-algorithms.dfy",
+            "from": [
+              64,
+              11
+            ],
+            "to": [
+              64,
+              17
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction Offset(x: int): int\n\u0060\u0060\u0060"
+      },
+      "hits": 1,
+      "misses": 9,
+      "tracked": [
+        {
+          "name": "Provider",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Client",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Arithmetic",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Search",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Independent",
+          "hit": false,
+          "miss": true
+        }
+      ]
+    },
+    {
+      "revision": 4,
+      "stage": "prefix-origin-shift",
+      "source": "// Origin shift across all modules\n// Purpose-built proof-bearing Dafny project (not a converted CNF).\n// Dependency graph: Arithmetic, Search, Provider -\u003E Client; Independent is unrelated.\nmodule Arithmetic {\n  method CountUp(n: nat) returns (count: nat)\n    ensures count == n\n  {\n    var i: nat := 0;\n    count := 0;\n    while i \u003C n\n      invariant i \u003C= n\n      invariant count == i\n      decreases n - i\n    {\n      i := i \u002B 1;\n      count := count \u002B 1;\n    }\n  }\n\n  function SumPrefix(a: array\u003Cint\u003E, n: nat): int\n    requires n \u003C= a.Length\n    reads a\n    decreases n\n  {\n    if n == 0 then 0 else SumPrefix(a, n - 1) \u002B a[n - 1]\n  }\n\n  method SumArray(a: array\u003Cint\u003E) returns (sum: int)\n    ensures sum == SumPrefix(a, a.Length)\n  {\n    var i: nat := 0;\n    sum := 0;\n    while i \u003C a.Length\n      invariant i \u003C= a.Length\n      invariant sum == SumPrefix(a, i)\n      decreases a.Length - i\n    {\n      sum := sum \u002B a[i];\n      i := i \u002B 1;\n    }\n  }\n}\n\nmodule Search {\n  method FindFirst(a: array\u003Cint\u003E, target: int) returns (index: int)\n    ensures -1 \u003C= index \u003C a.Length\n    ensures index \u003E= 0 ==\u003E a[index] == target\n    ensures index == -1 ==\u003E forall k :: 0 \u003C= k \u003C a.Length ==\u003E a[k] != target\n  {\n    var i: nat := 0;\n    while i \u003C a.Length\n      invariant i \u003C= a.Length\n      invariant forall k :: 0 \u003C= k \u003C i ==\u003E a[k] != target\n      decreases a.Length - i\n    {\n      if a[i] == target {\n        return i;\n      }\n      i := i \u002B 1;\n    }\n    return -1;\n  }\n}\n\nmodule Provider {\n  function Offset(x: int): int { x \u002B 1 }\n\n  method Increment(x: int) returns (result: int)\n    ensures result == Offset(x)\n  {\n    result := x \u002B 1;\n  }\n}\n\nmodule Client {\n  import P = Provider\n  import A = Arithmetic\n  import S = Search\n\n  method CheckProvider(x: int) {\n    assert P.Offset(x) == x \u002B 1;\n  }\n\n  method CheckCounter(n: nat) {\n    var count := A.CountUp(n);\n    assert count == n;\n  }\n\n  method CheckSearch(a: array\u003Cint\u003E, needle: int) {\n    var index := S.FindFirst(a, needle);\n    assert index \u003C 0 || a[index] == needle;\n  }\n}\n\nmodule Independent {\n  function RevisionTag(): int { 11 }\n\n  method Abs(x: int) returns (y: nat)\n    ensures y \u003E= 0\n    ensures x \u003E= 0 ==\u003E y == x\n    ensures x \u003C 0 ==\u003E y == -x\n  {\n    if x \u003E= 0 { y := x; }\n    else { y := -x; }\n  }\n\n  method Triangle(a: int, b: int, c: int)\n    requires 0 \u003C= a \u0026\u0026 0 \u003C= b \u0026\u0026 0 \u003C= c\n    requires a \u002B b \u003E= c \u0026\u0026 b \u002B c \u003E= a \u0026\u0026 a \u002B c \u003E= b\n  {\n    assert a \u002B b \u003E= c;\n    assert b \u002B c \u003E= a;\n  }\n}\n",
+      "milliseconds": 20.5176,
+      "diagnostics": [
+        {
+          "message": "auto-accumulator tail recursive",
+          "code": "",
+          "severity": "Hint",
+          "source": "Resolver",
+          "from": [
+            19,
+            11
+          ],
+          "to": [
+            19,
+            20
+          ]
+        },
+        {
+          "message": "Selected triggers: {a[k]}",
+          "code": "0",
+          "severity": "Hint",
+          "source": "Rewriter",
+          "from": [
+            47,
+            28
+          ],
+          "to": [
+            47,
+            34
+          ]
+        },
+        {
+          "message": "Selected triggers: {a[k]}",
+          "code": "0",
+          "severity": "Hint",
+          "source": "Rewriter",
+          "from": [
+            52,
+            16
+          ],
+          "to": [
+            52,
+            22
+          ]
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-verified-algorithms.dfy",
+            "from": [
+              65,
+              11
+            ],
+            "to": [
+              65,
+              17
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction Offset(x: int): int\n\u0060\u0060\u0060"
+      },
+      "hits": 1,
+      "misses": 9,
+      "tracked": [
+        {
+          "name": "Provider",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Client",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Arithmetic",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Search",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "Independent",
+          "hit": false,
+          "miss": true
+        }
+      ]
+    }
+  ]
+}

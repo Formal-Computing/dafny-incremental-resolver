@@ -1,0 +1,32 @@
+{
+  "kind": "handwritten-proof-bearing-differential-v1",
+  "revisions": 5,
+  "comparisons": 45,
+  "volatile_verifier_hover_status_differences": 0,
+  "observedFreshDiagnosticCounts": [
+    3,
+    3,
+    3,
+    3,
+    3
+  ],
+  "modes": {
+    "original": {
+      "hits": 4,
+      "misses": 36
+    },
+    "patched-baseline": {
+      "hits": 4,
+      "misses": 36
+    },
+    "experimental": {
+      "hits": 15,
+      "misses": 25
+    },
+    "fresh": {
+      "hits": 0,
+      "misses": 0
+    }
+  },
+  "note": "Diagnostics/hover/definition agreement is not a general verification-soundness proof; separate CLI proof obligations are recorded."
+}

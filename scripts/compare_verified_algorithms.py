@@ -21,7 +21,8 @@ def stable_hover(hover):
  blocks=re.findall(r"```dafny\s*(.*?)```",hover,re.S)
  assert len(blocks)==1, "missing/ambiguous stable Dafny signature"
  prefix=hover.split("```dafny",1)[0]
- assert ("Verification not started yet" in prefix or "Still verifying..." in prefix
+ assert (not prefix.strip()
+         or "Verification not started yet" in prefix or "Still verifying..." in prefix
          or ("Success:" in prefix and "Resource usage:" in prefix)
          or "Error:" in prefix), "unrecognized hover prefix"
  return blocks[0].strip()
