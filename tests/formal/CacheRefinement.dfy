@@ -73,8 +73,10 @@ lemma UnsupportedModuleReuseDecisionsMatchUpstream(prior: ResolverContext,
 // A *counterexample* to semantic soundness of the content-aware research key:
 // the key misses the negative-lookup context. Same content, origins, dependencies
 // and builtins can coexist with different previously failed lookups.
+// Clone IDs are deliberately excluded from FullSemanticContext: they are
+// identity proxies, not resolution inputs.
 function FullSemanticContext(s: ResolverContext): seq<int> {
-  [s.cloneId, s.text, s.origin, s.builtins, s.options, s.plugins]
+  [s.text, s.origin, s.builtins, s.options, s.plugins]
   + s.dependencyHashes + s.failedLookups
 }
 
