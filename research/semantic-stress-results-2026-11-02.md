@@ -95,3 +95,26 @@ with SHA-256 for each retained file. The GitHub Actions artifact also
 preserves the raw source observations and the initial failed comparator
 output. Use the pinned revision and the originally declared sources when
 replicating, not the latest upstream Dafny without pinning.
+
+## Independent 662-clause result
+
+The isolated workflow **passed** in CI run
+https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41450471990
+at the research revision `be5eec4`. Five modes each completed seven
+revisions, producing **28/28 exact diagnostic comparisons** with no
+differences. There were **no selected hover/definition queries** in that
+large-corpus run; the original upstream LSP request had exceeded the
+180-second limit in the earlier isolated run. The seven revisions include
+provider changes, source-length and source-origin changes, an ill-typed
+clause, and recovery. Separate raw traces, normalized v3 report and SHA-256
+manifest are archived under
+`experiments/results/2026-11-02-air662-41450471990/`.
+
+**Combined informative evidence across the two independently executed
+workflows:** 82 source revisions, 11 scenarios, **328/328 diagnostic
+comparisons** and **256/256 selected symbol-query comparisons**, for
+**584/584 informative matches**. These are mode/revision comparisons, not
+584 distinct Dafny programs. The 16 ignored *verification-progress hover*
+differences in the primary run remain a separately reported limitation.
+No proof of verifier-outcome equivalence, general soundness, or production
+readiness is asserted.

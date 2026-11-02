@@ -1,0 +1,207 @@
+{
+  "schema": "dafny-differential-v3",
+  "scenarios": {
+    "air_semantic_662": 7
+  },
+  "comparison": [
+    {
+      "scenario": "air_semantic_662",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 0,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 1,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 2,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 3,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 4,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 4,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 4,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 4,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 5,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 5,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 5,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 5,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 6,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 6,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 6,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic_662",
+      "revision": 6,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    }
+  ],
+  "volatileVerificationHoverCount": 0,
+  "volatileVerificationHovers": [],
+  "normalization": "Exact diagnostics and definition targets; all fenced Dafny signature/type blocks when present, otherwise exact hover. Dynamic verification progress is reported separately, not asserted equivalent."
+}
