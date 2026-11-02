@@ -44,6 +44,27 @@ def run():
         write_traces(path)
         (path / "original-stress_scope.json").unlink()
         assert any(x["status"] == "MISSING" for x in compare(path)["comparison"])
+        # Verification-progress strings are asynchronous. When the Dafny
+        # signature/type code block is identical, only the volatile status
+        # text is excluded. An actual typed signature change must still fail.
+        write_traces(path)
+        for mode in MODES:
+            f = path / f"{mode}-stress_graph.json"
+            obj = json.loads(f.read_text())
+            progress = "Verification not started yet" if mode != "fresh-semantic" else "Success"
+            obj["records"][0]["semantic"]["hover"] = (
+                progress + "\n" + "```dafny\nfunction ValueA(): int\n```")
+            f.write_text(json.dumps(obj))
+        result = compare(path)
+        assert all(x["status"] == "MATCH" for x in result["comparison"]), result
+        assert result["volatileVerificationHoverCount"] >= 1
+        f = path / "experimental-stress_graph.json"
+        obj = json.loads(f.read_text())
+        obj["records"][0]["semantic"]["hover"] = obj["records"][0]["semantic"]["hover"].replace(
+            "function ValueA(): int", "function ValueA(): bool")
+        f.write_text(json.dumps(obj))
+        assert any(x["status"] == "DIFFERENCE" for x in compare(path)["comparison"])
+
         write_traces(path, scenarios=EXTENDED_SCENARIOS)
         assert all(x["status"] == "MATCH" for x in compare(path, ("air_semantic_662",))["comparison"])
         write_traces(path, ("semantic", "experimental", "air_semantic_662"),

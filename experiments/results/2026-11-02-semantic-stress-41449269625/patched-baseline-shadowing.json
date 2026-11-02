@@ -1,0 +1,69 @@
+{
+  "mode": "patched-baseline",
+  "scenario": "shadowing",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module Shared { function Value(): int { 1 } }\nmodule User { import opened Shared function Result(): int { Value() } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-shadowing.dfy",
+            "from": [
+              0,
+              25
+            ],
+            "to": [
+              0,
+              30
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 1,
+      "source": "module Shared { function Value(): int { 1 } }\nmodule User { import opened Shared function Value(): int { 9 } function Result(): int { Value() } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-shadowing.dfy",
+            "from": [
+              1,
+              44
+            ],
+            "to": [
+              1,
+              49
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 2,
+      "source": "module Shared { function Value(): int { 1 } }\nmodule User { import opened Shared function Result(): int { Value() } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-shadowing.dfy",
+            "from": [
+              0,
+              25
+            ],
+            "to": [
+              0,
+              30
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    }
+  ]
+}

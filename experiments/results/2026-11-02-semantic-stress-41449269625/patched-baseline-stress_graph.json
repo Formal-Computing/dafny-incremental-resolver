@@ -1,0 +1,758 @@
+{
+  "mode": "patched-baseline",
+  "scenario": "stress_graph",
+  "records": [
+    {
+      "revision": 0,
+      "source": "// prefix position shift\nmodule Provider { function ValueA(): int { 1 } }\nmodule Secondary { function ValueB(): int { 2 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 0 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              1,
+              27
+            ],
+            "to": [
+              1,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 1,
+      "source": "module Provider { function ValueA(): int { 2 } }\nmodule Secondary { function ValueB(): int { 3 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 1 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 2,
+      "source": "module Provider { function ValueA(): bool { true } }\nmodule Secondary { function ValueB(): int { 4 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 2 } }\n",
+      "diagnostics": [
+        {
+          "message": "Function body type mismatch (expected int, got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            10
+          ],
+          "to": [
+            5,
+            19
+          ],
+          "related": []
+        },
+        {
+          "message": "type of \u002B must be of a numeric type, a bitvector type, ORDINAL, char, a sequence type, or a set-like or map-like type (instead got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            38
+          ],
+          "to": [
+            5,
+            39
+          ],
+          "related": []
+        },
+        {
+          "message": "type of right argument to \u002B (int) must agree with the result type (bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            38
+          ],
+          "to": [
+            5,
+            39
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction ValueA(): bool\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 3,
+      "source": "module Provider { function ValueA(): int { 1 } }\nmodule Secondary { function ValueB(): int { 5 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 3 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 4,
+      "source": "// prefix position shift\nmodule Provider { function Renamed(): int { 8 } }\nmodule Secondary { function ValueB(): int { 2 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 4 } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: ValueA",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            6,
+            29
+          ],
+          "to": [
+            6,
+            35
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    },
+    {
+      "revision": 5,
+      "source": "module Provider { function ValueA(): int { 3 } }\nmodule Secondary { function ValueB(): bool { false } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 5 } }\n",
+      "diagnostics": [
+        {
+          "message": "type of right argument to \u002B (bool) must agree with the result type (int)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            38
+          ],
+          "to": [
+            5,
+            39
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 6,
+      "source": "module Provider { function ValueA(): int { 1 } }\nmodule Secondary { function ValueB(): int { 4 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Added { function Extra(): int { 8 } }\nmodule Tail { function RevisionTag(): int { 6 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 7,
+      "source": "module Provider { function ValueA(): int { 2 } }\nmodule Secondary { function ValueB(): int { 5 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 7 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 8,
+      "source": "// prefix position shift\nmodule Provider { function ValueA(): bool { true } }\nmodule Secondary { function ValueB(): int { 2 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 8 } }\n",
+      "diagnostics": [
+        {
+          "message": "Function body type mismatch (expected int, got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            6,
+            10
+          ],
+          "to": [
+            6,
+            19
+          ],
+          "related": []
+        },
+        {
+          "message": "type of \u002B must be of a numeric type, a bitvector type, ORDINAL, char, a sequence type, or a set-like or map-like type (instead got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            6,
+            38
+          ],
+          "to": [
+            6,
+            39
+          ],
+          "related": []
+        },
+        {
+          "message": "type of right argument to \u002B (int) must agree with the result type (bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            6,
+            38
+          ],
+          "to": [
+            6,
+            39
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              1,
+              27
+            ],
+            "to": [
+              1,
+              33
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction ValueA(): bool\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 9,
+      "source": "module Provider { function ValueA(): int { 1 } }\nmodule Secondary { function ValueB(): int { 3 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 9 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 10,
+      "source": "module Provider { function Renamed(): int { 8 } }\nmodule Secondary { function ValueB(): int { 4 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 10 } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: ValueA",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            29
+          ],
+          "to": [
+            5,
+            35
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    },
+    {
+      "revision": 11,
+      "source": "module Provider { function ValueA(): int { 3 } }\nmodule Secondary { function ValueB(): int { 5 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 11 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 12,
+      "source": "// prefix position shift\nmodule Provider { function ValueA(): int { 1 } }\nmodule Secondary { function ValueB(): int { 2 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 12 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              1,
+              27
+            ],
+            "to": [
+              1,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 13,
+      "source": "module Provider { function ValueA(): int { 2 } }\nmodule Secondary { function ValueB(): bool { false } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 13 } }\n",
+      "diagnostics": [
+        {
+          "message": "type of right argument to \u002B (bool) must agree with the result type (int)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            38
+          ],
+          "to": [
+            5,
+            39
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 14,
+      "source": "module Provider { function ValueA(): bool { true } }\nmodule Secondary { function ValueB(): int { 4 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 14 } }\n",
+      "diagnostics": [
+        {
+          "message": "Function body type mismatch (expected int, got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            10
+          ],
+          "to": [
+            5,
+            19
+          ],
+          "related": []
+        },
+        {
+          "message": "type of \u002B must be of a numeric type, a bitvector type, ORDINAL, char, a sequence type, or a set-like or map-like type (instead got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            38
+          ],
+          "to": [
+            5,
+            39
+          ],
+          "related": []
+        },
+        {
+          "message": "type of right argument to \u002B (int) must agree with the result type (bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            38
+          ],
+          "to": [
+            5,
+            39
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction ValueA(): bool\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 15,
+      "source": "module Provider { function ValueA(): int { 1 } }\nmodule Secondary { function ValueB(): int { 5 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Added { function Extra(): int { 8 } }\nmodule Tail { function RevisionTag(): int { 15 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 16,
+      "source": "// prefix position shift\nmodule Provider { function Renamed(): int { 8 } }\nmodule Secondary { function ValueB(): int { 2 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 16 } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: ValueA",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            6,
+            29
+          ],
+          "to": [
+            6,
+            35
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    },
+    {
+      "revision": 17,
+      "source": "module Provider { function ValueA(): int { 3 } }\nmodule Secondary { function ValueB(): int { 3 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 17 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 18,
+      "source": "module Provider { function ValueA(): int { 1 } }\nmodule Secondary { function ValueB(): int { 4 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 18 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 19,
+      "source": "module Provider { function ValueA(): int { 2 } }\nmodule Secondary { function ValueB(): int { 5 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 19 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 20,
+      "source": "// prefix position shift\nmodule Provider { function ValueA(): bool { true } }\nmodule Secondary { function ValueB(): int { 2 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 20 } }\n",
+      "diagnostics": [
+        {
+          "message": "Function body type mismatch (expected int, got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            6,
+            10
+          ],
+          "to": [
+            6,
+            19
+          ],
+          "related": []
+        },
+        {
+          "message": "type of \u002B must be of a numeric type, a bitvector type, ORDINAL, char, a sequence type, or a set-like or map-like type (instead got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            6,
+            38
+          ],
+          "to": [
+            6,
+            39
+          ],
+          "related": []
+        },
+        {
+          "message": "type of right argument to \u002B (int) must agree with the result type (bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            6,
+            38
+          ],
+          "to": [
+            6,
+            39
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              1,
+              27
+            ],
+            "to": [
+              1,
+              33
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction ValueA(): bool\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 21,
+      "source": "module Provider { function ValueA(): int { 1 } }\nmodule Secondary { function ValueB(): bool { false } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 21 } }\n",
+      "diagnostics": [
+        {
+          "message": "type of right argument to \u002B (bool) must agree with the result type (int)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            38
+          ],
+          "to": [
+            5,
+            39
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 22,
+      "source": "module Provider { function Renamed(): int { 8 } }\nmodule Secondary { function ValueB(): int { 4 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 22 } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: ValueA",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            29
+          ],
+          "to": [
+            5,
+            35
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    },
+    {
+      "revision": 23,
+      "source": "module Provider { function ValueA(): int { 3 } }\nmodule Secondary { function ValueB(): int { 5 } }\nmodule Inspector {\n import opened Provider\n import opened Secondary\n function Calculate(): int { ValueA() \u002B ValueB() }\n}\nmodule Tail { function RevisionTag(): int { 23 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_graph.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              33
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Calculate\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction ValueA(): int\n\u0060\u0060\u0060"
+      }
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "mode": "experimental",
+  "scenario": "negative",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module Provider { function Existing(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: Missing",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            1,
+            62
+          ],
+          "to": [
+            1,
+            69
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    },
+    {
+      "revision": 1,
+      "source": "module Provider { function Existing(): int { 1 } function Missing(): int { 2 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-negative.dfy",
+            "from": [
+              0,
+              58
+            ],
+            "to": [
+              0,
+              65
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Missing(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 2,
+      "source": "module Provider { function Existing(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: Missing",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            1,
+            62
+          ],
+          "to": [
+            1,
+            69
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    },
+    {
+      "revision": 3,
+      "source": "module Provider { function Existing(): int { 1 } function Missing(): int { 3 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-negative.dfy",
+            "from": [
+              0,
+              58
+            ],
+            "to": [
+              0,
+              65
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Missing(): int\n\u0060\u0060\u0060"
+      }
+    }
+  ]
+}

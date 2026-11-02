@@ -1,0 +1,110 @@
+{
+  "mode": "patched-baseline",
+  "scenario": "dependency",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module Provider { function Value(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Value() } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-dependency.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              32
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 1,
+      "source": "module Provider { function Value(): bool { true } }\nmodule User { import opened Provider function Result(): int { Value() } }\n",
+      "diagnostics": [
+        {
+          "message": "Function body type mismatch (expected int, got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            1,
+            46
+          ],
+          "to": [
+            1,
+            52
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-dependency.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              32
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction Value(): bool\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 2,
+      "source": "module Provider { function Value(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Value() } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-dependency.dfy",
+            "from": [
+              0,
+              27
+            ],
+            "to": [
+              0,
+              32
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 3,
+      "source": "module Provider { function Renamed(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Value() } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: Value",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            1,
+            62
+          ],
+          "to": [
+            1,
+            67
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    }
+  ]
+}

@@ -6,6 +6,7 @@ verification equivalence for unobserved locations.
 """
 import json
 import pathlib
+import re
 import sys
 
 SCENARIOS = (
@@ -20,10 +21,44 @@ QUERIED = {
     "stress_scope", "air_semantic",
 }
 
+def stable_hover(value):
+    """Compare language/type markup, not asynchronous verification progress.
+
+    Retain every Dafny code block verbatim (ignoring surrounding blank lines).
+    If no Dafny code blocks exist, compare the complete hover string. We do NOT
+    claim equivalence of proof/verifier outcomes from this normalized value.
+    """
+    if value is None or not isinstance(value, str):
+        return value
+    blocks = re.findall(r"```dafny\s*\n([\s\S]*?)```", value)
+    if blocks:
+        return {"dafny-signatures": [block.strip() for block in blocks]}
+    return {"exact-hover": value}
+
+
+def stable_semantic(value):
+    if not isinstance(value, dict):
+        return value
+    return {**value, "hover": stable_hover(value.get("hover"))}
+
+
 def compare(root: pathlib.Path, scenarios=SCENARIOS):
     report = []
     counts = {}
+    volatile_hover_differences = []
     def record(scenario, revision, mode, field, got, wanted):
+        # A pair of absent optional semantic queries carries no evidence.
+        # Do not inflate match counts by treating None == None as a test.
+        if field == "semantic" and got is None and wanted is None:
+            return
+        if field == "semantic" and isinstance(got, dict) and isinstance(wanted, dict):
+            if got.get("hover") != wanted.get("hover") and stable_hover(got.get("hover")) == stable_hover(wanted.get("hover")):
+                volatile_hover_differences.append({
+                    "scenario": scenario, "revision": revision, "mode": mode,
+                    "classification": "same Dafny signature; verification-progress hover differs"
+                })
+            got = stable_semantic(got)
+            wanted = stable_semantic(wanted)
         match = got == wanted
         report.append({
             "scenario": scenario, "revision": revision, "mode": mode,
@@ -78,8 +113,12 @@ def compare(root: pathlib.Path, scenarios=SCENARIOS):
                         continue
                     record(scenario, index, mode, field,
                            traces[mode][index][field], wanted[field])
-    return {"schema": "dafny-differential-v2",
-            "scenarios": counts, "comparison": report}
+    return {"schema": "dafny-differential-v3",
+            "scenarios": counts,
+            "comparison": report,
+            "volatileVerificationHoverCount": len(volatile_hover_differences),
+            "volatileVerificationHovers": volatile_hover_differences,
+            "normalization": "Exact diagnostics and definition targets; all fenced Dafny signature/type blocks when present, otherwise exact hover. Dynamic verification progress is reported separately, not asserted equivalent."}
 
 
 def main():
@@ -100,6 +139,8 @@ def main():
     print("Revisions by scenario:", data["scenarios"])
     print("Differential comparisons:", len(data["comparison"]) - len(bad),
           "match,", len(bad), "fail/missing")
+    print("Verification-progress hover differences (not semantic results):",
+          data["volatileVerificationHoverCount"])
     for x in bad[:25]:
         print("FAIL:", x.get("scenario"), x.get("revision"),
               x.get("mode"), x.get("observable"), x["status"])

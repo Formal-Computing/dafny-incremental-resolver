@@ -1,0 +1,460 @@
+{
+  "mode": "experimental",
+  "scenario": "stress_scope",
+  "records": [
+    {
+      "revision": 0,
+      "source": "// varying prefix\nmodule A { function Value(): int { 1 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 0 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              1,
+              20
+            ],
+            "to": [
+              1,
+              25
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 1,
+      "source": "module A { function Value(): bool { true } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 1 } }\n",
+      "diagnostics": [
+        {
+          "message": "Function body type mismatch (expected int, got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            4,
+            12
+          ],
+          "to": [
+            4,
+            18
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              0,
+              20
+            ],
+            "to": [
+              0,
+              25
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction Value(): bool\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 2,
+      "source": "module A { function Value(): int { 3 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened B\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 2 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              1,
+              20
+            ],
+            "to": [
+              1,
+              25
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 3,
+      "source": "// varying prefix\nmodule A { function Renamed(): int { 3 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n  function Value(): int { 99 }\n function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 3 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              5,
+              11
+            ],
+            "to": [
+              5,
+              16
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 4,
+      "source": "module A { function Value(): int { 5 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n import opened B\n  function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 4 } }\n",
+      "diagnostics": [
+        {
+          "message": "The name Value ambiguously refers to a static member in one of the modules A, B (try qualifying the member name with the module name)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            27
+          ],
+          "to": [
+            5,
+            32
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    },
+    {
+      "revision": 5,
+      "source": "module A { function Value(): int { 6 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 5 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              0,
+              20
+            ],
+            "to": [
+              0,
+              25
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 6,
+      "source": "// varying prefix\nmodule A { function Value(): bool { true } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 6 } }\n",
+      "diagnostics": [
+        {
+          "message": "Function body type mismatch (expected int, got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            5,
+            12
+          ],
+          "to": [
+            5,
+            18
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              1,
+              20
+            ],
+            "to": [
+              1,
+              25
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction Value(): bool\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 7,
+      "source": "module A { function Value(): int { 8 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 7 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              0,
+              20
+            ],
+            "to": [
+              0,
+              25
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 8,
+      "source": "module A { function Renamed(): int { 3 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened B\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 8 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              1,
+              20
+            ],
+            "to": [
+              1,
+              25
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 9,
+      "source": "// varying prefix\nmodule A { function Value(): int { 10 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 9 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              1,
+              20
+            ],
+            "to": [
+              1,
+              25
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 10,
+      "source": "module A { function Value(): int { 11 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n  function Value(): int { 99 }\n function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 10 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              4,
+              11
+            ],
+            "to": [
+              4,
+              16
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 11,
+      "source": "module A { function Value(): bool { true } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 11 } }\n",
+      "diagnostics": [
+        {
+          "message": "Function body type mismatch (expected int, got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            4,
+            12
+          ],
+          "to": [
+            4,
+            18
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              0,
+              20
+            ],
+            "to": [
+              0,
+              25
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction Value(): bool\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 12,
+      "source": "// varying prefix\nmodule A { function Value(): int { 13 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n import opened B\n  function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 12 } }\n",
+      "diagnostics": [
+        {
+          "message": "The name Value ambiguously refers to a static member in one of the modules A, B (try qualifying the member name with the module name)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            6,
+            27
+          ],
+          "to": [
+            6,
+            32
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    },
+    {
+      "revision": 13,
+      "source": "module A { function Renamed(): int { 3 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 13 } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: Value",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            4,
+            28
+          ],
+          "to": [
+            4,
+            33
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    },
+    {
+      "revision": 14,
+      "source": "module A { function Value(): int { 15 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened B\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 14 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              1,
+              20
+            ],
+            "to": [
+              1,
+              25
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 15,
+      "source": "// varying prefix\nmodule A { function Value(): int { 16 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 15 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              1,
+              20
+            ],
+            "to": [
+              1,
+              25
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 16,
+      "source": "module A { function Value(): bool { true } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n   function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 16 } }\n",
+      "diagnostics": [
+        {
+          "message": "Function body type mismatch (expected int, got bool)",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            4,
+            12
+          ],
+          "to": [
+            4,
+            18
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              0,
+              20
+            ],
+            "to": [
+              0,
+              25
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nfunction Value(): bool\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 17,
+      "source": "module A { function Value(): int { 18 } }\nmodule B { function Value(): int { 2 } }\nmodule Consumer {\n import opened A\n  function Value(): int { 99 }\n function Result(): int { Value() }\n}\nmodule Unrelated { function V(): int { 17 } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-stress_scope.dfy",
+            "from": [
+              4,
+              11
+            ],
+            "to": [
+              4,
+              16
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060Result\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nfunction Value(): int\n\u0060\u0060\u0060"
+      }
+    }
+  ]
+}
