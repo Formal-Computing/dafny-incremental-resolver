@@ -41,10 +41,10 @@ applied after patches #1–#3.
 
 ### Immutable-by-ownership audit metadata
 
-Each observation is a new `byte[]` digest stored privately in
+Each observation is a new `ImmutableArray<byte>` digest stored in
 `ResolutionCache.ResearchAuditFingerprints`, keyed by hexadecimal candidate
 hash. The dictionary is exclusively accessed under a lock, only stores
-primitive digest bytes, and clears when it reaches 2048 entries. Cached
+immutable primitive digest values, and clears when it reaches 2048 entries. Cached
 mutable `ModuleResolutionResult` graphs are neither stored in this audit
 dictionary nor reattached by this mode. A matching key with different digest
 produces a warning, but always returns fresh resolved data.
