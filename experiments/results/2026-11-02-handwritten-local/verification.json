@@ -1,0 +1,42 @@
+{
+  "schema": "handwritten-proof-obligation-v1",
+  "source": "tests/handwritten/VerifiedAlgorithms.dfy",
+  "notes": "Fresh CLI verification per revision, not cached LSP verification",
+  "cases": [
+    {
+      "stage": "original",
+      "verified": 12,
+      "errors": 0,
+      "cli_exit": 0,
+      "sha256_dafny": "f61eb70b4a4c2c8d605aa286a03c2a860187d83934df92a592ab4ba824941d17"
+    },
+    {
+      "stage": "unrelated-edit",
+      "verified": 12,
+      "errors": 0,
+      "cli_exit": 0,
+      "sha256_dafny": "90430a6259feff792f92cc951c222b89d9bad4210666693fe74f89a007fdfb15"
+    },
+    {
+      "stage": "changed-provider",
+      "verified": 10,
+      "errors": 2,
+      "cli_exit": 4,
+      "sha256_dafny": "8942c8cde1f224a8c196d6d20cb2659109011e089cee799af9ecfe5ddaa5894d"
+    },
+    {
+      "stage": "recovered-provider",
+      "verified": 12,
+      "errors": 0,
+      "cli_exit": 0,
+      "sha256_dafny": "90430a6259feff792f92cc951c222b89d9bad4210666693fe74f89a007fdfb15"
+    },
+    {
+      "stage": "prefix-position-shift",
+      "verified": 12,
+      "errors": 0,
+      "cli_exit": 0,
+      "sha256_dafny": "158851663cef3bb6d045502da3925b022dce591b62f8c8b337b5171f13a1f476"
+    }
+  ]
+}

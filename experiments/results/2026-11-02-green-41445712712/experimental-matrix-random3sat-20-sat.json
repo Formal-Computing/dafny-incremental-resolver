@@ -1,0 +1,176 @@
+{
+  "mode": "experimental",
+  "caseName": "random3sat-20-sat",
+  "experiment": "seven-distinct-documents-four-revisions",
+  "parserCacheStillEnabledInFreshMode": true,
+  "samples": [
+    {
+      "revision": 0,
+      "stage": "open",
+      "source": "// Generated from original SATLIB DIMACS; this program does NOT solve SAT.\n// uf20-01.cnf; SHA-256 bbb43578ee4f0634de44a7632b6df4ee6b9204f1c82e77660616b0891b00eb24; reported SATLIB class: SAT\nmodule CorpusProvider {\n  const VariableCount: nat := 20\n  const C000: seq\u003Cint\u003E := [4, -18, 19]\n  const C001: seq\u003Cint\u003E := [3, 18, -5]\n  const C002: seq\u003Cint\u003E := [-5, -8, -15]\n  const C003: seq\u003Cint\u003E := [-20, 7, -16]\n  const C004: seq\u003Cint\u003E := [10, -13, -7]\n  const C005: seq\u003Cint\u003E := [-12, -9, 17]\n  const C006: seq\u003Cint\u003E := [17, 19, 5]\n  const C007: seq\u003Cint\u003E := [-16, 9, 15]\n  const C008: seq\u003Cint\u003E := [11, -5, -14]\n  const C009: seq\u003Cint\u003E := [18, -10, 13]\n  const C010: seq\u003Cint\u003E := [-3, 11, 12]\n  const C011: seq\u003Cint\u003E := [-6, -17, -8]\n  const C012: seq\u003Cint\u003E := [-18, 14, 1]\n  const C013: seq\u003Cint\u003E := [-19, -15, 10]\n  const C014: seq\u003Cint\u003E := [12, 18, -19]\n  const C015: seq\u003Cint\u003E := [-8, 4, 7]\n  const C016: seq\u003Cint\u003E := [-8, -9, 4]\n  const C017: seq\u003Cint\u003E := [7, 17, -15]\n  const C018: seq\u003Cint\u003E := [12, -7, -14]\n  const C019: seq\u003Cint\u003E := [-10, -11, 8]\n  const C020: seq\u003Cint\u003E := [2, -15, -11]\n  const C021: seq\u003Cint\u003E := [9, 6, 1]\n  const C022: seq\u003Cint\u003E := [-11, 20, -17]\n  const C023: seq\u003Cint\u003E := [9, -15, 13]\n  const C024: seq\u003Cint\u003E := [12, -7, -17]\n  const C025: seq\u003Cint\u003E := [-18, -2, 20]\n  const C026: seq\u003Cint\u003E := [20, 12, 4]\n  const C027: seq\u003Cint\u003E := [19, 11, 14]\n  const C028: seq\u003Cint\u003E := [-16, 18, -4]\n  const C029: seq\u003Cint\u003E := [-1, -17, -19]\n  const C030: seq\u003Cint\u003E := [-13, 15, 10]\n  const C031: seq\u003Cint\u003E := [-12, -14, -13]\n  const C032: seq\u003Cint\u003E := [12, -14, -7]\n  const C033: seq\u003Cint\u003E := [-7, 16, 10]\n  const C034: seq\u003Cint\u003E := [6, 10, 7]\n  const C035: seq\u003Cint\u003E := [20, 14, -16]\n  const C036: seq\u003Cint\u003E := [-19, 17, 11]\n  const C037: seq\u003Cint\u003E := [-7, 1, -20]\n  const C038: seq\u003Cint\u003E := [-5, 12, 15]\n  const C039: seq\u003Cint\u003E := [-4, -9, -13]\n  const C040: seq\u003Cint\u003E := [12, -11, -7]\n  const C041: seq\u003Cint\u003E := [-5, 19, -8]\n  const C042: seq\u003Cint\u003E := [1, 16, 17]\n  const C043: seq\u003Cint\u003E := [20, -14, -15]\n  const C044: seq\u003Cint\u003E := [13, -4, 10]\n  const C045: seq\u003Cint\u003E := [14, 7, 10]\n  const C046: seq\u003Cint\u003E := [-5, 9, 20]\n  const C047: seq\u003Cint\u003E := [10, 1, -19]\n  const C048: seq\u003Cint\u003E := [-16, -15, -1]\n  const C049: seq\u003Cint\u003E := [16, 3, -11]\n  const C050: seq\u003Cint\u003E := [-15, -10, 4]\n  const C051: seq\u003Cint\u003E := [4, -15, -3]\n  const C052: seq\u003Cint\u003E := [-10, -16, 11]\n  const C053: seq\u003Cint\u003E := [-8, 12, -5]\n  const C054: seq\u003Cint\u003E := [14, -6, 12]\n  const C055: seq\u003Cint\u003E := [1, 6, 11]\n  const C056: seq\u003Cint\u003E := [-13, -5, -1]\n  const C057: seq\u003Cint\u003E := [-7, -2, 12]\n  const C058: seq\u003Cint\u003E := [1, -20, 19]\n  const C059: seq\u003Cint\u003E := [-2, -13, -8]\n  const C060: seq\u003Cint\u003E := [15, 18, 4]\n  const C061: seq\u003Cint\u003E := [-11, 14, 9]\n  const C062: seq\u003Cint\u003E := [-6, -15, -2]\n  const C063: seq\u003Cint\u003E := [5, -12, -15]\n  const C064: seq\u003Cint\u003E := [-6, 17, 5]\n  const C065: seq\u003Cint\u003E := [-13, 5, -19]\n  const C066: seq\u003Cint\u003E := [20, -1, 14]\n  const C067: seq\u003Cint\u003E := [9, -17, 15]\n  const C068: seq\u003Cint\u003E := [-5, 19, -18]\n  const C069: seq\u003Cint\u003E := [-12, 8, -10]\n  const C070: seq\u003Cint\u003E := [-18, 14, -4]\n  const C071: seq\u003Cint\u003E := [15, -9, 13]\n  const C072: seq\u003Cint\u003E := [9, -5, -1]\n  const C073: seq\u003Cint\u003E := [10, -19, -14]\n  const C074: seq\u003Cint\u003E := [20, 9, 4]\n  const C075: seq\u003Cint\u003E := [-9, -2, 19]\n  const C076: seq\u003Cint\u003E := [-5, 13, -17]\n  const C077: seq\u003Cint\u003E := [2, -10, -18]\n  const C078: seq\u003Cint\u003E := [-18, 3, 11]\n  const C079: seq\u003Cint\u003E := [7, -9, 17]\n  const C080: seq\u003Cint\u003E := [-15, -6, -3]\n  const C081: seq\u003Cint\u003E := [-2, 3, -13]\n  const C082: seq\u003Cint\u003E := [12, 3, -2]\n  const C083: seq\u003Cint\u003E := [-2, -3, 17]\n  const C084: seq\u003Cint\u003E := [20, -15, -16]\n  const C085: seq\u003Cint\u003E := [-5, -17, -19]\n  const C086: seq\u003Cint\u003E := [-20, -18, 11]\n  const C087: seq\u003Cint\u003E := [-9, 1, -5]\n  const C088: seq\u003Cint\u003E := [-19, 9, 17]\n  const C089: seq\u003Cint\u003E := [12, -2, 17]\n  const C090: seq\u003Cint\u003E := [4, -16, -5]\n  const Clauses: seq\u003Cseq\u003Cint\u003E\u003E := [\n    C000, C001, C002, C003, C004, C005, C006, C007, C008, C009, C010, C011,\n    C012, C013, C014, C015, C016, C017, C018, C019, C020, C021, C022, C023,\n    C024, C025, C026, C027, C028, C029, C030, C031, C032, C033, C034, C035,\n    C036, C037, C038, C039, C040, C041, C042, C043, C044, C045, C046, C047,\n    C048, C049, C050, C051, C052, C053, C054, C055, C056, C057, C058, C059,\n    C060, C061, C062, C063, C064, C065, C066, C067, C068, C069, C070, C071,\n    C072, C073, C074, C075, C076, C077, C078, C079, C080, C081, C082, C083,\n    C084, C085, C086, C087, C088, C089, C090\n  ]\n  function SourceVersion(): int { 0 }\n}\nmodule CorpusInspector {\n  import Src = CorpusProvider\n  function ClauseCount(): nat { |Src.Clauses| }\n}\nmodule CorpusWorkingEdit {\n  function RevisionTag(): int { 10 }\n}\n",
+      "milliseconds": 0.0001,
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-satlib-matrix-random3sat-20-sat.dfy",
+            "from": [
+              95,
+              8
+            ],
+            "to": [
+              95,
+              15
+            ]
+          }
+        ],
+        "hover": "\u003Cspan style=\u0027color:green\u0027\u003E**Success:**\u003C/span\u003E value always satisfies the subset constraints of \u0027nat\u0027  \nThis is the only assertion in function \u0060ClauseCount\u0060  \nResource usage: 111K RU  \n\u0060\u0060\u0060dafny\nconst Clauses: seq\u003Cseq\u003Cint\u003E\u003E\n\u0060\u0060\u0060"
+      },
+      "hits": 0,
+      "misses": 0,
+      "tracked": [
+        {
+          "name": "CorpusProvider",
+          "hit": false,
+          "miss": false
+        },
+        {
+          "name": "CorpusInspector",
+          "hit": false,
+          "miss": false
+        },
+        {
+          "name": "CorpusWorkingEdit",
+          "hit": false,
+          "miss": false
+        }
+      ]
+    },
+    {
+      "revision": 1,
+      "stage": "suffix-value-edit",
+      "source": "// Generated from original SATLIB DIMACS; this program does NOT solve SAT.\n// uf20-01.cnf; SHA-256 bbb43578ee4f0634de44a7632b6df4ee6b9204f1c82e77660616b0891b00eb24; reported SATLIB class: SAT\nmodule CorpusProvider {\n  const VariableCount: nat := 20\n  const C000: seq\u003Cint\u003E := [4, -18, 19]\n  const C001: seq\u003Cint\u003E := [3, 18, -5]\n  const C002: seq\u003Cint\u003E := [-5, -8, -15]\n  const C003: seq\u003Cint\u003E := [-20, 7, -16]\n  const C004: seq\u003Cint\u003E := [10, -13, -7]\n  const C005: seq\u003Cint\u003E := [-12, -9, 17]\n  const C006: seq\u003Cint\u003E := [17, 19, 5]\n  const C007: seq\u003Cint\u003E := [-16, 9, 15]\n  const C008: seq\u003Cint\u003E := [11, -5, -14]\n  const C009: seq\u003Cint\u003E := [18, -10, 13]\n  const C010: seq\u003Cint\u003E := [-3, 11, 12]\n  const C011: seq\u003Cint\u003E := [-6, -17, -8]\n  const C012: seq\u003Cint\u003E := [-18, 14, 1]\n  const C013: seq\u003Cint\u003E := [-19, -15, 10]\n  const C014: seq\u003Cint\u003E := [12, 18, -19]\n  const C015: seq\u003Cint\u003E := [-8, 4, 7]\n  const C016: seq\u003Cint\u003E := [-8, -9, 4]\n  const C017: seq\u003Cint\u003E := [7, 17, -15]\n  const C018: seq\u003Cint\u003E := [12, -7, -14]\n  const C019: seq\u003Cint\u003E := [-10, -11, 8]\n  const C020: seq\u003Cint\u003E := [2, -15, -11]\n  const C021: seq\u003Cint\u003E := [9, 6, 1]\n  const C022: seq\u003Cint\u003E := [-11, 20, -17]\n  const C023: seq\u003Cint\u003E := [9, -15, 13]\n  const C024: seq\u003Cint\u003E := [12, -7, -17]\n  const C025: seq\u003Cint\u003E := [-18, -2, 20]\n  const C026: seq\u003Cint\u003E := [20, 12, 4]\n  const C027: seq\u003Cint\u003E := [19, 11, 14]\n  const C028: seq\u003Cint\u003E := [-16, 18, -4]\n  const C029: seq\u003Cint\u003E := [-1, -17, -19]\n  const C030: seq\u003Cint\u003E := [-13, 15, 10]\n  const C031: seq\u003Cint\u003E := [-12, -14, -13]\n  const C032: seq\u003Cint\u003E := [12, -14, -7]\n  const C033: seq\u003Cint\u003E := [-7, 16, 10]\n  const C034: seq\u003Cint\u003E := [6, 10, 7]\n  const C035: seq\u003Cint\u003E := [20, 14, -16]\n  const C036: seq\u003Cint\u003E := [-19, 17, 11]\n  const C037: seq\u003Cint\u003E := [-7, 1, -20]\n  const C038: seq\u003Cint\u003E := [-5, 12, 15]\n  const C039: seq\u003Cint\u003E := [-4, -9, -13]\n  const C040: seq\u003Cint\u003E := [12, -11, -7]\n  const C041: seq\u003Cint\u003E := [-5, 19, -8]\n  const C042: seq\u003Cint\u003E := [1, 16, 17]\n  const C043: seq\u003Cint\u003E := [20, -14, -15]\n  const C044: seq\u003Cint\u003E := [13, -4, 10]\n  const C045: seq\u003Cint\u003E := [14, 7, 10]\n  const C046: seq\u003Cint\u003E := [-5, 9, 20]\n  const C047: seq\u003Cint\u003E := [10, 1, -19]\n  const C048: seq\u003Cint\u003E := [-16, -15, -1]\n  const C049: seq\u003Cint\u003E := [16, 3, -11]\n  const C050: seq\u003Cint\u003E := [-15, -10, 4]\n  const C051: seq\u003Cint\u003E := [4, -15, -3]\n  const C052: seq\u003Cint\u003E := [-10, -16, 11]\n  const C053: seq\u003Cint\u003E := [-8, 12, -5]\n  const C054: seq\u003Cint\u003E := [14, -6, 12]\n  const C055: seq\u003Cint\u003E := [1, 6, 11]\n  const C056: seq\u003Cint\u003E := [-13, -5, -1]\n  const C057: seq\u003Cint\u003E := [-7, -2, 12]\n  const C058: seq\u003Cint\u003E := [1, -20, 19]\n  const C059: seq\u003Cint\u003E := [-2, -13, -8]\n  const C060: seq\u003Cint\u003E := [15, 18, 4]\n  const C061: seq\u003Cint\u003E := [-11, 14, 9]\n  const C062: seq\u003Cint\u003E := [-6, -15, -2]\n  const C063: seq\u003Cint\u003E := [5, -12, -15]\n  const C064: seq\u003Cint\u003E := [-6, 17, 5]\n  const C065: seq\u003Cint\u003E := [-13, 5, -19]\n  const C066: seq\u003Cint\u003E := [20, -1, 14]\n  const C067: seq\u003Cint\u003E := [9, -17, 15]\n  const C068: seq\u003Cint\u003E := [-5, 19, -18]\n  const C069: seq\u003Cint\u003E := [-12, 8, -10]\n  const C070: seq\u003Cint\u003E := [-18, 14, -4]\n  const C071: seq\u003Cint\u003E := [15, -9, 13]\n  const C072: seq\u003Cint\u003E := [9, -5, -1]\n  const C073: seq\u003Cint\u003E := [10, -19, -14]\n  const C074: seq\u003Cint\u003E := [20, 9, 4]\n  const C075: seq\u003Cint\u003E := [-9, -2, 19]\n  const C076: seq\u003Cint\u003E := [-5, 13, -17]\n  const C077: seq\u003Cint\u003E := [2, -10, -18]\n  const C078: seq\u003Cint\u003E := [-18, 3, 11]\n  const C079: seq\u003Cint\u003E := [7, -9, 17]\n  const C080: seq\u003Cint\u003E := [-15, -6, -3]\n  const C081: seq\u003Cint\u003E := [-2, 3, -13]\n  const C082: seq\u003Cint\u003E := [12, 3, -2]\n  const C083: seq\u003Cint\u003E := [-2, -3, 17]\n  const C084: seq\u003Cint\u003E := [20, -15, -16]\n  const C085: seq\u003Cint\u003E := [-5, -17, -19]\n  const C086: seq\u003Cint\u003E := [-20, -18, 11]\n  const C087: seq\u003Cint\u003E := [-9, 1, -5]\n  const C088: seq\u003Cint\u003E := [-19, 9, 17]\n  const C089: seq\u003Cint\u003E := [12, -2, 17]\n  const C090: seq\u003Cint\u003E := [4, -16, -5]\n  const Clauses: seq\u003Cseq\u003Cint\u003E\u003E := [\n    C000, C001, C002, C003, C004, C005, C006, C007, C008, C009, C010, C011,\n    C012, C013, C014, C015, C016, C017, C018, C019, C020, C021, C022, C023,\n    C024, C025, C026, C027, C028, C029, C030, C031, C032, C033, C034, C035,\n    C036, C037, C038, C039, C040, C041, C042, C043, C044, C045, C046, C047,\n    C048, C049, C050, C051, C052, C053, C054, C055, C056, C057, C058, C059,\n    C060, C061, C062, C063, C064, C065, C066, C067, C068, C069, C070, C071,\n    C072, C073, C074, C075, C076, C077, C078, C079, C080, C081, C082, C083,\n    C084, C085, C086, C087, C088, C089, C090\n  ]\n  function SourceVersion(): int { 0 }\n}\nmodule CorpusInspector {\n  import Src = CorpusProvider\n  function ClauseCount(): nat { |Src.Clauses| }\n}\nmodule CorpusWorkingEdit {\n  function RevisionTag(): int { 11 }\n}\n",
+      "milliseconds": 42.2703,
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-satlib-matrix-random3sat-20-sat.dfy",
+            "from": [
+              95,
+              8
+            ],
+            "to": [
+              95,
+              15
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060ClauseCount\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nconst Clauses: seq\u003Cseq\u003Cint\u003E\u003E\n\u0060\u0060\u0060"
+      },
+      "hits": 4,
+      "misses": 2,
+      "tracked": [
+        {
+          "name": "CorpusProvider",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "CorpusInspector",
+          "hit": true,
+          "miss": false
+        },
+        {
+          "name": "CorpusWorkingEdit",
+          "hit": false,
+          "miss": true
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "stage": "provider-value-edit",
+      "source": "// Generated from original SATLIB DIMACS; this program does NOT solve SAT.\n// uf20-01.cnf; SHA-256 bbb43578ee4f0634de44a7632b6df4ee6b9204f1c82e77660616b0891b00eb24; reported SATLIB class: SAT\nmodule CorpusProvider {\n  const VariableCount: nat := 20\n  const C000: seq\u003Cint\u003E := [4, -18, 19]\n  const C001: seq\u003Cint\u003E := [3, 18, -5]\n  const C002: seq\u003Cint\u003E := [-5, -8, -15]\n  const C003: seq\u003Cint\u003E := [-20, 7, -16]\n  const C004: seq\u003Cint\u003E := [10, -13, -7]\n  const C005: seq\u003Cint\u003E := [-12, -9, 17]\n  const C006: seq\u003Cint\u003E := [17, 19, 5]\n  const C007: seq\u003Cint\u003E := [-16, 9, 15]\n  const C008: seq\u003Cint\u003E := [11, -5, -14]\n  const C009: seq\u003Cint\u003E := [18, -10, 13]\n  const C010: seq\u003Cint\u003E := [-3, 11, 12]\n  const C011: seq\u003Cint\u003E := [-6, -17, -8]\n  const C012: seq\u003Cint\u003E := [-18, 14, 1]\n  const C013: seq\u003Cint\u003E := [-19, -15, 10]\n  const C014: seq\u003Cint\u003E := [12, 18, -19]\n  const C015: seq\u003Cint\u003E := [-8, 4, 7]\n  const C016: seq\u003Cint\u003E := [-8, -9, 4]\n  const C017: seq\u003Cint\u003E := [7, 17, -15]\n  const C018: seq\u003Cint\u003E := [12, -7, -14]\n  const C019: seq\u003Cint\u003E := [-10, -11, 8]\n  const C020: seq\u003Cint\u003E := [2, -15, -11]\n  const C021: seq\u003Cint\u003E := [9, 6, 1]\n  const C022: seq\u003Cint\u003E := [-11, 20, -17]\n  const C023: seq\u003Cint\u003E := [9, -15, 13]\n  const C024: seq\u003Cint\u003E := [12, -7, -17]\n  const C025: seq\u003Cint\u003E := [-18, -2, 20]\n  const C026: seq\u003Cint\u003E := [20, 12, 4]\n  const C027: seq\u003Cint\u003E := [19, 11, 14]\n  const C028: seq\u003Cint\u003E := [-16, 18, -4]\n  const C029: seq\u003Cint\u003E := [-1, -17, -19]\n  const C030: seq\u003Cint\u003E := [-13, 15, 10]\n  const C031: seq\u003Cint\u003E := [-12, -14, -13]\n  const C032: seq\u003Cint\u003E := [12, -14, -7]\n  const C033: seq\u003Cint\u003E := [-7, 16, 10]\n  const C034: seq\u003Cint\u003E := [6, 10, 7]\n  const C035: seq\u003Cint\u003E := [20, 14, -16]\n  const C036: seq\u003Cint\u003E := [-19, 17, 11]\n  const C037: seq\u003Cint\u003E := [-7, 1, -20]\n  const C038: seq\u003Cint\u003E := [-5, 12, 15]\n  const C039: seq\u003Cint\u003E := [-4, -9, -13]\n  const C040: seq\u003Cint\u003E := [12, -11, -7]\n  const C041: seq\u003Cint\u003E := [-5, 19, -8]\n  const C042: seq\u003Cint\u003E := [1, 16, 17]\n  const C043: seq\u003Cint\u003E := [20, -14, -15]\n  const C044: seq\u003Cint\u003E := [13, -4, 10]\n  const C045: seq\u003Cint\u003E := [14, 7, 10]\n  const C046: seq\u003Cint\u003E := [-5, 9, 20]\n  const C047: seq\u003Cint\u003E := [10, 1, -19]\n  const C048: seq\u003Cint\u003E := [-16, -15, -1]\n  const C049: seq\u003Cint\u003E := [16, 3, -11]\n  const C050: seq\u003Cint\u003E := [-15, -10, 4]\n  const C051: seq\u003Cint\u003E := [4, -15, -3]\n  const C052: seq\u003Cint\u003E := [-10, -16, 11]\n  const C053: seq\u003Cint\u003E := [-8, 12, -5]\n  const C054: seq\u003Cint\u003E := [14, -6, 12]\n  const C055: seq\u003Cint\u003E := [1, 6, 11]\n  const C056: seq\u003Cint\u003E := [-13, -5, -1]\n  const C057: seq\u003Cint\u003E := [-7, -2, 12]\n  const C058: seq\u003Cint\u003E := [1, -20, 19]\n  const C059: seq\u003Cint\u003E := [-2, -13, -8]\n  const C060: seq\u003Cint\u003E := [15, 18, 4]\n  const C061: seq\u003Cint\u003E := [-11, 14, 9]\n  const C062: seq\u003Cint\u003E := [-6, -15, -2]\n  const C063: seq\u003Cint\u003E := [5, -12, -15]\n  const C064: seq\u003Cint\u003E := [-6, 17, 5]\n  const C065: seq\u003Cint\u003E := [-13, 5, -19]\n  const C066: seq\u003Cint\u003E := [20, -1, 14]\n  const C067: seq\u003Cint\u003E := [9, -17, 15]\n  const C068: seq\u003Cint\u003E := [-5, 19, -18]\n  const C069: seq\u003Cint\u003E := [-12, 8, -10]\n  const C070: seq\u003Cint\u003E := [-18, 14, -4]\n  const C071: seq\u003Cint\u003E := [15, -9, 13]\n  const C072: seq\u003Cint\u003E := [9, -5, -1]\n  const C073: seq\u003Cint\u003E := [10, -19, -14]\n  const C074: seq\u003Cint\u003E := [20, 9, 4]\n  const C075: seq\u003Cint\u003E := [-9, -2, 19]\n  const C076: seq\u003Cint\u003E := [-5, 13, -17]\n  const C077: seq\u003Cint\u003E := [2, -10, -18]\n  const C078: seq\u003Cint\u003E := [-18, 3, 11]\n  const C079: seq\u003Cint\u003E := [7, -9, 17]\n  const C080: seq\u003Cint\u003E := [-15, -6, -3]\n  const C081: seq\u003Cint\u003E := [-2, 3, -13]\n  const C082: seq\u003Cint\u003E := [12, 3, -2]\n  const C083: seq\u003Cint\u003E := [-2, -3, 17]\n  const C084: seq\u003Cint\u003E := [20, -15, -16]\n  const C085: seq\u003Cint\u003E := [-5, -17, -19]\n  const C086: seq\u003Cint\u003E := [-20, -18, 11]\n  const C087: seq\u003Cint\u003E := [-9, 1, -5]\n  const C088: seq\u003Cint\u003E := [-19, 9, 17]\n  const C089: seq\u003Cint\u003E := [12, -2, 17]\n  const C090: seq\u003Cint\u003E := [4, -16, -5]\n  const Clauses: seq\u003Cseq\u003Cint\u003E\u003E := [\n    C000, C001, C002, C003, C004, C005, C006, C007, C008, C009, C010, C011,\n    C012, C013, C014, C015, C016, C017, C018, C019, C020, C021, C022, C023,\n    C024, C025, C026, C027, C028, C029, C030, C031, C032, C033, C034, C035,\n    C036, C037, C038, C039, C040, C041, C042, C043, C044, C045, C046, C047,\n    C048, C049, C050, C051, C052, C053, C054, C055, C056, C057, C058, C059,\n    C060, C061, C062, C063, C064, C065, C066, C067, C068, C069, C070, C071,\n    C072, C073, C074, C075, C076, C077, C078, C079, C080, C081, C082, C083,\n    C084, C085, C086, C087, C088, C089, C090\n  ]\n  function SourceVersion(): int { 1 }\n}\nmodule CorpusInspector {\n  import Src = CorpusProvider\n  function ClauseCount(): nat { |Src.Clauses| }\n}\nmodule CorpusWorkingEdit {\n  function RevisionTag(): int { 11 }\n}\n",
+      "milliseconds": 650.8639,
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-satlib-matrix-random3sat-20-sat.dfy",
+            "from": [
+              95,
+              8
+            ],
+            "to": [
+              95,
+              15
+            ]
+          }
+        ],
+        "hover": "\u003Cspan style=\u0027color:green\u0027\u003E**Success:**\u003C/span\u003E value always satisfies the subset constraints of \u0027nat\u0027  \nThis is the only assertion in function \u0060ClauseCount\u0060  \nResource usage: 111K RU  \n\u0060\u0060\u0060dafny\nconst Clauses: seq\u003Cseq\u003Cint\u003E\u003E\n\u0060\u0060\u0060"
+      },
+      "hits": 2,
+      "misses": 4,
+      "tracked": [
+        {
+          "name": "CorpusProvider",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "CorpusInspector",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "CorpusWorkingEdit",
+          "hit": true,
+          "miss": false
+        }
+      ]
+    },
+    {
+      "revision": 3,
+      "stage": "prefix-origin-shift",
+      "source": "// Position shift deliberately invalidates origin-dependent reuse\n// Generated from original SATLIB DIMACS; this program does NOT solve SAT.\n// uf20-01.cnf; SHA-256 bbb43578ee4f0634de44a7632b6df4ee6b9204f1c82e77660616b0891b00eb24; reported SATLIB class: SAT\nmodule CorpusProvider {\n  const VariableCount: nat := 20\n  const C000: seq\u003Cint\u003E := [4, -18, 19]\n  const C001: seq\u003Cint\u003E := [3, 18, -5]\n  const C002: seq\u003Cint\u003E := [-5, -8, -15]\n  const C003: seq\u003Cint\u003E := [-20, 7, -16]\n  const C004: seq\u003Cint\u003E := [10, -13, -7]\n  const C005: seq\u003Cint\u003E := [-12, -9, 17]\n  const C006: seq\u003Cint\u003E := [17, 19, 5]\n  const C007: seq\u003Cint\u003E := [-16, 9, 15]\n  const C008: seq\u003Cint\u003E := [11, -5, -14]\n  const C009: seq\u003Cint\u003E := [18, -10, 13]\n  const C010: seq\u003Cint\u003E := [-3, 11, 12]\n  const C011: seq\u003Cint\u003E := [-6, -17, -8]\n  const C012: seq\u003Cint\u003E := [-18, 14, 1]\n  const C013: seq\u003Cint\u003E := [-19, -15, 10]\n  const C014: seq\u003Cint\u003E := [12, 18, -19]\n  const C015: seq\u003Cint\u003E := [-8, 4, 7]\n  const C016: seq\u003Cint\u003E := [-8, -9, 4]\n  const C017: seq\u003Cint\u003E := [7, 17, -15]\n  const C018: seq\u003Cint\u003E := [12, -7, -14]\n  const C019: seq\u003Cint\u003E := [-10, -11, 8]\n  const C020: seq\u003Cint\u003E := [2, -15, -11]\n  const C021: seq\u003Cint\u003E := [9, 6, 1]\n  const C022: seq\u003Cint\u003E := [-11, 20, -17]\n  const C023: seq\u003Cint\u003E := [9, -15, 13]\n  const C024: seq\u003Cint\u003E := [12, -7, -17]\n  const C025: seq\u003Cint\u003E := [-18, -2, 20]\n  const C026: seq\u003Cint\u003E := [20, 12, 4]\n  const C027: seq\u003Cint\u003E := [19, 11, 14]\n  const C028: seq\u003Cint\u003E := [-16, 18, -4]\n  const C029: seq\u003Cint\u003E := [-1, -17, -19]\n  const C030: seq\u003Cint\u003E := [-13, 15, 10]\n  const C031: seq\u003Cint\u003E := [-12, -14, -13]\n  const C032: seq\u003Cint\u003E := [12, -14, -7]\n  const C033: seq\u003Cint\u003E := [-7, 16, 10]\n  const C034: seq\u003Cint\u003E := [6, 10, 7]\n  const C035: seq\u003Cint\u003E := [20, 14, -16]\n  const C036: seq\u003Cint\u003E := [-19, 17, 11]\n  const C037: seq\u003Cint\u003E := [-7, 1, -20]\n  const C038: seq\u003Cint\u003E := [-5, 12, 15]\n  const C039: seq\u003Cint\u003E := [-4, -9, -13]\n  const C040: seq\u003Cint\u003E := [12, -11, -7]\n  const C041: seq\u003Cint\u003E := [-5, 19, -8]\n  const C042: seq\u003Cint\u003E := [1, 16, 17]\n  const C043: seq\u003Cint\u003E := [20, -14, -15]\n  const C044: seq\u003Cint\u003E := [13, -4, 10]\n  const C045: seq\u003Cint\u003E := [14, 7, 10]\n  const C046: seq\u003Cint\u003E := [-5, 9, 20]\n  const C047: seq\u003Cint\u003E := [10, 1, -19]\n  const C048: seq\u003Cint\u003E := [-16, -15, -1]\n  const C049: seq\u003Cint\u003E := [16, 3, -11]\n  const C050: seq\u003Cint\u003E := [-15, -10, 4]\n  const C051: seq\u003Cint\u003E := [4, -15, -3]\n  const C052: seq\u003Cint\u003E := [-10, -16, 11]\n  const C053: seq\u003Cint\u003E := [-8, 12, -5]\n  const C054: seq\u003Cint\u003E := [14, -6, 12]\n  const C055: seq\u003Cint\u003E := [1, 6, 11]\n  const C056: seq\u003Cint\u003E := [-13, -5, -1]\n  const C057: seq\u003Cint\u003E := [-7, -2, 12]\n  const C058: seq\u003Cint\u003E := [1, -20, 19]\n  const C059: seq\u003Cint\u003E := [-2, -13, -8]\n  const C060: seq\u003Cint\u003E := [15, 18, 4]\n  const C061: seq\u003Cint\u003E := [-11, 14, 9]\n  const C062: seq\u003Cint\u003E := [-6, -15, -2]\n  const C063: seq\u003Cint\u003E := [5, -12, -15]\n  const C064: seq\u003Cint\u003E := [-6, 17, 5]\n  const C065: seq\u003Cint\u003E := [-13, 5, -19]\n  const C066: seq\u003Cint\u003E := [20, -1, 14]\n  const C067: seq\u003Cint\u003E := [9, -17, 15]\n  const C068: seq\u003Cint\u003E := [-5, 19, -18]\n  const C069: seq\u003Cint\u003E := [-12, 8, -10]\n  const C070: seq\u003Cint\u003E := [-18, 14, -4]\n  const C071: seq\u003Cint\u003E := [15, -9, 13]\n  const C072: seq\u003Cint\u003E := [9, -5, -1]\n  const C073: seq\u003Cint\u003E := [10, -19, -14]\n  const C074: seq\u003Cint\u003E := [20, 9, 4]\n  const C075: seq\u003Cint\u003E := [-9, -2, 19]\n  const C076: seq\u003Cint\u003E := [-5, 13, -17]\n  const C077: seq\u003Cint\u003E := [2, -10, -18]\n  const C078: seq\u003Cint\u003E := [-18, 3, 11]\n  const C079: seq\u003Cint\u003E := [7, -9, 17]\n  const C080: seq\u003Cint\u003E := [-15, -6, -3]\n  const C081: seq\u003Cint\u003E := [-2, 3, -13]\n  const C082: seq\u003Cint\u003E := [12, 3, -2]\n  const C083: seq\u003Cint\u003E := [-2, -3, 17]\n  const C084: seq\u003Cint\u003E := [20, -15, -16]\n  const C085: seq\u003Cint\u003E := [-5, -17, -19]\n  const C086: seq\u003Cint\u003E := [-20, -18, 11]\n  const C087: seq\u003Cint\u003E := [-9, 1, -5]\n  const C088: seq\u003Cint\u003E := [-19, 9, 17]\n  const C089: seq\u003Cint\u003E := [12, -2, 17]\n  const C090: seq\u003Cint\u003E := [4, -16, -5]\n  const Clauses: seq\u003Cseq\u003Cint\u003E\u003E := [\n    C000, C001, C002, C003, C004, C005, C006, C007, C008, C009, C010, C011,\n    C012, C013, C014, C015, C016, C017, C018, C019, C020, C021, C022, C023,\n    C024, C025, C026, C027, C028, C029, C030, C031, C032, C033, C034, C035,\n    C036, C037, C038, C039, C040, C041, C042, C043, C044, C045, C046, C047,\n    C048, C049, C050, C051, C052, C053, C054, C055, C056, C057, C058, C059,\n    C060, C061, C062, C063, C064, C065, C066, C067, C068, C069, C070, C071,\n    C072, C073, C074, C075, C076, C077, C078, C079, C080, C081, C082, C083,\n    C084, C085, C086, C087, C088, C089, C090\n  ]\n  function SourceVersion(): int { 1 }\n}\nmodule CorpusInspector {\n  import Src = CorpusProvider\n  function ClauseCount(): nat { |Src.Clauses| }\n}\nmodule CorpusWorkingEdit {\n  function RevisionTag(): int { 11 }\n}\n",
+      "milliseconds": 73.2791,
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-satlib-matrix-random3sat-20-sat.dfy",
+            "from": [
+              96,
+              8
+            ],
+            "to": [
+              96,
+              15
+            ]
+          }
+        ],
+        "hover": "**Verification performance metrics for function \u0060ClauseCount\u0060**:\n\n_Verification not started yet_  \n  \n\u0060\u0060\u0060dafny\nconst Clauses: seq\u003Cseq\u003Cint\u003E\u003E\n\u0060\u0060\u0060"
+      },
+      "hits": 1,
+      "misses": 5,
+      "tracked": [
+        {
+          "name": "CorpusProvider",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "CorpusInspector",
+          "hit": false,
+          "miss": true
+        },
+        {
+          "name": "CorpusWorkingEdit",
+          "hit": false,
+          "miss": true
+        }
+      ]
+    }
+  ]
+}

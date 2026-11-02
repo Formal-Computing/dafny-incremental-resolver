@@ -1,0 +1,85 @@
+{
+  "schema": "dafny-satlib-matrix-v1",
+  "origin": "Formal-Computing/cdcl-sat-solver",
+  "origin_revision": "88247ab605ee0e3da2aca711885e3340eb78c782",
+  "transforms": "DIMACS clauses become typed Dafny const declarations; never a SAT computation",
+  "cases": [
+    {
+      "id": "random3sat-20-sat",
+      "source": "uf20-01.cnf",
+      "kind": "Random3SAT-20-SAT",
+      "expected_sat_class": "SAT",
+      "variables": 20,
+      "clauses": 91,
+      "sha256_dimacs": "bbb43578ee4f0634de44a7632b6df4ee6b9204f1c82e77660616b0891b00eb24",
+      "dafny_lines": 114,
+      "sha256_dafny": "a818a9bae2476a15c14fac868bd9448fac71f5a46479e9f468a5716142ca3ef0"
+    },
+    {
+      "id": "random3sat-50-sat",
+      "source": "uf50-02.cnf",
+      "kind": "Random3SAT-50-SAT",
+      "expected_sat_class": "SAT",
+      "variables": 50,
+      "clauses": 218,
+      "sha256_dimacs": "6df53d8a737a2619a39bb0481d0bf0754ac6d6621cc85bfaf9f90288a29c4a90",
+      "dafny_lines": 252,
+      "sha256_dafny": "321e3cefacb21566c277d9b28197e32535a2289513b9e6376c618e37df697479"
+    },
+    {
+      "id": "random3sat-50-unsat",
+      "source": "uuf50-02.cnf",
+      "kind": "Random3SAT-50-UNSAT",
+      "expected_sat_class": "UNSAT",
+      "variables": 50,
+      "clauses": 218,
+      "sha256_dimacs": "398a0973fd40530e3034f4f873525fe0e0c6c973535b2957289a0bbeb34f0a6b",
+      "dafny_lines": 252,
+      "sha256_dafny": "067475cb69d1b1b484e201b31520bd2c303ec40bc8e93a775bcb5228025e7c05"
+    },
+    {
+      "id": "aim-50-sat",
+      "source": "aim-50-1_6-yes1-1.cnf",
+      "kind": "AIM-50-SAT",
+      "expected_sat_class": "SAT",
+      "variables": 50,
+      "clauses": 80,
+      "sha256_dimacs": "d96f1edb1db3d0e55a3ff0f7707517e41a79374acbb857df051e5441ab27657d",
+      "dafny_lines": 102,
+      "sha256_dafny": "e08c2dbf72a5c0b0fc4613b971f657d39622218201121e3deb5b6d71f10a6657"
+    },
+    {
+      "id": "aim-50-unsat",
+      "source": "aim-50-1_6-no-1.cnf",
+      "kind": "AIM-50-UNSAT",
+      "expected_sat_class": "UNSAT",
+      "variables": 50,
+      "clauses": 80,
+      "sha256_dimacs": "17d42ca0ef48f3a0523a4a9f0a9f683da9acdc9a61f175dc9e143398e6532a86",
+      "dafny_lines": 102,
+      "sha256_dafny": "fa2f6bb5fb297a76d96247c80204df410da7670dd3f53175260a52f410a8c10f"
+    },
+    {
+      "id": "pigeonhole-7-unsat",
+      "source": "hole7.cnf",
+      "kind": "Pigeonhole-7-UNSAT",
+      "expected_sat_class": "UNSAT",
+      "variables": 56,
+      "clauses": 204,
+      "sha256_dimacs": "225791cbb02429d71bae87f331460d456ee11fecc384a6af049813f42e6319ab",
+      "dafny_lines": 236,
+      "sha256_dafny": "937d1275413251ec65c9f1542e65237a7ad16779aaf1e106c06c697e10476343"
+    },
+    {
+      "id": "dubois-30-unsat",
+      "source": "dubois30.cnf",
+      "kind": "Dubois-30-UNSAT",
+      "expected_sat_class": "UNSAT",
+      "variables": 90,
+      "clauses": 240,
+      "sha256_dimacs": "5ab95e48051afa9d7410d52fb07ead3e8a4ec97243d9f9c3f36aa0ebe78d4059",
+      "dafny_lines": 275,
+      "sha256_dafny": "fc42221dccbe91d698f1edd46f048327969818f248f2e890643c48da0a3940f9"
+    }
+  ]
+}

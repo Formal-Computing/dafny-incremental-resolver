@@ -1,0 +1,113 @@
+  /// <summary>
+  /// Four-mode oracle for seven checksum-pinned, separately generated SATLIB/Dafny documents.
+  /// Each revision checks diagnostics plus selected definition/hover observables.
+  /// Cache logs measure memoization behavior; they do not establish verification equivalence.
+  /// </summary>
+  [Theory]
+  [InlineData("random3sat-20-sat")]
+  [InlineData("random3sat-50-sat")]
+  [InlineData("random3sat-50-unsat")]
+  [InlineData("aim-50-sat")]
+  [InlineData("aim-50-unsat")]
+  [InlineData("pigeonhole-7-unsat")]
+  [InlineData("dubois-30-unsat")]
+  public async Task ResearchSatlibMatrix(string caseName) {
+    var source = caseName switch {
+      SATLIB_MATRIX_SWITCH
+      _ => throw new ArgumentException(caseName)
+    };
+    Assert.Contains("SourceVersion(): int { 0 }", source);
+    Assert.Contains("RevisionTag(): int { 10 }", source);
+    var revisions = new[] {
+      source,
+      source.Replace("RevisionTag(): int { 10 }", "RevisionTag(): int { 11 }"),
+      source.Replace("RevisionTag(): int { 10 }", "RevisionTag(): int { 11 }")
+        .Replace("SourceVersion(): int { 0 }", "SourceVersion(): int { 1 }"),
+      "// Position shift deliberately invalidates origin-dependent reuse\n" +
+        source.Replace("RevisionTag(): int { 10 }", "RevisionTag(): int { 11 }")
+          .Replace("SourceVersion(): int { 0 }", "SourceVersion(): int { 1 }")
+    };
+    var stages = new[] { "open", "suffix-value-edit", "provider-value-edit", "prefix-origin-shift" };
+    var path = Path.Combine(Directory.GetCurrentDirectory(),
+      "Synchronization/TestFiles/research-satlib-matrix-" + caseName + ".dfy");
+    var document = CreateTestDocument(revisions[0], path);
+    await client.OpenDocumentAndWaitAsync(document, CancellationToken);
+    Diagnostic[] lastDiagnostics = Array.Empty<Diagnostic>();
+    var samples = new System.Collections.Generic.List<object>();
+    var mode = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_MODE") ?? "unset";
+
+    for (int revision = 0; revision < revisions.Length; revision++) {
+      var before = sink.Snapshot().LogEvents.Count();
+      var watch = System.Diagnostics.Stopwatch.StartNew();
+      if (revision != 0) {
+        var old = revisions[revision - 1].Split('\n');
+        ApplyChange(ref document,
+          new Range(0, 0, old.Length - 1, old[old.Length - 1].Length),
+          revisions[revision]);
+        await client.WaitForNotificationCompletionAsync(document.Uri, CancellationToken);
+      }
+      watch.Stop();
+      var published = diagnosticsReceiver.GetLatestAndClearQueue(d => d.Uri == document.Uri);
+      if (published != null) {
+        lastDiagnostics = published.Diagnostics.ToArray();
+      }
+      var diagnostics = lastDiagnostics.Select(d => new {
+        message = d.Message,
+        code = d.Code.HasValue ? (d.Code.Value.IsString ? d.Code.Value.String : d.Code.Value.Long.ToString()) : null,
+        severity = d.Severity?.ToString(),
+        source = d.Source,
+        from = new [] { d.Range.Start.Line, d.Range.Start.Character },
+        to = new [] { d.Range.End.Line, d.Range.End.Character },
+      }).OrderBy(d => d.from[0]).ThenBy(d => d.from[1]).ThenBy(d => d.message).ToArray();
+
+      // Named reference inside the dependent consumer: inspect resolution of "Clauses".
+      var queryOffset = revisions[revision].LastIndexOf("Src.Clauses", StringComparison.Ordinal);
+      Assert.True(queryOffset >= 0, "Dependent consumer reference missing");
+      queryOffset += "Src.".Length;
+      var prefix = revisions[revision][..queryOffset];
+      var pos = new Position(prefix.Count(c => c == '\n'),
+        queryOffset - prefix.LastIndexOf('\n') - 1);
+      var definitions = await RequestDefinition(document, pos);
+      var hover = await client.RequestHover(
+        new HoverParams { TextDocument = document.Uri, Position = pos },
+        CancellationToken);
+      var semantic = new {
+        definitions = definitions.Select(d => new {
+          uri = d.Location?.Uri.ToString(),
+          from = d.Location == null ? (int[]?)null : new [] {
+            d.Location.Range.Start.Line, d.Location.Range.Start.Character
+          },
+          to = d.Location == null ? (int[]?)null : new [] {
+            d.Location.Range.End.Line, d.Location.Range.End.Character
+          }
+        }).OrderBy(d => d.uri).ThenBy(d => d.from == null ? -1 : d.from[0]).ToArray(),
+        hover = hover?.Contents.MarkupContent?.Value
+      };
+      var messages = sink.Snapshot().LogEvents.Skip(before)
+        .Select(e => e.MessageTemplate.Text).ToArray();
+      var tracked = new[] { "CorpusProvider", "CorpusInspector", "CorpusWorkingEdit" }
+        .Select(name => new {
+          name,
+          hit = messages.Any(m => m.Contains("Resolution cache hit") && m.Contains(name)),
+          miss = messages.Any(m => m.Contains("Resolution cache miss") && m.Contains(name))
+        }).ToArray();
+      samples.Add(new {
+        revision, stage = stages[revision], source = revisions[revision],
+        milliseconds = watch.Elapsed.TotalMilliseconds,
+        diagnostics, semantic,
+        hits = messages.Count(m => m.Contains("Resolution cache hit")),
+        misses = messages.Count(m => m.Contains("Resolution cache miss")),
+        tracked
+      });
+    }
+    var output = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_OUTPUT_DIR");
+    Assert.False(string.IsNullOrWhiteSpace(output));
+    Directory.CreateDirectory(output!);
+    File.WriteAllText(Path.Combine(output!, mode + "-matrix-" + caseName + ".json"),
+      System.Text.Json.JsonSerializer.Serialize(new {
+        mode, caseName, experiment = "seven-distinct-documents-four-revisions",
+        parserCacheStillEnabledInFreshMode = true,
+        samples
+      }, new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
+    Assert.Equal(4, samples.Count);
+  }
