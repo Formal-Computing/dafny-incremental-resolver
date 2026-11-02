@@ -16,7 +16,7 @@ def validate(directory):
     count_semantic=0
     # Imported normalization must be identical to the previous semantic
     # stress analysis, while keeping asynchronous verification progress separate.
-    from compare_differential import stable_semantic
+    from compare_differential import stable_semantic, QUERIED
     for category, scenarios, kind, expected_counts in (
         ("verification", VERIFIER_SCENARIOS, "verification",
          {x: 4 for x in VERIFIER_SCENARIOS}),
@@ -61,7 +61,9 @@ def validate(directory):
                     if x.get("diagnostics") != y.get("diagnostics"):
                         results.append((scenario,i,"DIAGNOSTIC_DIFFERENCE"))
                     else:count_diagnostics+=1
-                    if x.get("semantic") is not None or y.get("semantic") is not None:
+                    if scenario in QUERIED and (x.get("semantic") is None or y.get("semantic") is None):
+                        results.append((scenario,i,"MISSING_SELECTED_QUERY"))
+                    elif x.get("semantic") is not None or y.get("semantic") is not None:
                         if stable_semantic(x.get("semantic")) != stable_semantic(y.get("semantic")):
                             results.append((scenario,i,"SEMANTIC_DIFFERENCE"))
                         else:count_semantic+=1

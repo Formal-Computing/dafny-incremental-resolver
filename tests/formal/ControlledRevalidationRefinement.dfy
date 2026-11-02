@@ -118,3 +118,32 @@ method IncompleteKeyCannotLicenseMutableReuse() {
 // No conditional speedup is claimed: the "hit" computes FreshResolve.
 // A future optimizing refinement must prove a complete context key AND
 // reattachment safety before removing the fresh-resolution branch.
+
+// A specification for future OPTIMIZING caching. This is NOT the current C#
+// hash: all semantic inputs must be represented, and equality is structural.
+datatype FullContextKey = FullContextKey(
+  source: int, importedNames: seq<int>, options: int,
+  rewriters: seq<int>, negativeLookups: seq<int>, builtins: int)
+
+function CompleteKeySpec(c: CompleteContext): FullContextKey {
+  FullContextKey(c.source, c.importedNames, c.options,
+                 c.rewriters, c.negativeLookups, c.builtins)
+}
+
+// Formal refinement obligation: a *genuinely complete*, injective
+// structural key licenses equivalence of any deterministic fresh resolver.
+// This theorem MUST NOT be applied to CandidateKey or real SHA-256 until
+// the mapping from all Dafny resolver inputs to this specification is proved.
+lemma CompleteKeyEqualityImpliesFreshEquivalence(a: CompleteContext,
+                                                   b: CompleteContext)
+  requires CompleteKeySpec(a) == CompleteKeySpec(b)
+  ensures a == b
+  ensures FreshResolve(a) == FreshResolve(b)
+{
+  assert a.source == b.source;
+  assert a.importedNames == b.importedNames;
+  assert a.options == b.options;
+  assert a.rewriters == b.rewriters;
+  assert a.negativeLookups == b.negativeLookups;
+  assert a.builtins == b.builtins;
+}

@@ -115,3 +115,15 @@ The suitable publication claim is **a proven abstract refinement for a
 conservative fresh-resolution audit mode** and the corresponding tested
 pinned C# implementation, not production readiness or an optimized
 sound incremental cache.
+
+## Complete-key refinement theorem (specification only)
+
+The expanded Dafny model includes an injective structural key over source,
+imports, options, rewriters, negative lookups and builtins. It proves that
+**equality of these fully specified context keys implies equality of complete
+contexts and thus deterministic fresh-resolution observations**. This is
+conditional on *all* real resolver inputs being mapped into the model. The
+current content-aware C# key omits some candidate inputs and uses SHA-256, so
+this theorem cannot yet certify the optimizing cache. It is a precise future
+implementation-refinement obligation, distinct from the unconditional
+safe-audit proof, which does not reuse any mutable graph.
