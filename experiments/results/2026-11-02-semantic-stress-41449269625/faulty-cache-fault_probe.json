@@ -1,0 +1,81 @@
+{
+  "mode": "faulty-cache",
+  "scenario": "fault_probe",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module Beta { function Value(): int { 1 } }\nmodule User { import opened Beta function Result(): int { Value() } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: Value",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            1,
+            58
+          ],
+          "to": [
+            1,
+            63
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    },
+    {
+      "revision": 1,
+      "source": "module Beta { function Value(): bool { true } }\nmodule User { import opened Beta function Result(): int { Value() } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: Value",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            1,
+            58
+          ],
+          "to": [
+            1,
+            63
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    },
+    {
+      "revision": 2,
+      "source": "module Beta { function Value(): int { 1 } }\nmodule User { import opened Beta function Result(): int { Value() } }\n",
+      "diagnostics": [
+        {
+          "message": "unresolved identifier: Value",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            1,
+            58
+          ],
+          "to": [
+            1,
+            63
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [],
+        "hover": null
+      }
+    }
+  ]
+}

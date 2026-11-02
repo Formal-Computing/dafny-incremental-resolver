@@ -1,0 +1,14 @@
+--- a/Source/DafnyLanguageServer/Language/Symbols/DafnyLangSymbolResolver.cs
++++ b/Source/DafnyLanguageServer/Language/Symbols/DafnyLangSymbolResolver.cs
+@@ -48,7 +48,10 @@
+     private async Task RunDafnyResolver(Compilation compilation, Program program, CancellationToken cancellationToken) {
+       var beforeResolution = DateTime.Now;
+       try {
+-        var resolver = program.Options.Get(UseCaching)
++        // Research-only resolver oracle: retain the normal parser-cache policy
++        // while forcing fresh semantic resolution for each document revision.
++        var resolver = program.Options.Get(UseCaching) &&
++          System.Environment.GetEnvironmentVariable("DAFNY_RESEARCH_DISABLE_SEMANTIC_CACHE") != "1"
+           ? new CachingResolver(program, innerLogger, telemetryPublisher, resolutionCache)
+           : new ProgramResolver(program);
+         await resolver.Resolve(cancellationToken);

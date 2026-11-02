@@ -1,0 +1,4009 @@
+{
+  "schema": "dafny-differential-v3",
+  "scenarios": {
+    "independent": 4,
+    "dependency": 4,
+    "shadowing": 3,
+    "roster": 3,
+    "recovery": 4,
+    "negative": 4,
+    "fault_probe": 3,
+    "stress_graph": 24,
+    "stress_scope": 18,
+    "air_semantic": 8
+  },
+  "comparison": [
+    {
+      "scenario": "independent",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 0,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 1,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 2,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 3,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "independent",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 0,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 0,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 1,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 1,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 2,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 2,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 3,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 3,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "dependency",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 0,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 0,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 1,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 1,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 2,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 2,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 0,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 1,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 2,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "roster",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 0,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 1,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 2,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 3,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "recovery",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 0,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 0,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 1,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 1,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 2,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 2,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 3,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 3,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "negative",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 0,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 0,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 1,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 1,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 2,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 2,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "fault_probe",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 0,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 0,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 1,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 1,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 2,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 2,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 3,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 3,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 4,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 4,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 4,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 4,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 4,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 4,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 4,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 4,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 5,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 5,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 5,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 5,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 5,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 5,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 5,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 5,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 6,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 6,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 6,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 6,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 6,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 6,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 6,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 6,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 7,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 7,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 7,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 7,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 7,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 7,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 7,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 7,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 8,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 8,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 8,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 8,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 8,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 8,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 8,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 8,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 9,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 9,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 9,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 9,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 9,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 9,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 9,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 9,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 10,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 10,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 10,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 10,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 10,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 10,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 10,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 10,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 11,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 11,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 11,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 11,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 11,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 11,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 11,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 11,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 12,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 12,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 12,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 12,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 12,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 12,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 12,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 12,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 13,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 13,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 13,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 13,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 13,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 13,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 13,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 13,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 14,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 14,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 14,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 14,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 14,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 14,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 14,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 14,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 15,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 15,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 15,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 15,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 15,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 15,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 15,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 15,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 16,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 16,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 16,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 16,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 16,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 16,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 16,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 16,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 17,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 17,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 17,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 17,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 17,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 17,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 17,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 17,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 18,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 18,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 18,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 18,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 18,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 18,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 18,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 18,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 19,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 19,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 19,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 19,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 19,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 19,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 19,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 19,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 20,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 20,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 20,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 20,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 20,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 20,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 20,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 20,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 21,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 21,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 21,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 21,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 21,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 21,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 21,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 21,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 22,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 22,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 22,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 22,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 22,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 22,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 22,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 22,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 23,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 23,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 23,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 23,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 23,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 23,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 23,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_graph",
+      "revision": 23,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 0,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 0,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 1,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 1,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 2,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 2,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 3,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 3,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 4,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 4,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 4,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 4,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 4,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 4,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 4,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 4,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 5,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 5,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 5,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 5,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 5,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 5,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 5,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 5,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 6,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 6,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 6,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 6,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 6,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 6,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 6,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 6,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 7,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 7,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 7,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 7,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 7,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 7,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 7,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 7,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 8,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 8,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 8,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 8,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 8,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 8,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 8,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 8,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 9,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 9,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 9,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 9,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 9,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 9,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 9,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 9,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 10,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 10,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 10,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 10,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 10,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 10,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 10,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 10,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 11,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 11,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 11,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 11,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 11,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 11,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 11,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 11,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 12,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 12,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 12,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 12,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 12,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 12,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 12,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 12,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 13,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 13,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 13,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 13,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 13,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 13,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 13,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 13,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 14,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 14,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 14,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 14,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 14,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 14,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 14,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 14,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 15,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 15,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 15,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 15,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 15,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 15,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 15,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 15,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 16,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 16,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 16,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 16,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 16,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 16,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 16,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 16,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 17,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 17,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 17,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 17,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 17,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 17,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 17,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "stress_scope",
+      "revision": 17,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 0,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 0,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 0,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 0,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 1,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 1,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 1,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 1,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 6,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 6,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 6,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 6,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 6,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 6,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 6,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 6,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 7,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 7,
+      "mode": "fresh-vs-fresh-semantic",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 7,
+      "mode": "original",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 7,
+      "mode": "original",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 7,
+      "mode": "patched-baseline",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 7,
+      "mode": "patched-baseline",
+      "observable": "semantic",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 7,
+      "mode": "experimental",
+      "observable": "diagnostics",
+      "status": "MATCH"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 7,
+      "mode": "experimental",
+      "observable": "semantic",
+      "status": "MATCH"
+    }
+  ],
+  "volatileVerificationHoverCount": 16,
+  "volatileVerificationHovers": [
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "fresh-vs-fresh-semantic",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "original",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 2,
+      "mode": "experimental",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "fresh-vs-fresh-semantic",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "original",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 3,
+      "mode": "experimental",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "fresh-vs-fresh-semantic",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "original",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "patched-baseline",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 4,
+      "mode": "experimental",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "fresh-vs-fresh-semantic",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "original",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "patched-baseline",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    },
+    {
+      "scenario": "air_semantic",
+      "revision": 5,
+      "mode": "experimental",
+      "classification": "same Dafny signature; verification-progress hover differs"
+    }
+  ],
+  "normalization": "Exact diagnostics and definition targets; all fenced Dafny signature/type blocks when present, otherwise exact hover. Dynamic verification progress is reported separately, not asserted equivalent."
+}
