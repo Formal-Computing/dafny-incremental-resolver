@@ -91,10 +91,21 @@ jobs:
           --no-build -c Debug --nologo
           --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits'
 
+      - name: Guarded mode (experiment requested, no unsafe opt-in) retains original baseline cache behavior
+        working-directory: dafny
+        env:
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
+          DAFNY_RESEARCH_UNSAFE_CROSS_REVISION_REUSE: '0'
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit'
+
       - name: Experimental differential traces and cache regression
         working-directory: dafny
         env:
           DAFNY_RESEARCH_MODE: experimental
+          DAFNY_RESEARCH_UNSAFE_CROSS_REVISION_REUSE: '1'
           DAFNY_RESEARCH_PROFILE_RESOLVER: '1'
           DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
           DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
@@ -107,6 +118,7 @@ jobs:
         working-directory: dafny
         env:
           DAFNY_RESEARCH_MODE: faulty-cache
+          DAFNY_RESEARCH_UNSAFE_CROSS_REVISION_REUSE: '1'
           DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
           DAFNY_RESEARCH_INJECT_STALE_BETA: '1'
           DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/faulty-results

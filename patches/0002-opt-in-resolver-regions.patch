@@ -32,7 +32,7 @@
 +      }
        // An error-bearing result is not safe to retain across revisions
        // without tracking failed name lookups and diagnostic origins.
-       if (!ExperimentalContentHash || !result.ErrorReporter.AllMessages.Any()) {
+       if (!UnsafeResearchCrossRevisionReuse || !result.ErrorReporter.AllMessages.Any()) {
 @@ -73,6 +91,12 @@
        telemetryPublisher.PublishTime("ModuleResolution", decl.FullName, DateTime.Now - beforeResolution);
      } else {
