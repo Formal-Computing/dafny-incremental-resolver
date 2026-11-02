@@ -1,0 +1,74 @@
+{
+  "mode": "immutable-export",
+  "scenario": "export-proof",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module ExportProofA { export reveals T\n type T = int }\nmodule ExportProofB { export reveals U\n type U = nat }\nmodule ExportProofConsumer { import ExportProofA\n import ExportProofB\n method Proof() { assert 1 == 1; } }\n",
+      "verification": [
+        {
+          "from": [
+            6,
+            8
+          ],
+          "to": [
+            6,
+            13
+          ],
+          "outcome": "Correct"
+        }
+      ]
+    },
+    {
+      "revision": 1,
+      "source": "module ExportProofA { export reveals T\n type T = int }\nmodule ExportProofB { export reveals U\n type U = nat }\nmodule ExportProofConsumer { import ExportProofA\n import ExportProofB\n method Proof() { assert 1 == 2; } }\n",
+      "verification": [
+        {
+          "from": [
+            6,
+            8
+          ],
+          "to": [
+            6,
+            13
+          ],
+          "outcome": "Error"
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "source": "module ExportProofA { export reveals T\n type T = int }\nmodule ExportProofB { export reveals U\n type U = nat }\nmodule ExportProofConsumer { import ExportProofA\n import ExportProofB\n method Proof() { assert 1 == 1; } }\n",
+      "verification": [
+        {
+          "from": [
+            6,
+            8
+          ],
+          "to": [
+            6,
+            13
+          ],
+          "outcome": "Correct"
+        }
+      ]
+    },
+    {
+      "revision": 3,
+      "source": "// independent export type change\nmodule ExportProofA { export reveals T\n type T = nat }\nmodule ExportProofB { export reveals U\n type U = nat }\nmodule ExportProofConsumer { import ExportProofA\n import ExportProofB\n method Proof() { assert 1 == 1; } }\n",
+      "verification": [
+        {
+          "from": [
+            7,
+            8
+          ],
+          "to": [
+            7,
+            13
+          ],
+          "outcome": "Correct"
+        }
+      ]
+    }
+  ]
+}

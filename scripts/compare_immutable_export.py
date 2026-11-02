@@ -29,6 +29,10 @@ def compare(folder):
                 bad.append([category,i,"INPUT_MISMATCH"])
                 continue
             if category=="differential":
+                if i==1 and not a.get("diagnostics"):
+                    bad.append([category,i,"EXPECTED_TYPE_ERROR_NOT_TRIGGERED"])
+                if not a.get("semantic") or not a["semantic"].get("definitions"):
+                    bad.append([category,i,"UNEXERCISED_GOTO_DEFINITION"])
                 if "diagnostics" not in a or "diagnostics" not in b:
                     bad.append([category,i,"MISSING_DIAGNOSTIC"])
                 elif a["diagnostics"]!=b["diagnostics"]:
@@ -68,7 +72,8 @@ def selftest():
                 records=[]
                 for i in range(4):
                     r={"revision":i,"source":f"source-{i}"}
-                    if category=="diff":r.update({"diagnostics":[],"semantic":{"definitions":[{"uri":"file:///a.dfy"}],"hover":"int"}})
+                    if category=="diff":r.update({"diagnostics":[{"message":"type mismatch"}] if i==1 else [],
+                                                  "semantic":{"definitions":[{"uri":"file:///a.dfy"}],"hover":"int"}})
                     else:r["verification"]=[{"from":[0,0],"to":[0,3],"outcome":"Error" if i==1 else "Correct"}]
                     records.append(r)
                 (root/f"{mode}-{suffix}{scenario}.json").write_text(json.dumps({"mode":mode,"scenario":scenario,"records":records}))

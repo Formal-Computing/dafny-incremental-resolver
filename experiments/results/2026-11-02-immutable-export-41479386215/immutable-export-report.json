@@ -1,0 +1,10 @@
+{
+  "schema": "immutable-export-summary-v1",
+  "matched": {
+    "diagnostics": 4,
+    "selected_semantic": 4,
+    "final_verification": 4
+  },
+  "errors": [],
+  "scope": "Export declaration only; immutable empty summary and current-compilation wrapper."
+}

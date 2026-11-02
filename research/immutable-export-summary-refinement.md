@@ -72,3 +72,11 @@ There is no verified reconstruction of nonempty AST graphs, general semantic
 summaries, option/rewriter/negative-lookup completeness, or SHA-256-to-semantic
 key refinement for ordinary modules. Those remain prerequisite to an
 optimization applicable to general Dafny projects.
+
+## Completed pinned real-Dafny evidence
+
+GitHub Actions run 41479386215 passed with the opt-in immutable-export cache. The pinned C# server compiled, a real two-export test confirmed a MISS followed by a HIT on the skipped ModuleResolver branch, and the independent fresh-semantic oracle agreed on 4/4 exact diagnostic snapshots, 4/4 selected definition/hover observations and 4/4 terminal verifier outcomes. One revision produced two type diagnostics as intended; all four selected go-to-definition queries returned one definition. The verifier scenario included an intentionally failing assertion and subsequent recovery. The comparator also rejected a deliberately falsified verifier result and a missing trace.
+
+The raw two-mode JSON traces, normalized comparison report, source-contract audit (ModuleResolver.cs SHA-256 ce2eb870fe78c31c445f146ce9c5e61405bfd140630fd3def59d29648f9061b8) and checksummed manifest are saved at experiments/results/2026-11-02-immutable-export-41479386215/. A stricter source-branch audit and nontrivial test assertions are now included in CI; the original green run predates those additional regression checks, although they passed locally on the archived evidence.
+
+This demonstrates skipped work in a narrow pinned implementation branch, not measured end-to-end speedup, semantic completeness of the general experimental key, or soundness for nonempty module-result graphs.

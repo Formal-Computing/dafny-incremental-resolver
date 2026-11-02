@@ -11,7 +11,7 @@ on:
       - 'tests/dafny/ResearchImmutableExportSummaryMethod.txt'
       - 'tests/dafny/ResearchVerificationOutcomeMethod.txt'
       - 'tests/dafny/ResearchDifferentialMethod.txt'
-      - 'scripts/compare_immutable_export.py'
+      - 'scripts/compare_immutable_export.py'\n      - 'scripts/assert_export_contract.py'
 
 jobs:
   immutable-export:
@@ -47,6 +47,11 @@ jobs:
             git -C dafny apply "../$f"
           done
           git -C dafny diff --check
+      - name: Audit the pinned empty export branch and current-graph reconstruction
+        run: >
+          python3 prototype/scripts/assert_export_contract.py
+          dafny research-results
+
       - name: Build real pinned Dafny language server
         working-directory: dafny
         run: dotnet build Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj -c Debug --nologo
