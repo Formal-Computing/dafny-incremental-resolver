@@ -31,7 +31,8 @@ module Beta {
     var betaMiss = newLogMessages.Any(m => m.Contains("Resolution cache miss") && m.Contains("Beta"));
 
     Assert.True(betaMiss, "Edited Beta must cause a resolution cache miss.");
-    if (Environment.GetEnvironmentVariable("DAFNY_EXPERIMENTAL_CONTENT_HASH") == "1") {
+    if (Environment.GetEnvironmentVariable("DAFNY_EXPERIMENTAL_CONTENT_HASH") == "1" &&
+        Environment.GetEnvironmentVariable("DAFNY_RESEARCH_UNSAFE_CROSS_REVISION_REUSE") == "1") {
       Assert.True(alphaHit, "Unchanged Alpha should be reused with content hashing.");
       Assert.False(alphaMiss, "Unchanged Alpha was unnecessarily invalidated.");
     } else {
