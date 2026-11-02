@@ -165,7 +165,7 @@
         "stress_graph" => "ValueA()",
         "stress_scope" => "Value()",
         "air_semantic" => "Clauses",
-        "air_semantic_662" => "Clauses",
+        // 662 clauses: diagnostics are compared, while LSP definition requests\n        // time out even on original upstream; keep this known limitation explicit.\n        "air_semantic_662" => null,
         _ => null
       };
       if (target != null) {

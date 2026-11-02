@@ -110,3 +110,16 @@ For a local comparator validation (does not execute Dafny):
 6. If any counterexample occurs, preserve the exact sources and revision
    pair and diagnose whether it stems from parser behavior, missing dependency
    fingerprints, stale mutable state, or test synchronization.
+
+## Observed large-corpus LSP limitation
+
+The first combined CI run failed after the ordinary test-base token canceled
+a 662-clause go-to-definition request. A second run with the documented 180s
+token was interrupted by a runner shutdown. An isolated upstream-only 662
+run failed on the same go-to-definition call after 180s
+(Actions run 41449473325). These are **harness/LSP responsiveness failures**,
+not demonstrated differences between cache algorithms. The amended isolated
+test still resolves and edits all 662 original SATLIB-derived clauses, and
+requires five-mode diagnostic equivalence. The selected semantic LSP query
+on 662 clauses is now an explicit unresolved limitation rather than a
+passing test. Smaller fixtures retain full selected-query comparisons.

@@ -7,6 +7,8 @@ on:
       - research/semantic-stress-2026-11-02
     paths:
       - .github/workflows/semantic-air662.yml
+      - tests/dafny/ResearchDifferentialMethod.txt
+      - scripts/compare_differential.py
 
 jobs:
   air-662-oracle:

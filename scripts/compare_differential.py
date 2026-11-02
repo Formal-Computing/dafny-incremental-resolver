@@ -17,7 +17,7 @@ MODES = ("original", "patched-baseline", "experimental", "fresh-semantic", "fres
 CACHED = ("original", "patched-baseline", "experimental")
 QUERIED = {
     "dependency", "shadowing", "negative", "fault_probe", "stress_graph",
-    "stress_scope", "air_semantic", "air_semantic_662",
+    "stress_scope", "air_semantic",
 }
 
 def compare(root: pathlib.Path, scenarios=SCENARIOS):
