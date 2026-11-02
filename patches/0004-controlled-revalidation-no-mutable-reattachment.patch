@@ -1,0 +1,150 @@
+--- a/Source/DafnyLanguageServer/Language/CachingResolver.cs
++++ b/Source/DafnyLanguageServer/Language/CachingResolver.cs
+@@ -16,6 +16,11 @@
+   public PruneIfNotUsedSinceLastPruneCache<byte[], ModuleResolutionResult> Modules { get; } = new(new HashEquality());
+   public SystemModuleManager? Builtins { get; set; }
+   public Dictionary<TopLevelDeclWithMembers, Dictionary<string, MemberDecl>>? SystemClassMembers { get; set; }
++  // Audit-only, bounded primitive snapshots. Never retain a mutable result.
++  internal Dictionary<string, byte[]> ResearchAuditFingerprints { get; } = new();
++  internal long ResearchAuditCandidates { get; set; }
++  internal long ResearchAuditEqual { get; set; }
++  internal long ResearchAuditDifferent { get; set; }
+ }
+ 
+ public class CachingResolver : ProgramResolver {
+@@ -45,6 +50,10 @@
+   }
+ 
+   protected override Dictionary<TopLevelDeclWithMembers, Dictionary<string, MemberDecl>> ResolveSystemModule(Program program) {
++    // Do not reattach the cached mutable builtins graph in safe audit mode.
++    if (ResearchSafeRevalidate) {
++      return base.ResolveSystemModule(program);
++    }
+     if (cache.Builtins == null || !new HashEquality().Equals(cache.Builtins.MyHash, program.SystemModuleManager.MyHash)) {
+       var systemClassMembers = base.ResolveSystemModule(program);
+       cache.Builtins = program.SystemModuleManager;
+@@ -59,6 +68,15 @@
+   }
+ 
+   protected override ModuleResolutionResult ResolveModuleDeclaration(CompilationData compilation, ModuleDecl decl) {
++    // Safe revalidation: speculative keys are used only for a metadata audit,
++    // not for returning cached mutable ASTs. Always fresh-resolve in the
++    // current compilation, so no result graph crosses compilation boundaries.
++    if (ResearchSafeRevalidate) {
++      var candidateHash = GetHash(decl);
++      var fresh = base.ResolveModuleDeclaration(compilation, decl);
++      AuditFreshResult(decl, candidateHash, fresh);
++      return fresh;
++    }
+     // Research instrumentation is opt-in and does not change caching decisions.
+     // Hashing and module-resolution body are measured separately. The latter is
+     // an INCLUSIVE synchronous region; nested resolutions may be double counted.
+@@ -109,10 +127,16 @@
+     Environment.GetEnvironmentVariable("DAFNY_EXPERIMENTAL_CONTENT_HASH") == "1" &&
+     Environment.GetEnvironmentVariable("DAFNY_RESEARCH_UNSAFE_CROSS_REVISION_REUSE") == "1";
+ 
++  // Explicit research-only guard; if both unsafe and safe flags are set,
++  // the safe path wins and never returns a cached module result.
++  private static readonly bool ResearchSafeRevalidate =
++    Environment.GetEnvironmentVariable("DAFNY_RESEARCH_SAFE_REVALIDATE") == "1";
++
+   private byte[] GetHash(ModuleDecl moduleDeclaration) {
+     // Fail closed for any module without a fully covered, single-file span.
+     // This is a LOCAL structural check, not a semantic-soundness certificate.
+-    if (UnsafeResearchCrossRevisionReuse && HasCompleteSingleFileTokenCoverage(moduleDeclaration)) {
++    if ((UnsafeResearchCrossRevisionReuse || ResearchSafeRevalidate) &&
++        HasCompleteSingleFileTokenCoverage(moduleDeclaration)) {
+       return GetExperimentalHash(moduleDeclaration);
+     }
+     // Call the isolated upstream recursion: never incorporate experimental
+@@ -134,7 +158,9 @@
+         hashAlgorithm.TransformBlock(dependencyHash, 0, dependencyHash.Length, null, 0);
+       }
+ 
+-      hashAlgorithm.TransformBlock(cache.Builtins!.MyHash, 0, cache.Builtins!.MyHash.Length, null, 0);
++      var builtinsHash = ResearchSafeRevalidate
++        ? Program.SystemModuleManager.MyHash : cache.Builtins!.MyHash;
++      hashAlgorithm.TransformBlock(builtinsHash, 0, builtinsHash.Length, null, 0);
+       // Here we would like to use a hash of the contents of the module declaration, but we don't have that.
+       // We use the CloneId as a defensive proxy for a content hash.
+       // The CloneId stays unchanged if none of the files in which the module occurs have been changed.
+@@ -162,9 +188,68 @@
+     return any;
+   }
+ 
++  // A deliberately partial diagnostic/symbol-name digest. It only flags
++  // suspicious collisions; equality never constitutes proof of equivalence.
++  private static byte[] ResearchObservationDigest(ModuleResolutionResult result) {
++    using var hasher = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
++    AppendText(hasher, "dafny-audit-observation-v1");
++    AppendText(hasher, result.ResolvedDeclaration.FullName);
++    foreach (var pair in result.Signatures.OrderBy(x => x.Key.FullName, StringComparer.Ordinal)) {
++      AppendText(hasher, pair.Key.FullName);
++      foreach (var n in pair.Value.TopLevels.Keys.OrderBy(x => x, StringComparer.Ordinal)) {
++        AppendText(hasher, "top:" + n);
++      }
++      foreach (var n in pair.Value.StaticMembers.Keys.OrderBy(x => x, StringComparer.Ordinal)) {
++        AppendText(hasher, "member:" + n);
++      }
++      foreach (var n in pair.Value.Ctors.Keys.OrderBy(x => x, StringComparer.Ordinal)) {
++        AppendText(hasher, "ctor:" + n);
++      }
++    }
++    foreach (var group in result.ClassMembers.OrderBy(x => x.Key.FullName, StringComparer.Ordinal)) {
++      AppendText(hasher, group.Key.FullName);
++      foreach (var n in group.Value.Keys.OrderBy(x => x, StringComparer.Ordinal)) {
++        AppendText(hasher, n);
++      }
++    }
++    foreach (var diagnostic in result.ErrorReporter.AllMessages
++      .Select(x => x.ToString()).OrderBy(x => x, StringComparer.Ordinal)) {
++      AppendText(hasher, diagnostic);
++    }
++    return hasher.GetHashAndReset();
++  }
++
++  private void AuditFreshResult(ModuleDecl decl, byte[] key, ModuleResolutionResult fresh) {
++    var observation = ResearchObservationDigest(fresh);
++    var candidate = Convert.ToHexString(key);
++    bool existed;
++    bool equal = false;
++    lock (cache.ResearchAuditFingerprints) {
++      existed = cache.ResearchAuditFingerprints.TryGetValue(candidate, out var old);
++      if (existed) {
++        equal = old!.AsSpan().SequenceEqual(observation);
++        if (equal) cache.ResearchAuditEqual++;
++        else cache.ResearchAuditDifferent++;
++      }
++      if (cache.ResearchAuditFingerprints.Count >= 2048) {
++        cache.ResearchAuditFingerprints.Clear();
++      }
++      cache.ResearchAuditFingerprints[candidate] = observation;
++      cache.ResearchAuditCandidates++;
++    }
++    if (existed && !equal) {
++      logger.LogWarning("Research candidate fingerprint collision or context difference " +
++        "for {Module}; freshly resolved graph was returned.", decl.FullName);
++    } else if (existed) {
++      logger.LogDebug("Research candidate matched primitive audit digest for {Module}; " +
++        "freshly resolved graph was returned.", decl.FullName);
++    }
++  }
++
+   private byte[] GetExperimentalHash(ModuleDecl decl) {
+     // Deliberately unsound TEST-ONLY cache key, gated behind explicit opt-in.
+-    if (Environment.GetEnvironmentVariable("DAFNY_RESEARCH_INJECT_STALE_BETA") == "1"
++    if (!ResearchSafeRevalidate &&
++        Environment.GetEnvironmentVariable("DAFNY_RESEARCH_INJECT_STALE_BETA") == "1"
+         && decl.FullName.Contains("Beta", StringComparison.Ordinal)) {
+       return hashes[decl] = SHA256.HashData(
+         System.Text.Encoding.UTF8.GetBytes("research-stale-Beta-v1"));
+@@ -183,7 +268,8 @@
+       AppendText(hash, dependency.Identity);
+       hash.AppendData(dependency.Hash);
+     }
+-    hash.AppendData(cache.Builtins!.MyHash);
++    hash.AppendData(ResearchSafeRevalidate
++      ? Program.SystemModuleManager.MyHash : cache.Builtins!.MyHash);
+     hash.AppendData(PositionSensitiveSourceHash(decl));
+     return hashes[decl] = hash.GetHashAndReset();
+   }

@@ -1,0 +1,107 @@
+name: Controlled revalidation refinement (pinned Dafny)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/controlled-reattachment-proof-2026-11-02]
+    paths:
+      - '.github/workflows/controlled-revalidation.yml'
+      - 'patches/0004-controlled-revalidation-no-mutable-reattachment.patch'
+      - 'tests/dafny/ResearchControlledModeMethod.txt'
+      - 'scripts/compare_safe_revalidation.py'
+
+jobs:
+  controlled-revalidation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: prototype
+      - uses: actions/checkout@v4
+        with:
+          repository: dafny-lang/dafny
+          ref: de36f2ec1f9c530080eff7929ae28229f45da069
+          submodules: recursive
+          path: dafny
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Install pinned tests and Z3
+        run: |
+          python3 prototype/scripts/install_verifier_outcome_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/VerificationStatusTest.cs
+          python3 prototype/scripts/install_differential_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
+          (cd dafny && dotnet tool restore)
+          sudo apt-get update -qq
+          sudo apt-get install -y z3
+      - name: Apply experimental patch chain
+        run: |
+          for n in 0001 0002 0003 0004; do
+            f=$(find prototype/patches -maxdepth 1 -type f -name "$n*.patch" -print -quit)
+            test -n "$f"
+            git -C dafny apply --check "../$f"
+            git -C dafny apply "../$f"
+          done
+          git -C dafny diff --check
+      - name: Build modified language-server tests
+        working-directory: dafny
+        run: dotnet build Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj -c Debug --nologo
+      - name: Confirm safe-audit mode is enabled
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_SAFE_REVALIDATE: '1'
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~VerificationStatusTest.ResearchControlledRevalidationModeIsActive'
+      - name: Fresh semantic verifier outcomes
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: fresh-semantic
+          DAFNY_RESEARCH_DISABLE_SEMANTIC_CACHE: '1'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~VerificationStatusTest.ResearchVerificationOutcomeTrace'
+      - name: Audited fresh verifier outcomes
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: safe-audit
+          DAFNY_RESEARCH_SAFE_REVALIDATE: '1'
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~VerificationStatusTest.ResearchVerificationOutcomeTrace'
+      - name: Fresh semantic diagnostic and symbol traces
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: fresh-semantic
+          DAFNY_RESEARCH_DISABLE_SEMANTIC_CACHE: '1'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace'
+      - name: Audited fresh diagnostic and symbol traces
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: safe-audit
+          DAFNY_RESEARCH_SAFE_REVALIDATE: '1'
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace'
+      - name: Strict two-mode differential comparison
+        run: python3 prototype/scripts/compare_safe_revalidation.py research-results
+      - name: Archive all traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: controlled-revalidation-evidence
+          path: research-results/
+          if-no-files-found: warn

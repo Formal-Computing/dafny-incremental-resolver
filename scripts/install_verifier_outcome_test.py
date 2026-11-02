@@ -8,5 +8,6 @@ anchor="  [Fact]\n  public async Task ParentModuleProjectFileVerification() {"
 assert anchor in body
 assert "ResearchVerificationOutcomeTrace" not in body
 # VerificationStatusTest already uses models, Range, Xunit, IO and System.
-target.write_text(body.replace(anchor,source.read_text()+"\n"+anchor,1))
+extra=(Path(__file__).resolve().parent.parent / "tests/dafny/ResearchControlledModeMethod.txt").read_text()
+target.write_text(body.replace(anchor,source.read_text()+"\n"+extra+"\n"+anchor,1))
 print("Installed verifier outcome test")
