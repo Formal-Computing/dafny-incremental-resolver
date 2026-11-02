@@ -37,3 +37,7 @@ The next formal step is a refinement relation `ImplState ~ AbstractState` for th
 No cache optimization can promise a universal runtime speedup: equal or absent hit opportunities plus additional hashing overhead produce a counterexample. Establish a workload distribution, use randomized paired runs across different Dafny projects and edit traces, measure cold/warm end-to-end latency and CPU/memory, report confidence intervals and negative cases.
 
 Production readiness is a release decision based on gates, not a single theorem. Require the refinement audit, differential verifier-output oracle, fault injection, option/plugin/URI/recovery changes, cancellation/concurrency stress, memory-boundedness, feature-flag rollback, and independent upstream maintainer review. Current experiment remains opt-in and not production-qualified.
+
+## Correction to manuscript fresh-oracle description
+
+At pinned Dafny commit de36f2e, `DafnyLangParser` checks `UseCaching` when choosing `CachingParser` versus `ProgramParser`, and `DafnyLangSymbolResolver` checks the same option when choosing `CachingResolver` versus `ProgramResolver`. Consequently `UseCaching=false` disables **both** caches; the manuscript sentence claiming the parser cache remains active in the fresh-semantic mode is incorrect. A resolver-only fresh oracle needs a separate switch.
