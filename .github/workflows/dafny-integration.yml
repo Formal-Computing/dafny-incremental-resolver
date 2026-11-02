@@ -35,6 +35,7 @@ jobs:
           python3 prototype/scripts/install_differential_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
           python3 prototype/scripts/install_air_case_study.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
           python3 prototype/scripts/install_satlib_matrix.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
+          python3 prototype/scripts/install_verified_algorithms.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
 
       - name: Restore tools and install Z3
         run: |
@@ -55,7 +56,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits|FullyQualifiedName~CachingTest.ResearchSatlibMatrix'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits|FullyQualifiedName~CachingTest.ResearchSatlibMatrix|FullyQualifiedName~CachingTest.ResearchVerifiedAlgorithms'
 
       - name: Fresh, non-caching semantic oracle
         working-directory: dafny
@@ -66,7 +67,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits|FullyQualifiedName~CachingTest.ResearchSatlibMatrix'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits|FullyQualifiedName~CachingTest.ResearchSatlibMatrix|FullyQualifiedName~CachingTest.ResearchVerifiedAlgorithms'
 
       - name: Apply experiment patch
         run: |
@@ -90,7 +91,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits|FullyQualifiedName~CachingTest.ResearchSatlibMatrix'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits|FullyQualifiedName~CachingTest.ResearchSatlibMatrix|FullyQualifiedName~CachingTest.ResearchVerifiedAlgorithms'
 
       - name: Experimental differential traces and cache regression
         working-directory: dafny
@@ -102,7 +103,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits|FullyQualifiedName~CachingTest.ResearchSatlibMatrix'
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace|FullyQualifiedName~CachingTest.SameFileIndependentModuleEdit|FullyQualifiedName~CachingTest.ResearchPersistentEditLatency|FullyQualifiedName~CachingTest.ResearchAirSatlibCaseStudy|FullyQualifiedName~CachingTest.ResearchAirMixedEdits|FullyQualifiedName~CachingTest.ResearchSatlibMatrix|FullyQualifiedName~CachingTest.ResearchVerifiedAlgorithms'
 
       - name: End-to-end faulty-cache probe (test-only)
         working-directory: dafny
@@ -125,6 +126,9 @@ jobs:
       - name: Compare SATLIB multi-document diagnostics and semantic queries
         run: python3 prototype/scripts/compare_satlib_matrix.py research-results
 
+      - name: Compare proof-bearing handwritten Dafny edit trace
+        run: python3 prototype/scripts/compare_verified_algorithms.py research-results
+
       - name: Summarize AIR SATLIB module resolution benchmark
         run: python3 prototype/scripts/summarize_air_case_study.py research-results
 
@@ -144,7 +148,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest&FullyQualifiedName!~ResearchDifferentialTrace&FullyQualifiedName!~ResearchPersistentEditLatency&FullyQualifiedName!~ResearchAirSatlibCaseStudy&FullyQualifiedName!~ResearchAirMixedEdits&FullyQualifiedName!~ResearchSatlibMatrix&FullyQualifiedName!~SameFileIndependentModuleEdit'
+          --filter 'FullyQualifiedName~CachingTest&FullyQualifiedName!~ResearchDifferentialTrace&FullyQualifiedName!~ResearchPersistentEditLatency&FullyQualifiedName!~ResearchAirSatlibCaseStudy&FullyQualifiedName!~ResearchAirMixedEdits&FullyQualifiedName!~ResearchSatlibMatrix&FullyQualifiedName!~ResearchVerifiedAlgorithms&FullyQualifiedName!~SameFileIndependentModuleEdit'
 
       - name: C# reference-model checks
         working-directory: prototype
