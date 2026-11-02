@@ -18,8 +18,16 @@
   [InlineData("stress_graph")]
   [InlineData("stress_scope")]
   [InlineData("air_semantic")]
-  [InlineData("air_semantic_662")]
-  public async Task ResearchDifferentialTrace(string scenario) {
+  public Task ResearchDifferentialTrace(string scenario) =>
+    RunResearchDifferentialTrace(scenario);
+
+  // Intentionally isolated: the 662-clause LSP test may require a different
+  // resource budget and must not prevent collection of the primary traces.
+  [Fact]
+  public Task ResearchAir662DifferentialTrace() =>
+    RunResearchDifferentialTrace("air_semantic_662");
+
+  private async Task RunResearchDifferentialTrace(string scenario) {
     string[] revisions = scenario switch {
       "independent" => new[] {
         "module Alpha {\n function Value(): int { 11 }\n}\nmodule Beta {\n function Value(): int { 21 }\n}\n",

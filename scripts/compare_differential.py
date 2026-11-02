@@ -10,8 +10,9 @@ import sys
 
 SCENARIOS = (
     "independent", "dependency", "shadowing", "roster", "recovery", "negative",
-    "fault_probe", "stress_graph", "stress_scope", "air_semantic", "air_semantic_662",
+    "fault_probe", "stress_graph", "stress_scope", "air_semantic",
 )
+EXTENDED_SCENARIOS = SCENARIOS + ("air_semantic_662",)
 MODES = ("original", "patched-baseline", "experimental", "fresh-semantic", "fresh")
 CACHED = ("original", "patched-baseline", "experimental")
 QUERIED = {
@@ -19,7 +20,7 @@ QUERIED = {
     "stress_scope", "air_semantic", "air_semantic_662",
 }
 
-def compare(root: pathlib.Path):
+def compare(root: pathlib.Path, scenarios=SCENARIOS):
     report = []
     counts = {}
     def record(scenario, revision, mode, field, got, wanted):
@@ -29,7 +30,7 @@ def compare(root: pathlib.Path):
             "observable": field, "status": "MATCH" if match else "DIFFERENCE",
             **({ "actual": got, "oracle": wanted } if not match else {})
         })
-    for scenario in SCENARIOS:
+    for scenario in scenarios:
         traces = {}
         for mode in MODES:
             path = root / f"{mode}-{scenario}.json"
@@ -82,10 +83,16 @@ def compare(root: pathlib.Path):
 
 
 def main():
-    if len(sys.argv) != 2:
-        raise SystemExit("usage: compare_differential.py <trace-dir>")
+    if len(sys.argv) not in (2, 4):
+        raise SystemExit("usage: compare_differential.py <trace-dir> [--scenarios air_semantic_662]")
     root = pathlib.Path(sys.argv[1])
-    data = compare(root)
+    if len(sys.argv) == 4:
+        if sys.argv[2] != "--scenarios" or sys.argv[3] != "air_semantic_662":
+            raise SystemExit("Only the independent 662-clause suite is supported as an override")
+        scenarios = ("air_semantic_662",)
+    else:
+        scenarios = SCENARIOS
+    data = compare(root, scenarios=scenarios)
     root.mkdir(parents=True, exist_ok=True)
     (root / "differential-report.json").write_text(
         json.dumps(data, ensure_ascii=False, indent=2))
@@ -98,7 +105,7 @@ def main():
               x.get("mode"), x.get("observable"), x["status"])
     if len(bad) > 25:
         print("... remaining failures:", len(bad) - 25)
-    return 1 if bad or len(data["scenarios"]) != len(SCENARIOS) else 0
+    return 1 if bad or len(data["scenarios"]) != len(scenarios) else 0
 
 
 if __name__ == "__main__":

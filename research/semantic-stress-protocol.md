@@ -54,7 +54,11 @@ In addition to seven existing short deterministic traces (25 revisions):
   sequence. This is a different, larger corpus, not merely another repeat of
   the 298-clause file.
 
-**Total: 82 revisions in 11 scenarios** per execution mode. These are not 82
+**Primary CI:** 75 revisions in ten scenarios per mode. The **isolated,
+manually dispatched 662-clause CI** adds seven revisions in a separate
+testhost, for an intended total of **82 revisions across 11 scenarios** per
+mode. The isolated experiment is a distinct qualification gate and should not
+be described as passing merely because the primary suite passes. These are not 82
 independent real-world projects and are not a representative random sample of
 editing behavior. The two SATLIB-derived test programs encode CNF clauses into
 typed Dafny constants; they are *resolver workloads*, not SAT-solver or
@@ -85,7 +89,7 @@ Run the pinned-source workflow \`dafny-integration.yml\` with
 three patches onto Dafny commit
 \`de36f2ec1f9c530080eff7929ae28229f45da069\`, compiles the language server
 tests, and collects per-mode JSON and the strict differential report.
-The workflow requires .NET 8 and Z3; local \`paradis\` with only .NET 10 cannot
+Both workflows require .NET 8 and Z3; local \`paradis\` with only .NET 10 cannot
 directly run the pinned .NET 8 integration project without a separate SDK.
 
 For a local comparator validation (does not execute Dafny):
