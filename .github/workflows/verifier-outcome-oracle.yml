@@ -37,6 +37,18 @@ jobs:
       - name: Build original Dafny language server tests
         working-directory: dafny
         run: dotnet build Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj -c Debug --nologo
+      - name: Pinned-source context completeness audit
+        run: >
+          python3 prototype/scripts/audit_semantic_context.py
+          --dafny dafny --research prototype --output research-results/source-context-audit.json
+
+      - name: Test actual mutable result record aliasing
+        working-directory: dafny
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~VerificationStatusTest.ResearchMutableResolutionResultAliasing'
+
       - name: Original verifier outcomes
         working-directory: dafny
         env:

@@ -84,3 +84,24 @@
 
     Assert.Equal(revisions.Length, snapshots.Count);
   }
+
+  // Demonstrates an actual source-level aliasing hazard in pinned Dafny.
+  // A shallow record copy retains the same mutable dictionary instances.
+  [Fact]
+  public void ResearchMutableResolutionResultAliasing() {
+    var signatures = new System.Collections.Generic.Dictionary<ModuleDefinition, ModuleSignature>();
+    var members = new System.Collections.Generic.Dictionary<TopLevelDeclWithMembers,
+      System.Collections.Generic.Dictionary<string, MemberDecl>>();
+    var cached = new ModuleResolutionResult(null!, null!, signatures, members);
+    var anotherReference = cached with { };
+
+    Assert.Same(signatures, cached.Signatures);
+    Assert.Same(members, cached.ClassMembers);
+    Assert.Same(cached.Signatures, anotherReference.Signatures);
+    Assert.Same(cached.ClassMembers, anotherReference.ClassMembers);
+
+    signatures.EnsureCapacity(16);
+    Assert.True(anotherReference.Signatures.EnsureCapacity(0) >= 16);
+    members.EnsureCapacity(8);
+    Assert.True(anotherReference.ClassMembers.EnsureCapacity(0) >= 8);
+  }
