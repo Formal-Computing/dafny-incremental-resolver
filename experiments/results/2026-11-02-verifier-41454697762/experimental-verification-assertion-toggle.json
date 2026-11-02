@@ -1,0 +1,74 @@
+{
+  "mode": "experimental",
+  "scenario": "assertion-toggle",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module A { method Proof() { assert true; } }\n",
+      "verification": [
+        {
+          "from": [
+            0,
+            18
+          ],
+          "to": [
+            0,
+            23
+          ],
+          "outcome": "Correct"
+        }
+      ]
+    },
+    {
+      "revision": 1,
+      "source": "module A { method Proof() { assert false; } }\n",
+      "verification": [
+        {
+          "from": [
+            0,
+            18
+          ],
+          "to": [
+            0,
+            23
+          ],
+          "outcome": "Error"
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "source": "module A { method Proof() { assert true; } }\n",
+      "verification": [
+        {
+          "from": [
+            0,
+            18
+          ],
+          "to": [
+            0,
+            23
+          ],
+          "outcome": "Correct"
+        }
+      ]
+    },
+    {
+      "revision": 3,
+      "source": "module A { method Proof() { assert 1 \u002B 1 == 2; } }\n",
+      "verification": [
+        {
+          "from": [
+            0,
+            18
+          ],
+          "to": [
+            0,
+            23
+          ],
+          "outcome": "Correct"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "mode": "fresh-semantic",
+  "scenario": "independent-proof",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module A { method Safe() { assert true; } }\nmodule B { method Unsafe() { assert false; } }\n",
+      "verification": [
+        {
+          "from": [
+            0,
+            18
+          ],
+          "to": [
+            0,
+            22
+          ],
+          "outcome": "Correct"
+        },
+        {
+          "from": [
+            1,
+            18
+          ],
+          "to": [
+            1,
+            24
+          ],
+          "outcome": "Error"
+        }
+      ]
+    },
+    {
+      "revision": 1,
+      "source": "module A { method Safe() { assert true; } }\nmodule B { method Unsafe() { assert true; } }\n",
+      "verification": [
+        {
+          "from": [
+            0,
+            18
+          ],
+          "to": [
+            0,
+            22
+          ],
+          "outcome": "Correct"
+        },
+        {
+          "from": [
+            1,
+            18
+          ],
+          "to": [
+            1,
+            24
+          ],
+          "outcome": "Correct"
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "source": "module A { method Safe() { assert true; } }\nmodule B { method Unsafe() { assert false; } }\n",
+      "verification": [
+        {
+          "from": [
+            0,
+            18
+          ],
+          "to": [
+            0,
+            22
+          ],
+          "outcome": "Correct"
+        },
+        {
+          "from": [
+            1,
+            18
+          ],
+          "to": [
+            1,
+            24
+          ],
+          "outcome": "Error"
+        }
+      ]
+    },
+    {
+      "revision": 3,
+      "source": "// unrelated prefix change\nmodule A { method Safe() { assert true; } }\nmodule B { method Unsafe() { assert false; } }\n",
+      "verification": [
+        {
+          "from": [
+            1,
+            18
+          ],
+          "to": [
+            1,
+            22
+          ],
+          "outcome": "Correct"
+        },
+        {
+          "from": [
+            2,
+            18
+          ],
+          "to": [
+            2,
+            24
+          ],
+          "outcome": "Error"
+        }
+      ]
+    }
+  ]
+}

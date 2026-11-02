@@ -1,0 +1,118 @@
+{
+  "mode": "patched-baseline",
+  "scenario": "dependency-proof",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module Provider { function Constant(): int { 1 } }\nmodule Consumer { import opened Provider method Proof() { assert Constant() == 1; } }\n",
+      "verification": [
+        {
+          "from": [
+            0,
+            27
+          ],
+          "to": [
+            0,
+            35
+          ],
+          "outcome": "Correct"
+        },
+        {
+          "from": [
+            1,
+            48
+          ],
+          "to": [
+            1,
+            53
+          ],
+          "outcome": "Correct"
+        }
+      ]
+    },
+    {
+      "revision": 1,
+      "source": "module Provider { function Constant(): int { 2 } }\nmodule Consumer { import opened Provider method Proof() { assert Constant() == 1; } }\n",
+      "verification": [
+        {
+          "from": [
+            0,
+            27
+          ],
+          "to": [
+            0,
+            35
+          ],
+          "outcome": "Correct"
+        },
+        {
+          "from": [
+            1,
+            48
+          ],
+          "to": [
+            1,
+            53
+          ],
+          "outcome": "Error"
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "source": "module Provider { function Constant(): int { 1 } }\nmodule Consumer { import opened Provider method Proof() { assert Constant() == 1; } }\n",
+      "verification": [
+        {
+          "from": [
+            0,
+            27
+          ],
+          "to": [
+            0,
+            35
+          ],
+          "outcome": "Correct"
+        },
+        {
+          "from": [
+            1,
+            48
+          ],
+          "to": [
+            1,
+            53
+          ],
+          "outcome": "Correct"
+        }
+      ]
+    },
+    {
+      "revision": 3,
+      "source": "// shift source positions\nmodule Provider { function Constant(): int { 1 } }\nmodule Consumer { import opened Provider method Proof() { assert Constant() == 1; } }\n",
+      "verification": [
+        {
+          "from": [
+            1,
+            27
+          ],
+          "to": [
+            1,
+            35
+          ],
+          "outcome": "Correct"
+        },
+        {
+          "from": [
+            2,
+            48
+          ],
+          "to": [
+            2,
+            53
+          ],
+          "outcome": "Correct"
+        }
+      ]
+    }
+  ]
+}

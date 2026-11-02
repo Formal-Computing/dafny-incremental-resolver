@@ -1,0 +1,107 @@
+
+  [Theory]
+  [InlineData("assertion-toggle")]
+  [InlineData("dependency-proof")]
+  [InlineData("independent-proof")]
+  public async Task ResearchVerificationOutcomeTrace(string scenario) {
+    // These tests compare COMPLETED verifier statuses, not asynchronous hover.
+    // Every source is resolved and verified for each exact document version.
+    string[] revisions = scenario switch {
+      "assertion-toggle" => new[] {
+        "module A { method Proof() { assert true; } }\n",
+        "module A { method Proof() { assert false; } }\n",
+        "module A { method Proof() { assert true; } }\n",
+        "module A { method Proof() { assert 1 + 1 == 2; } }\n"
+      },
+      "dependency-proof" => new[] {
+        "module Provider { function Constant(): int { 1 } }\nmodule Consumer { import opened Provider method Proof() { assert Constant() == 1; } }\n",
+        "module Provider { function Constant(): int { 2 } }\nmodule Consumer { import opened Provider method Proof() { assert Constant() == 1; } }\n",
+        "module Provider { function Constant(): int { 1 } }\nmodule Consumer { import opened Provider method Proof() { assert Constant() == 1; } }\n",
+        "// shift source positions\nmodule Provider { function Constant(): int { 1 } }\nmodule Consumer { import opened Provider method Proof() { assert Constant() == 1; } }\n"
+      },
+      "independent-proof" => new[] {
+        "module A { method Safe() { assert true; } }\nmodule B { method Unsafe() { assert false; } }\n",
+        "module A { method Safe() { assert true; } }\nmodule B { method Unsafe() { assert true; } }\n",
+        "module A { method Safe() { assert true; } }\nmodule B { method Unsafe() { assert false; } }\n",
+        "// unrelated prefix change\nmodule A { method Safe() { assert true; } }\nmodule B { method Unsafe() { assert false; } }\n"
+      },
+      _ => throw new ArgumentException(scenario)
+    };
+
+    var mode = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_MODE") ?? "undefined";
+    await SetUp(options => {
+      options.Set(ProjectManager.Verification, VerifyOnMode.ChangeProject);
+      if (mode == "fresh") {
+        options.Set(Microsoft.Dafny.LanguageServer.Language.Symbols.DafnyLangSymbolResolver.UseCaching, false);
+      }
+    });
+    var sourcePath = Path.Combine(Directory.GetCurrentDirectory(),
+      "Synchronization/TestFiles/research-verifier-" + scenario + ".dfy");
+    var document = await CreateOpenAndWaitForResolve(
+      revisions[0], sourcePath, cancellationToken: CancellationTokenWithHighTimeout);
+
+    var snapshots = new System.Collections.Generic.List<object>();
+    for (int i = 0; i < revisions.Length; i++) {
+      if (i > 0) {
+        var prev = revisions[i - 1].Split('\n');
+        ApplyChange(ref document,
+          new Range(0, 0, prev.Length - 1, prev[prev.Length - 1].Length), revisions[i]);
+      }
+
+      // Unlike the previous hover oracle, this awaits the final verification
+      // notification for exactly the current URI and document version.
+      var status = await WaitUntilAllStatusAreCompleted(document, CancellationTokenWithHighTimeout);
+      Assert.NotNull(status);
+      Assert.Equal(document.Version, status.Version);
+      Assert.NotEmpty(status.NamedVerifiables);
+      Assert.All(status.NamedVerifiables,
+        v => Assert.True(v.Status is PublishedVerificationStatus.Correct
+          or PublishedVerificationStatus.Error, "Incomplete verifier status: " + v.Status));
+
+      var statuses = status.NamedVerifiables
+        .Select(v => new {
+          from = new[] {v.NameRange.Start.Line, v.NameRange.Start.Character},
+          to = new[] {v.NameRange.End.Line, v.NameRange.End.Character},
+          outcome = v.Status.ToString()
+        }).OrderBy(v => v.from[0]).ThenBy(v => v.from[1]).ToArray();
+      bool shouldFail = scenario switch {
+        "assertion-toggle" => i == 1,
+        "dependency-proof" => i == 1,
+        "independent-proof" => i != 1,
+        _ => throw new ArgumentException(scenario)
+      };
+      Assert.Equal(shouldFail, status.NamedVerifiables.Any(
+        v => v.Status == PublishedVerificationStatus.Error));
+      snapshots.Add(new { revision = i, source = revisions[i], verification = statuses });
+    }
+
+    var destination = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_OUTPUT_DIR");
+    Assert.False(string.IsNullOrWhiteSpace(destination));
+    Directory.CreateDirectory(destination!);
+    File.WriteAllText(Path.Combine(destination!, mode + "-verification-" + scenario + ".json"),
+      System.Text.Json.JsonSerializer.Serialize(new { mode, scenario, records = snapshots },
+        new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
+
+    Assert.Equal(revisions.Length, snapshots.Count);
+  }
+
+  // Demonstrates an actual source-level aliasing hazard in pinned Dafny.
+  // A shallow record copy retains the same mutable dictionary instances.
+  [Fact]
+  public void ResearchMutableResolutionResultAliasing() {
+    var signatures = new System.Collections.Generic.Dictionary<ModuleDefinition, ModuleSignature>();
+    var members = new System.Collections.Generic.Dictionary<TopLevelDeclWithMembers,
+      System.Collections.Generic.Dictionary<string, MemberDecl>>();
+    var cached = new ModuleResolutionResult(null!, null!, signatures, members);
+    var anotherReference = cached with { };
+
+    Assert.Same(signatures, cached.Signatures);
+    Assert.Same(members, cached.ClassMembers);
+    Assert.Same(cached.Signatures, anotherReference.Signatures);
+    Assert.Same(cached.ClassMembers, anotherReference.ClassMembers);
+
+    signatures.EnsureCapacity(16);
+    Assert.True(anotherReference.Signatures.EnsureCapacity(0) >= 16);
+    members.EnsureCapacity(8);
+    Assert.True(anotherReference.ClassMembers.EnsureCapacity(0) >= 8);
+  }
