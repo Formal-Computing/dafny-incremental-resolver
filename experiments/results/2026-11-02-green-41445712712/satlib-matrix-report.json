@@ -1,0 +1,2086 @@
+{
+  "schema": "satlib-semantic-differential-v1",
+  "n_documents": 7,
+  "n_revisions_per_document": 4,
+  "cases": [
+    {
+      "id": "random3sat-20-sat",
+      "clauses": 91,
+      "sat_class": "SAT",
+      "modes": {
+        "original": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "patched-baseline": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "experimental": {
+          "hits": 7,
+          "misses": 11,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 4,
+              "misses": 2,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 2,
+              "misses": 4,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": true,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "fresh": {
+          "hits": 0,
+          "misses": 0,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "stage_comparisons": []
+    },
+    {
+      "id": "random3sat-50-sat",
+      "clauses": 218,
+      "sat_class": "SAT",
+      "modes": {
+        "original": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "patched-baseline": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "experimental": {
+          "hits": 7,
+          "misses": 11,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 4,
+              "misses": 2,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 2,
+              "misses": 4,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": true,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "fresh": {
+          "hits": 0,
+          "misses": 0,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "stage_comparisons": []
+    },
+    {
+      "id": "random3sat-50-unsat",
+      "clauses": 218,
+      "sat_class": "UNSAT",
+      "modes": {
+        "original": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "patched-baseline": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "experimental": {
+          "hits": 7,
+          "misses": 11,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 4,
+              "misses": 2,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 2,
+              "misses": 4,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": true,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "fresh": {
+          "hits": 0,
+          "misses": 0,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "stage_comparisons": []
+    },
+    {
+      "id": "aim-50-sat",
+      "clauses": 80,
+      "sat_class": "SAT",
+      "modes": {
+        "original": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "patched-baseline": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "experimental": {
+          "hits": 7,
+          "misses": 11,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 4,
+              "misses": 2,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 2,
+              "misses": 4,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": true,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "fresh": {
+          "hits": 0,
+          "misses": 0,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "stage_comparisons": []
+    },
+    {
+      "id": "aim-50-unsat",
+      "clauses": 80,
+      "sat_class": "UNSAT",
+      "modes": {
+        "original": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "patched-baseline": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "experimental": {
+          "hits": 7,
+          "misses": 11,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 4,
+              "misses": 2,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 2,
+              "misses": 4,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": true,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "fresh": {
+          "hits": 0,
+          "misses": 0,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "stage_comparisons": []
+    },
+    {
+      "id": "pigeonhole-7-unsat",
+      "clauses": 204,
+      "sat_class": "UNSAT",
+      "modes": {
+        "original": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "patched-baseline": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "experimental": {
+          "hits": 7,
+          "misses": 11,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 4,
+              "misses": 2,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 2,
+              "misses": 4,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": true,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "fresh": {
+          "hits": 0,
+          "misses": 0,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "stage_comparisons": []
+    },
+    {
+      "id": "dubois-30-unsat",
+      "clauses": 240,
+      "sat_class": "UNSAT",
+      "modes": {
+        "original": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "patched-baseline": {
+          "hits": 3,
+          "misses": 15,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "experimental": {
+          "hits": 7,
+          "misses": 11,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 4,
+              "misses": 2,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": true,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 2,
+              "misses": 4,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": true,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 1,
+              "misses": 5,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": true
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": true
+                }
+              ]
+            }
+          ]
+        },
+        "fresh": {
+          "hits": 0,
+          "misses": 0,
+          "stages": [
+            {
+              "stage": "suffix-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "provider-value-edit",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            },
+            {
+              "stage": "prefix-origin-shift",
+              "hits": 0,
+              "misses": 0,
+              "tracked": [
+                {
+                  "name": "CorpusProvider",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusInspector",
+                  "hit": false,
+                  "miss": false
+                },
+                {
+                  "name": "CorpusWorkingEdit",
+                  "hit": false,
+                  "miss": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "stage_comparisons": []
+    }
+  ],
+  "comparisons": 252,
+  "semantic_comparisons": 0,
+  "definition_comparisons": 84,
+  "stable_hover_type_comparisons": 84,
+  "diagnostic_comparisons": 84,
+  "raw_hover_status_differences": 31,
+  "failures": []
+}
