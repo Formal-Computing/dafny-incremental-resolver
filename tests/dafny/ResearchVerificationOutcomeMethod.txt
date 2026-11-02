@@ -3,10 +3,36 @@
   [InlineData("assertion-toggle")]
   [InlineData("dependency-proof")]
   [InlineData("independent-proof")]
-  public async Task ResearchVerificationOutcomeTrace(string scenario) {
+  public Task ResearchVerificationOutcomeTrace(string scenario) =>
+    RunResearchVerificationOutcomeTrace(scenario);
+
+  [Fact]
+  public Task ResearchExportProofOutcomeTrace() =>
+    RunResearchVerificationOutcomeTrace("export-proof");
+
+  private async Task RunResearchVerificationOutcomeTrace(string scenario) {
     // These tests compare COMPLETED verifier statuses, not asynchronous hover.
     // Every source is resolved and verified for each exact document version.
     string[] revisions = scenario switch {
+      "export-proof" => new[] {
+        "module ExportProofA { export reveals T\n type T = int }\n" +
+        "module ExportProofB { export reveals U\n type U = nat }\n" +
+        "module ExportProofConsumer { import ExportProofA\n import ExportProofB\n" +
+        " method Proof() { assert 1 == 1; } }\n",
+        "module ExportProofA { export reveals T\n type T = int }\n" +
+        "module ExportProofB { export reveals U\n type U = nat }\n" +
+        "module ExportProofConsumer { import ExportProofA\n import ExportProofB\n" +
+        " method Proof() { assert 1 == 2; } }\n",
+        "module ExportProofA { export reveals T\n type T = int }\n" +
+        "module ExportProofB { export reveals U\n type U = nat }\n" +
+        "module ExportProofConsumer { import ExportProofA\n import ExportProofB\n" +
+        " method Proof() { assert 1 == 1; } }\n",
+        "// independent export type change\n" +
+        "module ExportProofA { export reveals T\n type T = nat }\n" +
+        "module ExportProofB { export reveals U\n type U = nat }\n" +
+        "module ExportProofConsumer { import ExportProofA\n import ExportProofB\n" +
+        " method Proof() { assert 1 == 1; } }\n"
+      },
       "assertion-toggle" => new[] {
         "module A { method Proof() { assert true; } }\n",
         "module A { method Proof() { assert false; } }\n",
@@ -67,6 +93,7 @@
       bool shouldFail = scenario switch {
         "assertion-toggle" => i == 1,
         "dependency-proof" => i == 1,
+        "export-proof" => i == 1,
         "independent-proof" => i != 1,
         _ => throw new ArgumentException(scenario)
       };

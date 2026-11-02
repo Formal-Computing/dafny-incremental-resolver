@@ -21,6 +21,11 @@
   public Task ResearchDifferentialTrace(string scenario) =>
     RunResearchDifferentialTrace(scenario);
 
+  // A dedicated export-summary trace; not part of the older 10-scenario oracle.
+  [Fact]
+  public Task ResearchExportSummaryDifferentialTrace() =>
+    RunResearchDifferentialTrace("export_summary");
+
   // Intentionally isolated: the 662-clause LSP test may require a different
   // resource budget and must not prevent collection of the primary traces.
   [Fact]
@@ -67,6 +72,24 @@
         "module Beta { function Value(): int { 1 } }\nmodule User { import opened Beta function Result(): int { Value() } }\n",
         "module Beta { function Value(): bool { true } }\nmodule User { import opened Beta function Result(): int { Value() } }\n",
         "module Beta { function Value(): int { 1 } }\nmodule User { import opened Beta function Result(): int { Value() } }\n"
+      },
+      "export_summary" => new[] {
+        "module ExportSummaryA { export reveals T\n type T = int }\n" +
+        "module ExportSummaryB { export reveals U\n type U = int }\n" +
+        "module ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n" +
+        " method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n",
+        "module ExportSummaryA { export reveals T\n type T = bool }\n" +
+        "module ExportSummaryB { export reveals U\n type U = int }\n" +
+        "module ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n" +
+        " method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n",
+        "module ExportSummaryA { export reveals T\n type T = int }\n" +
+        "module ExportSummaryB { export reveals U\n type U = int }\n" +
+        "module ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n" +
+        " method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n",
+        "// source shift\nmodule ExportSummaryA { export reveals T\n type T = int }\n" +
+        "module ExportSummaryB { export reveals U\n type U = nat }\n" +
+        "module ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n" +
+        " method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n"
       },
       "stress_graph" => Enumerable.Range(0, 24).Select(i => {
         var a = i % 6 == 2 ? "function ValueA(): bool { true }" :
@@ -164,6 +187,7 @@
         "negative" => "Missing()",
         "stress_graph" => "ValueA()",
         "stress_scope" => "Value()",
+        "export_summary" => "ExportSummaryA.T",
         "air_semantic" => "Clauses",
         // 662 clauses: diagnostics are compared, while LSP definition requests\n        // time out even on original upstream; keep this known limitation explicit.\n        "air_semantic_662" => null,
         _ => null

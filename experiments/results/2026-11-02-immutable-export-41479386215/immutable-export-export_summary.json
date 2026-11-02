@@ -1,0 +1,121 @@
+{
+  "mode": "immutable-export",
+  "scenario": "export_summary",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module ExportSummaryA { export reveals T\n type T = int }\nmodule ExportSummaryB { export reveals U\n type U = int }\nmodule ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-export_summary.dfy",
+            "from": [
+              0,
+              7
+            ],
+            "to": [
+              0,
+              21
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nmodule ExportSummaryA\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 1,
+      "source": "module ExportSummaryA { export reveals T\n type T = bool }\nmodule ExportSummaryB { export reveals U\n type U = int }\nmodule ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n",
+      "diagnostics": [
+        {
+          "message": "integer literal used as if it had type T",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            6,
+            45
+          ],
+          "to": [
+            6,
+            46
+          ],
+          "related": []
+        },
+        {
+          "message": "integer literal used as if it had type T",
+          "severity": "Error",
+          "code": "0",
+          "source": "Resolver",
+          "from": [
+            6,
+            60
+          ],
+          "to": [
+            6,
+            61
+          ],
+          "related": []
+        }
+      ],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-export_summary.dfy",
+            "from": [
+              0,
+              7
+            ],
+            "to": [
+              0,
+              21
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nmodule ExportSummaryA\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 2,
+      "source": "module ExportSummaryA { export reveals T\n type T = int }\nmodule ExportSummaryB { export reveals U\n type U = int }\nmodule ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-export_summary.dfy",
+            "from": [
+              0,
+              7
+            ],
+            "to": [
+              0,
+              21
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nmodule ExportSummaryA\n\u0060\u0060\u0060"
+      }
+    },
+    {
+      "revision": 3,
+      "source": "// source shift\nmodule ExportSummaryA { export reveals T\n type T = int }\nmodule ExportSummaryB { export reveals U\n type U = nat }\nmodule ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n",
+      "diagnostics": [],
+      "semantic": {
+        "definitions": [
+          {
+            "uri": "file:///home/runner/work/dafny-incremental-resolver/dafny-incremental-resolver/dafny/Source/DafnyLanguageServer.Test/bin/Debug/net8.0/Synchronization/TestFiles/research-differential-export_summary.dfy",
+            "from": [
+              1,
+              7
+            ],
+            "to": [
+              1,
+              21
+            ]
+          }
+        ],
+        "hover": "\u0060\u0060\u0060dafny\nmodule ExportSummaryA\n\u0060\u0060\u0060"
+      }
+    }
+  ]
+}

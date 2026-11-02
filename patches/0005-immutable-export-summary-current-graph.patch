@@ -1,0 +1,90 @@
+--- a/Source/DafnyLanguageServer/Language/CachingResolver.cs
++++ b/Source/DafnyLanguageServer/Language/CachingResolver.cs
+@@ -12,6 +12,11 @@
+ 
+ namespace Microsoft.Dafny.LanguageServer.Language;
+ 
++// A value-only, immutable semantic summary for the ModuleExportDecl branch
++// in pinned ModuleResolver.ResolveModuleDeclaration. It carries no AST,
++// signature, member, reporter, origin, or owner references.
++internal readonly record struct EmptyExportSummary(int SchemaVersion, bool ValidatedEmpty);
++
+ public class ResolutionCache {
+   public PruneIfNotUsedSinceLastPruneCache<byte[], ModuleResolutionResult> Modules { get; } = new(new HashEquality());
+   public SystemModuleManager? Builtins { get; set; }
+@@ -21,6 +26,13 @@
+   internal long ResearchAuditCandidates { get; set; }
+   internal long ResearchAuditEqual { get; set; }
+   internal long ResearchAuditDifferent { get; set; }
++
++  // The summary is context-INDEPENDENT only for the pinned no-op
++  // ModuleExportDecl resolution branch. It cannot be used by other kinds.
++  internal EmptyExportSummary? ResearchEmptyExportSummary;
++  internal readonly object ResearchEmptyExportLock = new();
++  internal long ResearchExportSummaryHits;
++  internal long ResearchExportSummaryMisses;
+ }
+ 
+ public class CachingResolver : ProgramResolver {
+@@ -68,6 +80,15 @@
+   }
+ 
+   protected override ModuleResolutionResult ResolveModuleDeclaration(CompilationData compilation, ModuleDecl decl) {
++    // Genuine but deliberately narrow optimization: for ModuleExportDecl ONLY,
++    // the PINNED core resolver's branch is a no-op. Its result consists of
++    // the current declaration and empty dictionaries/reporter. A validated,
++    // immutable zero-content summary lets us skip ModuleResolver construction
++    // on future export declarations without carrying any stale mutable graph.
++    if (ResearchImmutableExportSummary && decl is ModuleExportDecl) {
++      return ResolveEmptyExportSummary(compilation, decl);
++    }
++
+     // Safe revalidation: speculative keys are used only for a metadata audit,
+     // not for returning cached mutable ASTs. Always fresh-resolve in the
+     // current compilation, so no result graph crosses compilation boundaries.
+@@ -127,6 +148,45 @@
+     Environment.GetEnvironmentVariable("DAFNY_EXPERIMENTAL_CONTENT_HASH") == "1" &&
+     Environment.GetEnvironmentVariable("DAFNY_RESEARCH_UNSAFE_CROSS_REVISION_REUSE") == "1";
+ 
++  private static readonly bool ResearchImmutableExportSummary =
++    Environment.GetEnvironmentVariable("DAFNY_RESEARCH_IMMUTABLE_EXPORT_SUMMARY") == "1";
++
++  // A hit replaces every mutable return object with one owned by the CURRENT
++  // compilation; the shared summary contains only primitive, immutable values.
++  private ModuleResolutionResult ResolveEmptyExportSummary(CompilationData compilation, ModuleDecl decl) {
++    EmptyExportSummary? currentSummary;
++    lock (cache.ResearchEmptyExportLock) {
++      currentSummary = cache.ResearchEmptyExportSummary;
++    }
++    if (currentSummary is { SchemaVersion: 1, ValidatedEmpty: true }) {
++      Interlocked.Increment(ref cache.ResearchExportSummaryHits);
++      logger.LogInformation("ResearchExportSummary|HIT|{Module}", decl.FullName);
++      return new ModuleResolutionResult(
++        decl, new BatchErrorReporter(decl.Options),
++        new Dictionary<ModuleDefinition, ModuleSignature>(),
++        new Dictionary<TopLevelDeclWithMembers, Dictionary<string, MemberDecl>>());
++    }
++
++    // Do NOT assume the summary is safe without first checking the exact
++    // result contract against the real pinned resolver implementation.
++    var resolved = base.ResolveModuleDeclaration(compilation, decl);
++    Interlocked.Increment(ref cache.ResearchExportSummaryMisses);
++    logger.LogInformation("ResearchExportSummary|MISS|{Module}", decl.FullName);
++    if (ReferenceEquals(resolved.ResolvedDeclaration, decl) &&
++        resolved.Signatures.Count == 0 &&
++        resolved.ClassMembers.Count == 0 &&
++        resolved.ErrorReporter.AllMessages.Count == 0) {
++      lock (cache.ResearchEmptyExportLock) {
++        cache.ResearchEmptyExportSummary = new EmptyExportSummary(1, true);
++      }
++    } else {
++      // Fail closed on changed upstream semantics or nonempty diagnostics.
++      logger.LogWarning("ResearchExportSummary contract failed for {Module}; " +
++                        "no memoization authorized.", decl.FullName);
++    }
++    return resolved;
++  }
++
+   // Explicit research-only guard; if both unsafe and safe flags are set,
+   // the safe path wins and never returns a cached module result.
+   private static readonly bool ResearchSafeRevalidate =

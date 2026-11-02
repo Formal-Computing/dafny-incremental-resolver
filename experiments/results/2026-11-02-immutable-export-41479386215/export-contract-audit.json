@@ -1,0 +1,11 @@
+{
+  "schema": "pinned-export-branch-contract-v1",
+  "pinned_dafny": "de36f2ec1f9c530080eff7929ae28229f45da069",
+  "module_resolver_sha256": "ce2eb870fe78c31c445f146ce9c5e61405bfd140630fd3def59d29648f9061b8",
+  "branch_empty": true,
+  "fresh_result_current_decl_empty_collections_reporter": true,
+  "summary_primitive_record_only": true,
+  "summary_hit_skips_module_resolver": true,
+  "summary_hit_constructs_new_current_program_objects": true,
+  "limitations": "Textual anchors and a pinned source revision; not a machine-checked C# implementation refinement or proof about custom rewriters."
+}
