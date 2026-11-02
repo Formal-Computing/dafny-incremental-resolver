@@ -29,4 +29,5 @@ jobs:
         run: |
           "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/CacheSoundness.dfy --solver-path /usr/bin/z3
           "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/CacheRefinement.dfy --solver-path /usr/bin/z3
-          "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/MutableReuseAndKeyCompleteness.dfy --solver-path /usr/bin/z3\n          "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/ControlledRevalidationRefinement.dfy --solver-path /usr/bin/z3
+          "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/MutableReuseAndKeyCompleteness.dfy --solver-path /usr/bin/z3
+          "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/ControlledRevalidationRefinement.dfy --solver-path /usr/bin/z3
