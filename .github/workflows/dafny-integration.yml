@@ -73,11 +73,25 @@ jobs:
           git -C dafny apply ../prototype/patches/0001-experimental-module-token-hashing.patch
           git -C dafny apply --check ../prototype/patches/0002-opt-in-resolver-regions.patch
           git -C dafny apply ../prototype/patches/0002-opt-in-resolver-regions.patch
+          git -C dafny apply --check ../prototype/patches/0003-research-fresh-semantic-oracle.patch
+          git -C dafny apply ../prototype/patches/0003-research-fresh-semantic-oracle.patch
           git -C dafny diff --check
 
       - name: Build patched language-server tests
         working-directory: dafny
         run: dotnet build Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj -c Debug --nologo
+
+      - name: Parser-cached, semantic-uncached differential oracle
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: fresh-semantic
+          DAFNY_RESEARCH_DISABLE_SEMANTIC_CACHE: '1'
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '0'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace'
 
       - name: Patched baseline differential traces and cache regression
         working-directory: dafny
@@ -129,6 +143,9 @@ jobs:
 
       - name: Ensure stale resolver is detected
         run: python3 prototype/scripts/assert_fault_injection.py research-results faulty-results
+
+      - name: Self-test the diagnostic and semantic differential comparator
+        run: python3 prototype/scripts/test_compare_differential.py
 
       - name: Compare diagnostics to fresh oracle
         run: python3 prototype/scripts/compare_differential.py research-results
