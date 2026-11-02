@@ -11,7 +11,8 @@ on:
       - 'tests/dafny/ResearchImmutableExportSummaryMethod.txt'
       - 'tests/dafny/ResearchVerificationOutcomeMethod.txt'
       - 'tests/dafny/ResearchDifferentialMethod.txt'
-      - 'scripts/compare_immutable_export.py'\n      - 'scripts/assert_export_contract.py'
+      - 'scripts/compare_immutable_export.py'
+      - 'scripts/assert_export_contract.py'
 
 jobs:
   immutable-export:
