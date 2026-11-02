@@ -2,6 +2,11 @@ name: Isolated AIR 662 semantic differential
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - research/semantic-stress-2026-11-02
+    paths:
+      - .github/workflows/semantic-air662.yml
 
 jobs:
   air-662-oracle:
