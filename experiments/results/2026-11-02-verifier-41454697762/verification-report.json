@@ -16,12 +16,6 @@
     {
       "scenario": "assertion-toggle",
       "revision": 0,
-      "mode": "fresh-semantic",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "assertion-toggle",
-      "revision": 0,
       "mode": "patched-baseline",
       "status": "MATCH"
     },
@@ -41,12 +35,6 @@
       "scenario": "assertion-toggle",
       "revision": 1,
       "mode": "fresh",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "assertion-toggle",
-      "revision": 1,
-      "mode": "fresh-semantic",
       "status": "MATCH"
     },
     {
@@ -76,12 +64,6 @@
     {
       "scenario": "assertion-toggle",
       "revision": 2,
-      "mode": "fresh-semantic",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "assertion-toggle",
-      "revision": 2,
       "mode": "patched-baseline",
       "status": "MATCH"
     },
@@ -101,12 +83,6 @@
       "scenario": "assertion-toggle",
       "revision": 3,
       "mode": "fresh",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "assertion-toggle",
-      "revision": 3,
-      "mode": "fresh-semantic",
       "status": "MATCH"
     },
     {
@@ -136,12 +112,6 @@
     {
       "scenario": "dependency-proof",
       "revision": 0,
-      "mode": "fresh-semantic",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "dependency-proof",
-      "revision": 0,
       "mode": "patched-baseline",
       "status": "MATCH"
     },
@@ -161,12 +131,6 @@
       "scenario": "dependency-proof",
       "revision": 1,
       "mode": "fresh",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "dependency-proof",
-      "revision": 1,
-      "mode": "fresh-semantic",
       "status": "MATCH"
     },
     {
@@ -196,12 +160,6 @@
     {
       "scenario": "dependency-proof",
       "revision": 2,
-      "mode": "fresh-semantic",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "dependency-proof",
-      "revision": 2,
       "mode": "patched-baseline",
       "status": "MATCH"
     },
@@ -221,12 +179,6 @@
       "scenario": "dependency-proof",
       "revision": 3,
       "mode": "fresh",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "dependency-proof",
-      "revision": 3,
-      "mode": "fresh-semantic",
       "status": "MATCH"
     },
     {
@@ -256,12 +208,6 @@
     {
       "scenario": "independent-proof",
       "revision": 0,
-      "mode": "fresh-semantic",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "independent-proof",
-      "revision": 0,
       "mode": "patched-baseline",
       "status": "MATCH"
     },
@@ -286,12 +232,6 @@
     {
       "scenario": "independent-proof",
       "revision": 1,
-      "mode": "fresh-semantic",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "independent-proof",
-      "revision": 1,
       "mode": "patched-baseline",
       "status": "MATCH"
     },
@@ -316,12 +256,6 @@
     {
       "scenario": "independent-proof",
       "revision": 2,
-      "mode": "fresh-semantic",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "independent-proof",
-      "revision": 2,
       "mode": "patched-baseline",
       "status": "MATCH"
     },
@@ -341,12 +275,6 @@
       "scenario": "independent-proof",
       "revision": 3,
       "mode": "fresh",
-      "status": "MATCH"
-    },
-    {
-      "scenario": "independent-proof",
-      "revision": 3,
-      "mode": "fresh-semantic",
       "status": "MATCH"
     },
     {
@@ -362,6 +290,6 @@
       "status": "MATCH"
     }
   ],
-  "matches": 60,
+  "matches": 48,
   "failures": 0
 }

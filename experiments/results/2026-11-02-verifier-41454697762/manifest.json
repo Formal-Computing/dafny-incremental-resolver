@@ -7,8 +7,8 @@
   "scenarios": 3,
   "revisions_per_scenario": 4,
   "configurations": 5,
-  "completed_status_comparisons": 60,
-  "matching": 60,
+  "completed_status_comparisons": 48,
+  "matching": 48,
   "different": 0,
   "scope": "NamedVerifiableStatus (name range and terminal Correct/Error); no inference from hover or Z3 transcript",
   "sha256": {
@@ -27,6 +27,10 @@
     "patched-baseline-verification-assertion-toggle.json": "ec7f8dad9bfe73684977a384d90440a4adb76c3a69c4e5062726bab128c9804d",
     "patched-baseline-verification-dependency-proof.json": "1e02067a49d7751df6d609bc57fba6d1228d0d9e38fb4cd3d4f737fe4cb43435",
     "patched-baseline-verification-independent-proof.json": "833b583061f1ce0bf252f960295c7eb3d70a72ba3306b44f3594cb78239b26ef",
-    "verification-report.json": "6fb4ae1ebab9f8dbae3601af51f8f818425ab4748c484240de5ba9653117e035"
-  }
+    "verification-report.json": "d50ecf34c300965ed3aa29e664f97e4d92f55ea2a3bf0097778ce8b3df50fd19"
+  },
+  "original_ci_comparisons_including_oracle_to_itself": 60,
+  "informative_cross_mode_comparisons": 48,
+  "oracle_to_itself_checks_excluded": 12,
+  "report_reanalysis": "Corrected comparator v2 removes 12 oracle-to-itself comparisons. Raw five-mode snapshots unchanged."
 }

@@ -34,6 +34,8 @@ def compare(directory):
                 comparisons.append({"scenario":scenario,"revision":i,"status":"SOURCE_MISMATCH"})
                 continue
             for mode in MODES:
+                if mode == "fresh-semantic":
+                    continue  # never count an oracle compared to itself
                 got = traces[mode][i]["verification"]
                 expected = reference["verification"]
                 # Do NOT remove, reorder, or normalize Correct/Error statuses.
@@ -53,7 +55,7 @@ def compare(directory):
           "matches,",report["failures"],"failures")
     for failure in bad[:15]:
         print("FAIL",failure["scenario"],failure.get("revision"),failure.get("mode"),failure["status"])
-    return not bad and len(comparisons) == len(SCENARIOS)*4*len(MODES)
+    return not bad and len(comparisons) == len(SCENARIOS)*4*(len(MODES)-1)
 
 def selftest():
     import tempfile

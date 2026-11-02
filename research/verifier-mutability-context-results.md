@@ -6,8 +6,8 @@ Research date: 2026-11-02. Tested upstream pin:
 ## 1. Completed-verifier equivalence (empirical)
 
 CI [run 41454697762](https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41454697762)
-**passed** with **60/60** comparisons of *completed* per-declaration outcomes
-and name ranges: 3 scenarios × 4 revisions × 5 execution modes.
+**passed** with **48/48 informative** comparisons of *completed* per-declaration outcomes
+and name ranges: 3 scenarios × 4 revisions × 4 non-oracle modes (plus the fresh-semantic oracle).
 
 The scenarios cover assertion pass/fail/recovery, changes to a dependency
 used by a proof, and unrelated edits alongside both a correct and an
@@ -100,3 +100,5 @@ Publication-safe formulation: **empirical equality of selected terminal
 verifier outcomes, a formal aliasing countermodel, and a pinned-source
 audit identifying unresolved key-completeness obligations.** Not a complete
 proof of actual incremental resolver semantic soundness.
+
+The initial CI report counted 60/60 comparisons, including 12 oracle-to-itself comparisons. The corrected comparator omits those 12 trivial comparisons and reports 48/48 informative matches.
