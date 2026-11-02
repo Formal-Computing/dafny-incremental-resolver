@@ -15,6 +15,6 @@
         System.Reflection.BindingFlags.NonPublic |
         System.Reflection.BindingFlags.Public);
     Assert.NotNull(primitiveStore);
-    Assert.Equal(typeof(System.Collections.Generic.Dictionary<string, byte[]>),
+    Assert.Equal(typeof(System.Collections.Generic.Dictionary<string, System.Collections.Immutable.ImmutableArray<byte>>),
       primitiveStore.PropertyType);
   }

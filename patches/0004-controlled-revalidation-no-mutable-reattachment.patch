@@ -5,7 +5,7 @@
    public SystemModuleManager? Builtins { get; set; }
    public Dictionary<TopLevelDeclWithMembers, Dictionary<string, MemberDecl>>? SystemClassMembers { get; set; }
 +  // Audit-only, bounded primitive snapshots. Never retain a mutable result.
-+  internal Dictionary<string, byte[]> ResearchAuditFingerprints { get; } = new();
++  internal Dictionary<string, ImmutableArray<byte>> ResearchAuditFingerprints { get; } = new();
 +  internal long ResearchAuditCandidates { get; set; }
 +  internal long ResearchAuditEqual { get; set; }
 +  internal long ResearchAuditDifferent { get; set; }
@@ -118,7 +118,7 @@
 +      if (cache.ResearchAuditFingerprints.Count >= 2048) {
 +        cache.ResearchAuditFingerprints.Clear();
 +      }
-+      cache.ResearchAuditFingerprints[candidate] = observation;
++      cache.ResearchAuditFingerprints[candidate] = ImmutableArray.CreateRange(observation);
 +      cache.ResearchAuditCandidates++;
 +    }
 +    if (existed && !equal) {
