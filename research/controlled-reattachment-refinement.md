@@ -127,3 +127,7 @@ current content-aware C# key omits some candidate inputs and uses SHA-256, so
 this theorem cannot yet certify the optimizing cache. It is a precise future
 implementation-refinement obligation, distinct from the unconditional
 safe-audit proof, which does not reuse any mutable graph.
+
+## Completed pinned Dafny integration (initial immutable-snapshot revision)
+
+GitHub Actions run 41471521253 passed after compiling the patched Dafny C# language server, verifying the safe-audit feature flag and immutable snapshot type, and executing the independent fresh-semantic oracle. The archived traces show 12/12 terminal verifier outcome pairs, 75/75 exact diagnostic snapshot pairs, and 64/64 selected stable definition/hover pairs matching the independent oracle, with 0 differences. All 151 informative two-mode comparisons are archived with SHA-256 manifests at experiments/results/2026-11-02-controlled-revalidation-41471521253/. The source code for this pinned run was commit 8c6117d; later commits strengthen the model/comparator/documentation without changing the conservative graph-reuse policy. The initial CI is evidence of runtime equivalence on sampled edit sequences, not a proof of global correctness or performance benefits.

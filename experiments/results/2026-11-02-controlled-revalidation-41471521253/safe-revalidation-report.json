@@ -1,0 +1,8 @@
+{
+  "schema": "dafny-controlled-reattachment-v1",
+  "verifier_revision_pairs": 12,
+  "diagnostic_revision_pairs": 75,
+  "selected_semantic_revision_pairs": 64,
+  "errors": [],
+  "limitation": "Candidate audit may be incomplete; results are always freshly resolved, no cache speedup and no proof of an optimizing reattachment implementation."
+}
