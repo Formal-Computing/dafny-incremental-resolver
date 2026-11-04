@@ -16,6 +16,7 @@ assert method.count("AIR_STRESS_662_FIXTURE") >= 2
 method=method.replace("AIR_STRESS_662_FIXTURE", '@"'+fixture662.replace('"','""')+'"')
 method += "\n" + (base/"tests/dafny/ResearchBenchmarkMethod.txt").read_text()
 method += "\n" + (base/"tests/dafny/ResearchImmutableExportSummaryMethod.txt").read_text()
+method += "\n" + (base/"tests/dafny/ResearchNonemptyFallbackMethod.txt").read_text()
 anchor="  [Fact]\n  public async Task ChangedImportAffectsExport() {"
 assert "ResearchDifferentialTrace" not in text
 assert anchor in text
