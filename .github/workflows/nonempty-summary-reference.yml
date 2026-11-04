@@ -1,0 +1,22 @@
+name: Nonempty immutable summary reference
+on:
+  push:
+    branches: [research/immutable-nonempty-prototype-2026-11-05]
+    paths:
+      - 'tests/reference/NonemptySummaryReference/**'
+      - 'tests/formal/NonemptyImmutableSummaryRefinement.dfy'
+      - '.github/workflows/nonempty-summary-reference.yml'
+  pull_request:
+    paths:
+      - 'tests/reference/NonemptySummaryReference/**'
+      - 'tests/formal/NonemptyImmutableSummaryRefinement.dfy'
+      - '.github/workflows/nonempty-summary-reference.yml'
+jobs:
+  reference:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet run --project tests/reference/NonemptySummaryReference/NonemptySummaryReference.csproj -c Release
