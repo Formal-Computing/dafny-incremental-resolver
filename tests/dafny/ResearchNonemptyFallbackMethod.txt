@@ -1,0 +1,34 @@
+  // Negative control: nonempty LiteralModuleDecl resolution is NOT authorized
+  // by the export-only immutable summary. With SAFE_REVALIDATE enabled,
+  // these modules are resolved through the current compilation.
+  [Fact]
+  public async Task ResearchNonemptyModulesNeverUseExportSummary() {
+    Assert.Equal("1", Environment.GetEnvironmentVariable(
+      "DAFNY_RESEARCH_IMMUTABLE_EXPORT_SUMMARY"));
+    Assert.Equal("1", Environment.GetEnvironmentVariable(
+      "DAFNY_RESEARCH_SAFE_REVALIDATE"));
+
+    var source = @"
+module ResearchNonemptyProvider {
+  datatype Payload = P(value: int)
+  function Value(): int { 7 }
+  class Cell {
+    var value: int
+  }
+}
+module ResearchNonemptyConsumer {
+  import opened ResearchNonemptyProvider
+  method Check() {
+    var p := P(Value());
+    assert p.value == 7;
+  }
+}".Trim();
+    await CreateOpenAndWaitForResolve(source,
+      Path.Combine("Synchronization/TestFiles", "research-nonempty-fallback.dfy"));
+
+    var events = sink.Snapshot().LogEvents
+      .Select(e => e.RenderMessage()).ToArray();
+    Assert.DoesNotContain(events, e =>
+      e.Contains("ResearchExportSummary|HIT|ResearchNonempty", StringComparison.Ordinal) ||
+      e.Contains("ResearchExportSummary|MISS|ResearchNonempty", StringComparison.Ordinal));
+  }

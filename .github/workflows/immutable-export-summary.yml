@@ -3,12 +3,13 @@ name: Immutable export summary optimizing refinement
 on:
   workflow_dispatch:
   push:
-    branches: [research/immutable-export-summaries-2026-11-02]
+    branches: [research/immutable-export-summaries-2026-11-02, research/nonempty-real-dafny-fallback-2026-11-05]
     paths:
       - '.github/workflows/immutable-export-summary.yml'
       - 'patches/0005-immutable-export-summary-current-graph.patch'
       - 'tests/formal/ImmutableExportSummaryRefinement.dfy'
       - 'tests/dafny/ResearchImmutableExportSummaryMethod.txt'
+      - 'tests/dafny/ResearchNonemptyFallbackMethod.txt'
       - 'tests/dafny/ResearchVerificationOutcomeMethod.txt'
       - 'tests/dafny/ResearchDifferentialMethod.txt'
       - 'scripts/compare_immutable_export.py'
@@ -65,6 +66,15 @@ jobs:
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
           --filter 'FullyQualifiedName~CachingTest.ResearchImmutableExportSummaryActuallySkipsResolver'
+      - name: Nonempty real Dafny modules fail closed to fresh resolution
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_IMMUTABLE_EXPORT_SUMMARY: '1'
+          DAFNY_RESEARCH_SAFE_REVALIDATE: '1'
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchNonemptyModulesNeverUseExportSummary'
       - name: Fresh semantic definition and diagnostics oracle
         working-directory: dafny
         env:
