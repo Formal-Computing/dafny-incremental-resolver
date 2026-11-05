@@ -3,6 +3,8 @@
 **Research team (proposed):** Dragoș-Andrei Bobu and Ștefan-Alexandru Mercaș  
 **Supervision:** Prof. Ștefan Ciobâcă
 
+**Status (5 Nov 2026):** all research patches, tests, source audits, and immutable summaries are maintained in this repository. General nonempty resolver-result reuse remains **unproved and disabled**. See [main integration safety](docs/main-integration-safety.md).
+
 ## Research premise
 
 Dafny already has **module-level resolution caching** in its language server. The present implementation keys cached modules using `ModuleDecl.CloneId`, a defensive proxy for source content. `CachingResolver.cs` explicitly notes that this is a substitute for a true content hash.
@@ -46,7 +48,7 @@ git apply --check ../dafny-incremental-resolver/patches/0001-experimental-module
 git apply ../dafny-incremental-resolver/patches/0001-experimental-module-token-hashing.patch
 ```
 
-Build Dafny following its **current** developer instructions; SDK and submodule requirements may change between commits. Run with normal caching first, then start the language server in an environment with `DAFNY_EXPERIMENTAL_CONTENT_HASH=1` and repeat identical edits. This variable enables the research-only hashing branch; otherwise the original CloneId-based caching behavior remains active.
+Build Dafny following its **current** developer instructions; SDK and submodule requirements may change between commits. Run with normal caching first, then start the language server in an environment with `DAFNY_EXPERIMENTAL_CONTENT_HASH=1` and repeat identical edits. This variable alone **does not enable unsafe cross-revision content reuse**. That experimental mode additionally requires `DAFNY_RESEARCH_UNSAFE_CROSS_REVISION_REUSE=1` and is NOT recommended. For the safe research oracle, use `DAFNY_RESEARCH_SAFE_REVALIDATE=1` to always freshly resolve ordinary modules; `DAFNY_RESEARCH_IMMUTABLE_EXPORT_SUMMARY=1` independently enables only the source-pinned export-declaration no-op summary. See `docs/main-integration-safety.md` for the exact scope.
 
 **Important:** `dafny resolve` launched separately for each revision does not exercise the persistent language-server cache. Cache-hit measurements must be made within a long-running language-server session or dedicated integration-test harness, not independent CLI processes.
 

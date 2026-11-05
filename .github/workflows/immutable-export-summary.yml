@@ -2,8 +2,15 @@ name: Immutable export summary optimizing refinement
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'patches/**'
+      - 'scripts/**'
+      - 'tests/dafny/**'
+      - '.github/workflows/immutable-export-summary.yml'
   push:
-    branches: [research/immutable-export-summaries-2026-11-02, research/nonempty-real-dafny-fallback-2026-11-05, research/nonempty-immutable-real-audit-2026-11-05]
+    branches: [main, research/immutable-export-summaries-2026-11-02, research/nonempty-real-dafny-fallback-2026-11-05, research/nonempty-immutable-real-audit-2026-11-05, research/integrate-research-stack-main-2026-11-05]
     paths:
       - '.github/workflows/immutable-export-summary.yml'
       - 'patches/0005-immutable-export-summary-current-graph.patch'
