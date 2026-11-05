@@ -50,9 +50,17 @@ def verify(dafny, results):
     assert "ResearchNonemptyAudit|" in cache
     audit=cache.split("private void AuditFreshResult(",1)[1].split("private byte[] GetExperimentalHash(",1)[0]
     assert "var fresh" not in audit or "var symbols = CaptureNonemptyNames(fresh);" in audit
-    assert "cache.ResearchNonemptySymbolAudits[candidate] = symbols;" in audit
+    assert "cache.ResearchNonemptySymbolAudits[auditCandidate] = symbols;" in audit
     assert "return new ModuleResolutionResult(" not in audit
     assert "cache.Modules.Set(" not in audit and "cache.Modules.TryGet(" not in audit
+    # A deliberately forced collision is scoped only to the immutable audit
+    # dictionary. Resolution and the original digest candidate remain untouched.
+    assert 'DAFNY_RESEARCH_AUDIT_COLLISION_PROBE' in audit
+    assert "cache.ResearchNonemptySymbolAudits.TryGetValue(auditCandidate" in audit
+    assert "cache.ResearchNonemptySymbolAudits[auditCandidate] = symbols;" in audit
+    assert "cache.ResearchAuditFingerprints.TryGetValue(candidate" in audit
+    assert "cache.ResearchAuditFingerprints[candidate] = " in audit
+    assert "return fresh;" in cache.split("if (ResearchSafeRevalidate)",1)[1]
 
     out={
         "schema":"pinned-export-branch-contract-v1",

@@ -1,0 +1,43 @@
+  // Adversarial audit-only collision: two independently resolved nonempty
+  // modules must yield different immutable observations. The forced bucket
+  // must NEVER change actual resolver keys or authorize mutable result reuse.
+  [Fact]
+  public async Task ResearchNonemptyAuditDetectsForcedCollisionWithoutReuse() {
+    Assert.Equal("1", Environment.GetEnvironmentVariable(
+      "DAFNY_RESEARCH_SAFE_REVALIDATE"));
+    Assert.Equal("1", Environment.GetEnvironmentVariable(
+      "DAFNY_RESEARCH_AUDIT_COLLISION_PROBE"));
+
+    var source = @"
+module ResearchCollisionFirst {
+  datatype First = FirstValue(number: int)
+  function Value(): int { 7 }
+}
+module ResearchCollisionSecond {
+  datatype Second = SecondValue(flag: bool)
+  function Other(): bool { true }
+}
+module ResearchCollisionClient {
+  import opened ResearchCollisionFirst
+  method Check() {
+    assert Value() == 7;
+  }
+}".Trim();
+    await CreateOpenAndWaitForResolve(source,
+      Path.Combine("Synchronization/TestFiles", "research-audit-collision.dfy"));
+
+    var events = sink.Snapshot().LogEvents
+      .Select(e => e.RenderMessage()).ToArray();
+    var nonempty = events.Where(e =>
+      e.Contains("ResearchNonemptyAudit|", StringComparison.Ordinal)).ToArray();
+
+    Assert.True(nonempty.Any(e => e.Contains("MISS", StringComparison.Ordinal)),
+      "Expected first audit observation. Logs: " + string.Join(" || ", nonempty));
+    Assert.True(nonempty.Any(e => e.Contains("DIFFERENT", StringComparison.Ordinal) &&
+                                  e.Contains("ResearchCollision", StringComparison.Ordinal)),
+      "Expected different resolved symbols under forced audit-only key collision. Logs: " +
+      string.Join(" || ", nonempty));
+    Assert.DoesNotContain(events, e =>
+      e.Contains("ResearchExportSummary|", StringComparison.Ordinal) &&
+      e.Contains("ResearchCollision", StringComparison.Ordinal));
+  }

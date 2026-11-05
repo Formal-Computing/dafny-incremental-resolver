@@ -1,0 +1,29 @@
+--- a/Source/DafnyLanguageServer/Language/CachingResolver.cs
++++ b/Source/DafnyLanguageServer/Language/CachingResolver.cs
+@@ -306,12 +306,16 @@
+   private void AuditFreshResult(ModuleDecl decl, byte[] key, ModuleResolutionResult fresh) {
+     var observation = ResearchObservationDigest(fresh);
+     var candidate = Convert.ToHexString(key);
++    // Research-only adversarial test: collapse ONLY the immutable audit bucket.
++    // This must never affect resolver input keys or ModuleResolutionResult reuse.
++    var auditCandidate = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_AUDIT_COLLISION_PROBE") == "1"
++      ? "RESEARCH_AUDIT_COLLISION_PROBE_V1" : candidate;
+     var symbols = CaptureNonemptyNames(fresh);
+     if (!symbols.Names.IsDefaultOrEmpty) {
+       bool seen;
+       bool same = false;
+       lock (cache.ResearchNonemptySymbolAudits) {
+-        seen = cache.ResearchNonemptySymbolAudits.TryGetValue(candidate, out var oldSummary);
++        seen = cache.ResearchNonemptySymbolAudits.TryGetValue(auditCandidate, out var oldSummary);
+         if (seen) {
+           same = oldSummary == symbols ||
+             (oldSummary.SchemaVersion == symbols.SchemaVersion &&
+@@ -322,7 +326,7 @@
+         if (cache.ResearchNonemptySymbolAudits.Count >= 2048) {
+           cache.ResearchNonemptySymbolAudits.Clear();
+         }
+-        cache.ResearchNonemptySymbolAudits[candidate] = symbols;
++        cache.ResearchNonemptySymbolAudits[auditCandidate] = symbols;
+       }
+       logger.LogInformation("ResearchNonemptyAudit|{Outcome}|{Module}|{Symbols}",
+         !seen ? "MISS" : same ? "MATCH" : "DIFFERENT", decl.FullName, symbols.Names.Length);
