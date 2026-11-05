@@ -7,8 +7,10 @@ Parent research: PR #13. Pinned Dafny: de36f2ec1f9c530080eff7929ae28229f45da069.
 Patch 0006 adds a value-only NonemptySymbolAudit to the real
 DafnyLanguageServer/Language/CachingResolver.cs, in the safe-revalidation path.
 
-- After **fresh** resolution it captures the module signature's top-level,
-  static-member and constructor names as immutable strings.
+- After **fresh** resolution it captures the resolved module declaration name
+  plus the module signature's top-level, static-member and constructor names
+  as immutable strings. The declaration identity is always included, even
+  when the available signature-name collections are empty.
 - It indexes bounded snapshots under the existing speculative candidate key,
   and logs MISS, MATCH or DIFFERENT when a key is observed again.
 - A different observation for the same candidate key is evidence of a

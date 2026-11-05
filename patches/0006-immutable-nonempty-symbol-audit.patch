@@ -23,7 +23,7 @@
  
    // The summary is context-INDEPENDENT only for the pinned no-op
    // ModuleExportDecl resolution branch. It cannot be used by other kinds.
-@@ -279,9 +288,44 @@
+@@ -279,9 +288,45 @@
      return hasher.GetHashAndReset();
    }
  
@@ -37,6 +37,7 @@
 +        .Concat(p.Value.StaticMembers.Keys.Select(n => "static:" + p.Key.FullName + ":" + n))
 +        .Concat(p.Value.Ctors.Keys.Select(n => "ctor:" + p.Key.FullName + ":" + n)))
 +      .OrderBy(n => n, StringComparer.Ordinal)
++      .Prepend("decl:" + result.ResolvedDeclaration.FullName)
 +      .ToImmutableArray();
 +    return new NonemptySymbolAudit(1, names);
 +  }
