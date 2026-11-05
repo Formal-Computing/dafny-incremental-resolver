@@ -1,0 +1,70 @@
+--- a/Source/DafnyLanguageServer/Language/CachingResolver.cs
++++ b/Source/DafnyLanguageServer/Language/CachingResolver.cs
+@@ -17,6 +17,11 @@
+ // signature, member, reporter, origin, or owner references.
+ internal readonly record struct EmptyExportSummary(int SchemaVersion, bool ValidatedEmpty);
+ 
++// Audit only: immutable strings, never AST or ModuleResolutionResult objects.
++// This is NOT a reusable semantic result and cannot authorize a cache hit.
++internal readonly record struct NonemptySymbolAudit(int SchemaVersion, ImmutableArray<string> Names);
++
++
+ public class ResolutionCache {
+   public PruneIfNotUsedSinceLastPruneCache<byte[], ModuleResolutionResult> Modules { get; } = new(new HashEquality());
+   public SystemModuleManager? Builtins { get; set; }
+@@ -26,6 +31,10 @@
+   internal long ResearchAuditCandidates { get; set; }
+   internal long ResearchAuditEqual { get; set; }
+   internal long ResearchAuditDifferent { get; set; }
++  internal Dictionary<string, NonemptySymbolAudit> ResearchNonemptySymbolAudits { get; } = new();
++  internal long ResearchNonemptyAuditEqual;
++  internal long ResearchNonemptyAuditDifferent;
++
+ 
+   // The summary is context-INDEPENDENT only for the pinned no-op
+   // ModuleExportDecl resolution branch. It cannot be used by other kinds.
+@@ -279,9 +288,44 @@
+     return hasher.GetHashAndReset();
+   }
+ 
++  // The signature snapshot is nonempty for ordinary literal modules. Each
++  // entry is a value string (no mutable declaration, type or scope references).
++  // Equality is diagnostic-only and never bypasses a fresh resolution.
++  private static NonemptySymbolAudit CaptureNonemptyNames(ModuleResolutionResult result) {
++    var names = result.Signatures
++      .OrderBy(p => p.Key.FullName, StringComparer.Ordinal)
++      .SelectMany(p => p.Value.TopLevels.Keys.Select(n => "top:" + p.Key.FullName + ":" + n)
++        .Concat(p.Value.StaticMembers.Keys.Select(n => "static:" + p.Key.FullName + ":" + n))
++        .Concat(p.Value.Ctors.Keys.Select(n => "ctor:" + p.Key.FullName + ":" + n)))
++      .OrderBy(n => n, StringComparer.Ordinal)
++      .ToImmutableArray();
++    return new NonemptySymbolAudit(1, names);
++  }
++
+   private void AuditFreshResult(ModuleDecl decl, byte[] key, ModuleResolutionResult fresh) {
+     var observation = ResearchObservationDigest(fresh);
+     var candidate = Convert.ToHexString(key);
++    var symbols = CaptureNonemptyNames(fresh);
++    if (!symbols.Names.IsDefaultOrEmpty) {
++      bool seen;
++      bool same = false;
++      lock (cache.ResearchNonemptySymbolAudits) {
++        seen = cache.ResearchNonemptySymbolAudits.TryGetValue(candidate, out var oldSummary);
++        if (seen) {
++          same = oldSummary == symbols ||
++            (oldSummary.SchemaVersion == symbols.SchemaVersion &&
++             oldSummary.Names.SequenceEqual(symbols.Names));
++          if (same) Interlocked.Increment(ref cache.ResearchNonemptyAuditEqual);
++          else Interlocked.Increment(ref cache.ResearchNonemptyAuditDifferent);
++        }
++        if (cache.ResearchNonemptySymbolAudits.Count >= 2048) {
++          cache.ResearchNonemptySymbolAudits.Clear();
++        }
++        cache.ResearchNonemptySymbolAudits[candidate] = symbols;
++      }
++      logger.LogInformation("ResearchNonemptyAudit|{Outcome}|{Module}|{Symbols}",
++        !seen ? "MISS" : same ? "MATCH" : "DIFFERENT", decl.FullName, symbols.Names.Length);
++    }
+     bool existed;
+     bool equal = false;
+     lock (cache.ResearchAuditFingerprints) {

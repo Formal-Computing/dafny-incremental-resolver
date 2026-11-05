@@ -28,6 +28,8 @@ module ResearchNonemptyConsumer {
 
     var events = sink.Snapshot().LogEvents
       .Select(e => e.RenderMessage()).ToArray();
+    Assert.Contains(events, e =>
+      e.Contains("ResearchNonemptyAudit|MISS|ResearchNonempty", StringComparison.Ordinal));
     Assert.DoesNotContain(events, e =>
       e.Contains("ResearchExportSummary|HIT|ResearchNonempty", StringComparison.Ordinal) ||
       e.Contains("ResearchExportSummary|MISS|ResearchNonempty", StringComparison.Ordinal));

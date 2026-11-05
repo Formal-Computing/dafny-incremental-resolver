@@ -3,10 +3,11 @@ name: Immutable export summary optimizing refinement
 on:
   workflow_dispatch:
   push:
-    branches: [research/immutable-export-summaries-2026-11-02, research/nonempty-real-dafny-fallback-2026-11-05]
+    branches: [research/immutable-export-summaries-2026-11-02, research/nonempty-real-dafny-fallback-2026-11-05, research/nonempty-immutable-real-audit-2026-11-05]
     paths:
       - '.github/workflows/immutable-export-summary.yml'
       - 'patches/0005-immutable-export-summary-current-graph.patch'
+      - 'patches/0006-immutable-nonempty-symbol-audit.patch'
       - 'tests/formal/ImmutableExportSummaryRefinement.dfy'
       - 'tests/dafny/ResearchImmutableExportSummaryMethod.txt'
       - 'tests/dafny/ResearchNonemptyFallbackMethod.txt'
@@ -42,7 +43,7 @@ jobs:
           sudo apt-get install -y z3
       - name: Apply complete research patch chain
         run: |
-          for n in 0001 0002 0003 0004 0005; do
+          for n in 0001 0002 0003 0004 0005 0006; do
             f=$(find prototype/patches -maxdepth 1 -name "$n*.patch" -type f -print -quit)
             test -n "$f"
             git -C dafny apply --check "../$f"

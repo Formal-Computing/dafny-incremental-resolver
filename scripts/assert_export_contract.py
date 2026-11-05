@@ -44,6 +44,15 @@ def verify(dafny, results):
     assert "new Dictionary<TopLevelDeclWithMembers, Dictionary<string, MemberDecl>>()" in method
     assert "cache.Modules.TryGet" not in method and "cache.Modules.Set" not in method
     assert "Interlocked.Increment(ref cache.ResearchExportSummaryHits)" in method
+    # Research nonempty summaries are value-only and used strictly for audit.
+    assert "internal readonly record struct NonemptySymbolAudit(int SchemaVersion, ImmutableArray<string> Names);" in cache
+    assert "private static NonemptySymbolAudit CaptureNonemptyNames(ModuleResolutionResult result)" in cache
+    assert "ResearchNonemptyAudit|" in cache
+    audit=cache.split("private void AuditFreshResult(",1)[1].split("private byte[] GetExperimentalHash(",1)[0]
+    assert "var fresh" not in audit or "var symbols = CaptureNonemptyNames(fresh);" in audit
+    assert "cache.ResearchNonemptySymbolAudits[candidate] = symbols;" in audit
+    assert "return new ModuleResolutionResult(" not in audit
+    assert "cache.Modules.Set(" not in audit and "cache.Modules.TryGet(" not in audit
 
     out={
         "schema":"pinned-export-branch-contract-v1",
