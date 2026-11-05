@@ -1,0 +1,126 @@
+name: Isolated AIR 662 semantic differential
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/semantic-stress-2026-11-02
+    paths:
+      - tests/dafny/ResearchDifferentialMethod.txt
+
+jobs:
+  air-662-oracle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+        with:
+          path: prototype
+
+      - name: Checkout pinned Dafny
+        uses: actions/checkout@v4
+        with:
+          repository: dafny-lang/dafny
+          ref: de36f2ec1f9c530080eff7929ae28229f45da069
+          submodules: recursive
+          path: dafny
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install isolated 662-clause semantic trace
+        run: |
+          python3 prototype/scripts/install_differential_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
+          (cd dafny && dotnet tool restore)
+          sudo apt-get update -qq
+          sudo apt-get install -y z3
+
+      - name: Build original Dafny
+        working-directory: dafny
+        run: dotnet build Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj -c Debug --nologo
+
+      - name: Original upstream 662-clause oracle
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: original
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '0'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchAir662DifferentialTrace'
+
+      - name: Fully uncached 662-clause oracle
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: fresh
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '0'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchAir662DifferentialTrace'
+
+      - name: Apply experimental and oracle patches
+        run: |
+          git -C dafny apply --check ../prototype/patches/0001-experimental-module-token-hashing.patch
+          git -C dafny apply ../prototype/patches/0001-experimental-module-token-hashing.patch
+          git -C dafny apply --check ../prototype/patches/0002-opt-in-resolver-regions.patch
+          git -C dafny apply ../prototype/patches/0002-opt-in-resolver-regions.patch
+          git -C dafny apply --check ../prototype/patches/0003-research-fresh-semantic-oracle.patch
+          git -C dafny apply ../prototype/patches/0003-research-fresh-semantic-oracle.patch
+          git -C dafny diff --check
+
+      - name: Build patched Dafny
+        working-directory: dafny
+        run: dotnet build Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj -c Debug --nologo
+
+      - name: Fresh semantic 662-clause oracle with parser caching
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: fresh-semantic
+          DAFNY_RESEARCH_DISABLE_SEMANTIC_CACHE: '1'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchAir662DifferentialTrace'
+
+      - name: Patched baseline 662-clause observations
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: patched-baseline
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '0'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchAir662DifferentialTrace'
+
+      - name: Experimental 662-clause observations
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: experimental
+          DAFNY_EXPERIMENTAL_CONTENT_HASH: '1'
+          DAFNY_RESEARCH_UNSAFE_CROSS_REVISION_REUSE: '1'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchAir662DifferentialTrace'
+
+      - name: Compare independent 662-clause traces
+        run: |
+          python3 prototype/scripts/test_compare_differential.py
+          python3 prototype/scripts/compare_differential.py research-results --scenarios air_semantic_662
+
+      - name: Archive all 662-clause traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dafny-air662-traces
+          path: research-results/
+          if-no-files-found: warn

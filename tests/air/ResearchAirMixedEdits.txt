@@ -1,0 +1,77 @@
+  /// <summary>
+  /// Mixed edits on 298 original AIR/SATLIB clauses: dependency edit, safe suffix
+  /// insertion, and unsafe prefix insertion. Diagnostic equivalence is still
+  /// evaluated by the separate differential suite; this reports cache behavior.
+  /// </summary>
+  [Fact]
+  public async Task ResearchAirMixedEdits() {
+    var source = AIR_SATLIB_EMBEDDED_FIXTURE;
+    var dir = Path.Combine(Directory.GetCurrentDirectory(), "Synchronization/TestFiles");
+    var document = CreateTestDocument(source, Path.Combine(dir, "research-air-mixed.dfy"));
+    await client.OpenDocumentAndWaitAsync(document, CancellationToken);
+    int FindOffset(string fragment, string key) {
+      var index = source.IndexOf(fragment, StringComparison.Ordinal);
+      Assert.True(index >= 0, "Fixture fragment missing: " + fragment);
+      var relative = fragment.LastIndexOf(key, StringComparison.Ordinal);
+      Assert.True(relative >= 0, "Key missing in fragment: " + key);
+      return index + relative;
+    }
+    Range Span(int offset, int length) {
+      var prior = source[..offset];
+      var line = prior.Count(c => c == '\n');
+      var col = offset - source.LastIndexOf('\n', offset) - 1;
+      return new Range(line, col, line, col + length);
+    }
+    var c000 = FindOffset("C000: seq<int> := [-3, 36, 7]", "36");
+    var tag = FindOffset("RevisionTag(): int { 10 }", "10");
+    var sequence = new[] {
+      (edit: "provider-value-changed", range: Span(c000, 2), content: "37"),
+      (edit: "provider-value-restored", range: Span(c000, 2), content: "36"),
+      (edit: "independent-suffix-insertion", range: Span(tag, 2), content: "100"),
+      (edit: "independent-suffix-restoration", range: Span(tag, 3), content: "10"),
+      (edit: "prefix-position-shift", range: new Range(0, 0, 0, 0),
+        content: "// Source positions below this line now shift\n")
+    };
+    var samples = new System.Collections.Generic.List<object>();
+    var tracked = new[] { "AirUF50", "AirAIM50", "AIR_Inspector" };
+    foreach (var (edit, range, content) in sequence) {
+      var before = sink.Snapshot().LogEvents.Count();
+      var start = System.Diagnostics.Stopwatch.StartNew();
+      ApplyChange(ref document, range, content);
+      await client.WaitForNotificationCompletionAsync(document.Uri, CancellationToken);
+      start.Stop();
+      var messages = sink.Snapshot().LogEvents.Skip(before)
+        .Select(e => e.MessageTemplate.Text).ToArray();
+      var profile = messages.Where(m => m.StartsWith("ResearchResolverMetric|", StringComparison.Ordinal))
+        .Select(m => m.Split('|')).Where(a => a.Length == 7)
+        .Select(a => new {
+          module = a[1], disposition = a[2],
+          hashMicroseconds = double.Parse(a[3], System.Globalization.CultureInfo.InvariantCulture),
+          resolutionBodyMicroseconds = double.Parse(a[4], System.Globalization.CultureInfo.InvariantCulture),
+          hashThreadAllocatedBytes = long.Parse(a[5], System.Globalization.CultureInfo.InvariantCulture),
+          resolutionBodyThreadAllocatedBytes = long.Parse(a[6], System.Globalization.CultureInfo.InvariantCulture)
+        }).ToArray();
+      var modules = tracked.Select(name => new {
+        name,
+        hit = messages.Any(m => m.Contains("Resolution cache hit") && m.Contains(name)),
+        miss = messages.Any(m => m.Contains("Resolution cache miss") && m.Contains(name))
+      }).ToArray();
+      samples.Add(new {
+        edit, milliseconds = start.Elapsed.TotalMilliseconds,
+        resolutionHits = messages.Count(m => m.Contains("Resolution cache hit")),
+        resolutionMisses = messages.Count(m => m.Contains("Resolution cache miss")),
+        trackedModules = modules, profile
+      });
+    }
+    var output = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_OUTPUT_DIR");
+    var mode = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_MODE");
+    Assert.False(string.IsNullOrWhiteSpace(output));
+    Assert.False(string.IsNullOrWhiteSpace(mode));
+    Directory.CreateDirectory(output!);
+    File.WriteAllText(Path.Combine(output!, mode + "-air-mixed.json"),
+      System.Text.Json.JsonSerializer.Serialize(new {
+        mode, corpus = "AIR-SATLIB-298", note = "Five controlled edits (not a natural editing-trace distribution)",
+        samples
+      }, new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
+    Assert.Equal(5, samples.Count);
+  }

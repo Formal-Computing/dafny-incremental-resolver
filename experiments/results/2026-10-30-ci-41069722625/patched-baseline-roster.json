@@ -1,0 +1,39 @@
+{
+  "mode": "patched-baseline",
+  "scenario": "roster",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { 21 } }\n",
+      "diagnostics": []
+    },
+    {
+      "revision": 1,
+      "source": "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { 21 } }\nmodule Gamma { function Value(): int { 33 } }\n",
+      "diagnostics": []
+    },
+    {
+      "revision": 2,
+      "source": "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { 21 } }\nmodule Alpha { function Value(): int { 33 } }\n",
+      "diagnostics": [
+        {
+          "message": "Duplicate module name: Alpha",
+          "severity": "Error",
+          "code": "OmniSharp.Extensions.LanguageServer.Protocol.Models.DiagnosticCode",
+          "source": "Resolver",
+          "from": [
+            2,
+            7
+          ],
+          "to": [
+            2,
+            12
+          ],
+          "related": [
+            "@research-differential-roster.dfy:0:7"
+          ]
+        }
+      ]
+    }
+  ]
+}

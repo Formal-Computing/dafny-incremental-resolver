@@ -1,0 +1,136 @@
+name: Immutable export summary optimizing refinement
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'patches/**'
+      - 'scripts/**'
+      - 'tests/dafny/**'
+      - '.github/workflows/immutable-export-summary.yml'
+  push:
+    branches: [main, research/immutable-export-summaries-2026-11-02, research/nonempty-real-dafny-fallback-2026-11-05, research/nonempty-immutable-real-audit-2026-11-05, research/integrate-research-stack-main-2026-11-05]
+    paths:
+      - '.github/workflows/immutable-export-summary.yml'
+      - 'patches/0005-immutable-export-summary-current-graph.patch'
+      - 'patches/0006-immutable-nonempty-symbol-audit.patch'
+      - 'tests/formal/ImmutableExportSummaryRefinement.dfy'
+      - 'tests/dafny/ResearchImmutableExportSummaryMethod.txt'
+      - 'tests/dafny/ResearchNonemptyFallbackMethod.txt'
+      - 'tests/dafny/ResearchVerificationOutcomeMethod.txt'
+      - 'tests/dafny/ResearchDifferentialMethod.txt'
+      - 'scripts/compare_immutable_export.py'
+      - 'scripts/assert_export_contract.py'
+
+jobs:
+  immutable-export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: prototype
+      - uses: actions/checkout@v4
+        with:
+          repository: dafny-lang/dafny
+          ref: de36f2ec1f9c530080eff7929ae28229f45da069
+          submodules: recursive
+          path: dafny
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Install test harness, pinned tools and oracle calibration
+        run: |
+          python3 prototype/scripts/install_verifier_outcome_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/VerificationStatusTest.cs
+          python3 prototype/scripts/install_differential_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
+          python3 prototype/scripts/compare_immutable_export.py --selftest
+          (cd dafny && dotnet tool restore)
+          sudo apt-get update -qq
+          sudo apt-get install -y z3
+      - name: Apply complete research patch chain
+        run: |
+          for n in 0001 0002 0003 0004 0005 0006; do
+            f=$(find prototype/patches -maxdepth 1 -name "$n*.patch" -type f -print -quit)
+            test -n "$f"
+            git -C dafny apply --check "../$f"
+            git -C dafny apply "../$f"
+          done
+          git -C dafny diff --check
+      - name: Audit the pinned empty export branch and current-graph reconstruction
+        run: >
+          python3 prototype/scripts/assert_export_contract.py
+          dafny research-results
+
+      - name: Build real pinned Dafny language server
+        working-directory: dafny
+        run: dotnet build Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj -c Debug --nologo
+      - name: Verify an actual summary MISS and HIT, not a fallback
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_IMMUTABLE_EXPORT_SUMMARY: '1'
+          DAFNY_RESEARCH_SAFE_REVALIDATE: '1'
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchImmutableExportSummaryActuallySkipsResolver'
+      - name: Nonempty real Dafny modules fail closed to fresh resolution
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_IMMUTABLE_EXPORT_SUMMARY: '1'
+          DAFNY_RESEARCH_SAFE_REVALIDATE: '1'
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchNonemptyModulesNeverUseExportSummary'
+      - name: Fresh semantic definition and diagnostics oracle
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: fresh-semantic
+          DAFNY_RESEARCH_DISABLE_SEMANTIC_CACHE: '1'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchExportSummaryDifferentialTrace'
+      - name: Immutable export summary definition and diagnostics
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: immutable-export
+          DAFNY_RESEARCH_IMMUTABLE_EXPORT_SUMMARY: '1'
+          DAFNY_RESEARCH_SAFE_REVALIDATE: '1'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~CachingTest.ResearchExportSummaryDifferentialTrace'
+      - name: Fresh terminal verifier outcome oracle
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: fresh-semantic
+          DAFNY_RESEARCH_DISABLE_SEMANTIC_CACHE: '1'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~VerificationStatusTest.ResearchExportProofOutcomeTrace'
+      - name: Immutable export summary terminal verifier outcomes
+        working-directory: dafny
+        env:
+          DAFNY_RESEARCH_MODE: immutable-export
+          DAFNY_RESEARCH_IMMUTABLE_EXPORT_SUMMARY: '1'
+          DAFNY_RESEARCH_SAFE_REVALIDATE: '1'
+          DAFNY_RESEARCH_OUTPUT_DIR: ${{ github.workspace }}/research-results
+        run: >
+          dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
+          --no-build -c Debug --nologo
+          --filter 'FullyQualifiedName~VerificationStatusTest.ResearchExportProofOutcomeTrace'
+      - name: Strict source and semantic comparison
+        run: python3 prototype/scripts/compare_immutable_export.py research-results
+      - name: Archive all evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dafny-immutable-export-evidence
+          path: research-results/
+          if-no-files-found: warn

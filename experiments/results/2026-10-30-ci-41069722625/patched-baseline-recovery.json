@@ -1,0 +1,58 @@
+{
+  "mode": "patched-baseline",
+  "scenario": "recovery",
+  "records": [
+    {
+      "revision": 0,
+      "source": "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { 21 } }\n",
+      "diagnostics": []
+    },
+    {
+      "revision": 1,
+      "source": "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { } }\n",
+      "diagnostics": [
+        {
+          "message": "invalid UnaryExpression",
+          "severity": "Error",
+          "code": "OmniSharp.Extensions.LanguageServer.Protocol.Models.DiagnosticCode",
+          "source": "Parser",
+          "from": [
+            1,
+            38
+          ],
+          "to": [
+            1,
+            38
+          ],
+          "related": []
+        }
+      ]
+    },
+    {
+      "revision": 2,
+      "source": "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { 21 } }\n",
+      "diagnostics": []
+    },
+    {
+      "revision": 3,
+      "source": "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { true } }\n",
+      "diagnostics": [
+        {
+          "message": "boolean literal used as if it had type int",
+          "severity": "Error",
+          "code": "OmniSharp.Extensions.LanguageServer.Protocol.Models.DiagnosticCode",
+          "source": "Resolver",
+          "from": [
+            1,
+            38
+          ],
+          "to": [
+            1,
+            42
+          ],
+          "related": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+  /// <summary>
+  /// AIR/SATLIB: 298 original clauses converted to typed Dafny const declarations.
+  /// This measures LSP end-to-end update time and *actual resolver cache log counts*
+  /// on a substantial same-file module graph. It does NOT measure SAT solving time.
+  /// </summary>
+  [Fact]
+  public async Task ResearchAirSatlibCaseStudy() {
+    var source = AIR_SATLIB_EMBEDDED_FIXTURE;
+    var dir = Path.Combine(Directory.GetCurrentDirectory(), "Synchronization/TestFiles");
+    var document = CreateTestDocument(source, Path.Combine(dir, "research-air-satlib.dfy"));
+    await client.OpenDocumentAndWaitAsync(document, CancellationToken);
+
+    var marker = "RevisionTag(): int { 10 }";
+    int offset = source.LastIndexOf(marker, StringComparison.Ordinal);
+    Assert.True(offset >= 0, "AIR source revision marker missing");
+    int digitOffset = offset + marker.LastIndexOf("10", StringComparison.Ordinal);
+    int line = source[..digitOffset].Count(c => c == '\n');
+    int column = digitOffset - source.LastIndexOf('\n', digitOffset) - 1;
+
+    string[] tracked = { "AirUF50", "AirAIM50", "AIR_Inspector" };
+    var samples = new System.Collections.Generic.List<object>();
+    for (int iteration = 0; iteration < 6; iteration++) {
+      var before = sink.Snapshot().LogEvents.Count();
+      var allocatedBefore = GC.GetTotalAllocatedBytes(true);
+      var watch = System.Diagnostics.Stopwatch.StartNew();
+      var replacement = iteration % 2 == 0 ? "11" : "10";
+      ApplyChange(ref document, new Range(line, column, line, column + 2), replacement);
+      await client.WaitForNotificationCompletionAsync(document.Uri, CancellationToken);
+      watch.Stop();
+      var allocatedDelta = GC.GetTotalAllocatedBytes(true) - allocatedBefore;
+      var messages = sink.Snapshot().LogEvents.Skip(before)
+        .Select(e => e.MessageTemplate.Text).ToArray();
+      samples.Add(new {
+        iteration,
+        edit = "same-length-RevisionTag",
+        warmup = iteration < 2,
+        milliseconds = watch.Elapsed.TotalMilliseconds,
+        allocationsAllProcessBytes = allocatedDelta,
+        resolutionHits = messages.Count(m => m.Contains("Resolution cache hit")),
+        resolutionMisses = messages.Count(m => m.Contains("Resolution cache miss")),
+        profile = messages.Where(m => m.StartsWith("ResearchResolverMetric|", StringComparison.Ordinal))
+          .Select(m => m.Split('|')).Where(a => a.Length == 7)
+          .Select(a => new {
+            module = a[1], disposition = a[2],
+            hashMicroseconds = double.Parse(a[3], System.Globalization.CultureInfo.InvariantCulture),
+            resolutionBodyMicroseconds = double.Parse(a[4], System.Globalization.CultureInfo.InvariantCulture),
+            hashThreadAllocatedBytes = long.Parse(a[5], System.Globalization.CultureInfo.InvariantCulture),
+            resolutionBodyThreadAllocatedBytes = long.Parse(a[6], System.Globalization.CultureInfo.InvariantCulture)
+          }).ToArray(),
+        trackedModules = tracked.Select(name => new {
+          name,
+          hit = messages.Any(m => m.Contains("Resolution cache hit") && m.Contains(name)),
+          miss = messages.Any(m => m.Contains("Resolution cache miss") && m.Contains(name))
+        }).ToArray()
+      });
+    }
+
+    // Position-sensitive source identity must fail closed if all origins shift.
+    var beforeInsertion = sink.Snapshot().LogEvents.Count();
+    var allocatedBeforeInsertion = GC.GetTotalAllocatedBytes(true);
+    var insertionWatch = System.Diagnostics.Stopwatch.StartNew();
+    ApplyChange(ref document, new Range(0, 0, 0, 0),
+      "// length-changing edit: shifts all module origins\n");
+    await client.WaitForNotificationCompletionAsync(document.Uri, CancellationToken);
+    insertionWatch.Stop();
+    var insertionMessages = sink.Snapshot().LogEvents.Skip(beforeInsertion)
+      .Select(e => e.MessageTemplate.Text).ToArray();
+    samples.Add(new {
+      iteration = 6,
+      edit = "prefix-insertion",
+      warmup = false,
+      milliseconds = insertionWatch.Elapsed.TotalMilliseconds,
+      allocationsAllProcessBytes = GC.GetTotalAllocatedBytes(true) - allocatedBeforeInsertion,
+      resolutionHits = insertionMessages.Count(m => m.Contains("Resolution cache hit")),
+      resolutionMisses = insertionMessages.Count(m => m.Contains("Resolution cache miss")),
+      profile = insertionMessages.Where(m => m.StartsWith("ResearchResolverMetric|", StringComparison.Ordinal))
+        .Select(m => m.Split('|')).Where(a => a.Length == 7)
+        .Select(a => new {
+          module = a[1], disposition = a[2],
+          hashMicroseconds = double.Parse(a[3], System.Globalization.CultureInfo.InvariantCulture),
+          resolutionBodyMicroseconds = double.Parse(a[4], System.Globalization.CultureInfo.InvariantCulture),
+          hashThreadAllocatedBytes = long.Parse(a[5], System.Globalization.CultureInfo.InvariantCulture),
+          resolutionBodyThreadAllocatedBytes = long.Parse(a[6], System.Globalization.CultureInfo.InvariantCulture)
+        }).ToArray(),
+      trackedModules = tracked.Select(name => new {
+        name,
+        hit = insertionMessages.Any(m => m.Contains("Resolution cache hit") && m.Contains(name)),
+        miss = insertionMessages.Any(m => m.Contains("Resolution cache miss") && m.Contains(name))
+      }).ToArray()
+    });
+
+    string? mode = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_MODE");
+    string? output = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_OUTPUT_DIR");
+    Assert.False(string.IsNullOrWhiteSpace(mode));
+    Assert.False(string.IsNullOrWhiteSpace(output));
+    Directory.CreateDirectory(output!);
+    File.WriteAllText(Path.Combine(output!, mode + "-air-satlib.json"),
+      System.Text.Json.JsonSerializer.Serialize(new {
+        mode, kind = "typed-Dafny-AIR-SATLIB-clause-corpus",
+        source = "Formal-Computing/cdcl-sat-solver@88247ab",
+        input = new { variablesAcrossInstances = 100, clauses = 298,
+          modules = tracked, sourceLines = source.Count(c => c == '\n') },
+        note = "LSP client/server elapsed time is not resolver time. Optional profile records synchronous module hashing/body wall-time and current-thread allocations; body costs are inclusive and may be nested. GC total allocation is process-wide.",
+        samples
+      }, new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
+    Assert.Equal(7, samples.Count);
+  }

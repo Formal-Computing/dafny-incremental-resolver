@@ -1,0 +1,55 @@
+{
+  "schema": "dafny-exploratory-lsp-benchmark-v1",
+  "metric": "wall-clock milliseconds from edit submission through completed LSP notification",
+  "warning": "Not resolver-only timing; modes run in separate CI testhost processes; one runner and trace. No causal speedup claim.",
+  "modes": {
+    "original": {
+      "warmups": 3,
+      "n": 17,
+      "median_ms": 20.3143,
+      "mean_ms": 20.7184,
+      "stdev_ms": 8.068,
+      "min_ms": 9.9841,
+      "max_ms": 37.1517,
+      "alpha_hits": 0,
+      "alpha_misses": 17,
+      "beta_misses": 17
+    },
+    "patched-baseline": {
+      "warmups": 3,
+      "n": 17,
+      "median_ms": 12.3859,
+      "mean_ms": 15.5473,
+      "stdev_ms": 7.6546,
+      "min_ms": 8.5359,
+      "max_ms": 34.7136,
+      "alpha_hits": 0,
+      "alpha_misses": 17,
+      "beta_misses": 17
+    },
+    "experimental": {
+      "warmups": 3,
+      "n": 17,
+      "median_ms": 9.9976,
+      "mean_ms": 14.6017,
+      "stdev_ms": 7.8316,
+      "min_ms": 8.0013,
+      "max_ms": 33.2683,
+      "alpha_hits": 17,
+      "alpha_misses": 0,
+      "beta_misses": 17
+    },
+    "fresh": {
+      "warmups": 3,
+      "n": 17,
+      "median_ms": 11.7054,
+      "mean_ms": 14.191,
+      "stdev_ms": 5.9486,
+      "min_ms": 9.2112,
+      "max_ms": 27.9663,
+      "alpha_hits": 0,
+      "alpha_misses": 0,
+      "beta_misses": 0
+    }
+  }
+}

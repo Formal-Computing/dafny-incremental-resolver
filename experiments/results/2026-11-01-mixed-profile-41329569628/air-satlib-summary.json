@@ -1,0 +1,374 @@
+{
+  "kind": "AIR-SATLIB typed-Dafny-LSP-case-study-v1",
+  "input": {
+    "variablesAcrossInstances": 100,
+    "clauses": 298,
+    "modules": [
+      "AirUF50",
+      "AirAIM50",
+      "AIR_Inspector"
+    ],
+    "sourceLines": 359
+  },
+  "source": "Formal-Computing/cdcl-sat-solver@88247ab",
+  "modes": {
+    "original": {
+      "iterations": 4,
+      "resolverProfile": null,
+      "medianUpdateMs": 3875.968,
+      "minUpdateMs": 3689.649,
+      "maxUpdateMs": 4702.122,
+      "medianProcessAllocatedBytes": 2275356516,
+      "resolutionCacheHits": 4,
+      "resolutionCacheMisses": 32,
+      "trackedModules": {
+        "AirUF50": {
+          "hit": 0,
+          "miss": 4
+        },
+        "AirAIM50": {
+          "hit": 0,
+          "miss": 4
+        },
+        "AIR_Inspector": {
+          "hit": 0,
+          "miss": 4
+        }
+      },
+      "prefixInsertion": {
+        "iteration": 6,
+        "edit": "prefix-insertion",
+        "warmup": false,
+        "milliseconds": 3722.2467,
+        "allocationsAllProcessBytes": 2281523952,
+        "resolutionHits": 1,
+        "resolutionMisses": 8,
+        "profile": [],
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ]
+      }
+    },
+    "fresh": {
+      "iterations": 4,
+      "resolverProfile": null,
+      "medianUpdateMs": 3705.009,
+      "minUpdateMs": 3572.44,
+      "maxUpdateMs": 5405.979,
+      "medianProcessAllocatedBytes": 2273965052,
+      "resolutionCacheHits": 0,
+      "resolutionCacheMisses": 0,
+      "trackedModules": {
+        "AirUF50": {
+          "hit": 0,
+          "miss": 0
+        },
+        "AirAIM50": {
+          "hit": 0,
+          "miss": 0
+        },
+        "AIR_Inspector": {
+          "hit": 0,
+          "miss": 0
+        }
+      },
+      "prefixInsertion": {
+        "iteration": 6,
+        "edit": "prefix-insertion",
+        "warmup": false,
+        "milliseconds": 3586.8948,
+        "allocationsAllProcessBytes": 2277730584,
+        "resolutionHits": 0,
+        "resolutionMisses": 0,
+        "profile": [],
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": false
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": false
+          }
+        ]
+      }
+    },
+    "patched-baseline": {
+      "iterations": 4,
+      "resolverProfile": {
+        "events": 32,
+        "misses": 32,
+        "hits": 0,
+        "inclusiveResolveBodyWallMicroseconds": 223180.6,
+        "inclusiveResolveBodyThreadAllocatedBytes": 75001856,
+        "hashWallMicroseconds": 403.9,
+        "hashThreadAllocatedBytes": 25360
+      },
+      "medianUpdateMs": 3743.322,
+      "minUpdateMs": 3637.023,
+      "maxUpdateMs": 5004.431,
+      "medianProcessAllocatedBytes": 2275467564,
+      "resolutionCacheHits": 4,
+      "resolutionCacheMisses": 32,
+      "trackedModules": {
+        "AirUF50": {
+          "hit": 0,
+          "miss": 4
+        },
+        "AirAIM50": {
+          "hit": 0,
+          "miss": 4
+        },
+        "AIR_Inspector": {
+          "hit": 0,
+          "miss": 4
+        }
+      },
+      "prefixInsertion": {
+        "iteration": 6,
+        "edit": "prefix-insertion",
+        "warmup": false,
+        "milliseconds": 4820.5301,
+        "allocationsAllProcessBytes": 2281636440,
+        "resolutionHits": 1,
+        "resolutionMisses": 8,
+        "profile": [
+          {
+            "module": "_module.AIR_Semantics",
+            "disposition": "MISS",
+            "hashMicroseconds": 12.9,
+            "resolutionBodyMicroseconds": 720.9,
+            "hashThreadAllocatedBytes": 640,
+            "resolutionBodyThreadAllocatedBytes": 133120
+          },
+          {
+            "module": "_module.AirUF50",
+            "disposition": "MISS",
+            "hashMicroseconds": 10.7,
+            "resolutionBodyMicroseconds": 45961.4,
+            "hashThreadAllocatedBytes": 504,
+            "resolutionBodyThreadAllocatedBytes": 12910368
+          },
+          {
+            "module": "_module.AirAIM50",
+            "disposition": "MISS",
+            "hashMicroseconds": 39.2,
+            "resolutionBodyMicroseconds": 7665.8,
+            "hashThreadAllocatedBytes": 712,
+            "resolutionBodyThreadAllocatedBytes": 4786088
+          },
+          {
+            "module": "AIR_Inspector.UF",
+            "disposition": "MISS",
+            "hashMicroseconds": 26.8,
+            "resolutionBodyMicroseconds": 7.4,
+            "hashThreadAllocatedBytes": 976,
+            "resolutionBodyThreadAllocatedBytes": 1448
+          },
+          {
+            "module": "AIR_Inspector.AIM",
+            "disposition": "MISS",
+            "hashMicroseconds": 2.7,
+            "resolutionBodyMicroseconds": 1,
+            "hashThreadAllocatedBytes": 728,
+            "resolutionBodyThreadAllocatedBytes": 1448
+          },
+          {
+            "module": "_module.AIR_Inspector",
+            "disposition": "MISS",
+            "hashMicroseconds": 5.3,
+            "resolutionBodyMicroseconds": 669.2,
+            "hashThreadAllocatedBytes": 752,
+            "resolutionBodyThreadAllocatedBytes": 340872
+          },
+          {
+            "module": "_module.AIR_WorkingEdit",
+            "disposition": "MISS",
+            "hashMicroseconds": 15.8,
+            "resolutionBodyMicroseconds": 212.7,
+            "hashThreadAllocatedBytes": 504,
+            "resolutionBodyThreadAllocatedBytes": 60592
+          },
+          {
+            "module": "_module",
+            "disposition": "MISS",
+            "hashMicroseconds": 11.8,
+            "resolutionBodyMicroseconds": 521.2,
+            "hashThreadAllocatedBytes": 1368,
+            "resolutionBodyThreadAllocatedBytes": 516528
+          }
+        ],
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ]
+      }
+    },
+    "experimental": {
+      "iterations": 4,
+      "resolverProfile": {
+        "events": 32,
+        "misses": 8,
+        "hits": 24,
+        "inclusiveResolveBodyWallMicroseconds": 20754.2,
+        "inclusiveResolveBodyThreadAllocatedBytes": 2310144,
+        "hashWallMicroseconds": 43552.3,
+        "hashThreadAllocatedBytes": 10920320
+      },
+      "medianUpdateMs": 4075.734,
+      "minUpdateMs": 3512.082,
+      "maxUpdateMs": 4896.007,
+      "medianProcessAllocatedBytes": 2259434916,
+      "resolutionCacheHits": 28,
+      "resolutionCacheMisses": 8,
+      "trackedModules": {
+        "AirUF50": {
+          "hit": 4,
+          "miss": 0
+        },
+        "AirAIM50": {
+          "hit": 4,
+          "miss": 0
+        },
+        "AIR_Inspector": {
+          "hit": 4,
+          "miss": 0
+        }
+      },
+      "prefixInsertion": {
+        "iteration": 6,
+        "edit": "prefix-insertion",
+        "warmup": false,
+        "milliseconds": 3722.4733,
+        "allocationsAllProcessBytes": 2282096112,
+        "resolutionHits": 1,
+        "resolutionMisses": 8,
+        "profile": [
+          {
+            "module": "_module.AIR_Semantics",
+            "disposition": "MISS",
+            "hashMicroseconds": 79.8,
+            "resolutionBodyMicroseconds": 783.8,
+            "hashThreadAllocatedBytes": 26040,
+            "resolutionBodyThreadAllocatedBytes": 135664
+          },
+          {
+            "module": "_module.AirUF50",
+            "disposition": "MISS",
+            "hashMicroseconds": 2455.7,
+            "resolutionBodyMicroseconds": 40040.8,
+            "hashThreadAllocatedBytes": 1945400,
+            "resolutionBodyThreadAllocatedBytes": 12910368
+          },
+          {
+            "module": "_module.AirAIM50",
+            "disposition": "MISS",
+            "hashMicroseconds": 833.1,
+            "resolutionBodyMicroseconds": 5322.8,
+            "hashThreadAllocatedBytes": 722904,
+            "resolutionBodyThreadAllocatedBytes": 4786088
+          },
+          {
+            "module": "AIR_Inspector.UF",
+            "disposition": "MISS",
+            "hashMicroseconds": 29.8,
+            "resolutionBodyMicroseconds": 4.5,
+            "hashThreadAllocatedBytes": 4160,
+            "resolutionBodyThreadAllocatedBytes": 1448
+          },
+          {
+            "module": "AIR_Inspector.AIM",
+            "disposition": "MISS",
+            "hashMicroseconds": 6.5,
+            "resolutionBodyMicroseconds": 0.6,
+            "hashThreadAllocatedBytes": 3672,
+            "resolutionBodyThreadAllocatedBytes": 1448
+          },
+          {
+            "module": "_module.AIR_Inspector",
+            "disposition": "MISS",
+            "hashMicroseconds": 28.9,
+            "resolutionBodyMicroseconds": 654.2,
+            "hashThreadAllocatedBytes": 17160,
+            "resolutionBodyThreadAllocatedBytes": 340872
+          },
+          {
+            "module": "_module.AIR_WorkingEdit",
+            "disposition": "MISS",
+            "hashMicroseconds": 31.1,
+            "resolutionBodyMicroseconds": 204.1,
+            "hashThreadAllocatedBytes": 7488,
+            "resolutionBodyThreadAllocatedBytes": 60592
+          },
+          {
+            "module": "_module",
+            "disposition": "MISS",
+            "hashMicroseconds": 35.7,
+            "resolutionBodyMicroseconds": 13263.6,
+            "hashThreadAllocatedBytes": 3832,
+            "resolutionBodyThreadAllocatedBytes": 516528
+          }
+        ],
+        "trackedModules": [
+          {
+            "name": "AirUF50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AirAIM50",
+            "hit": false,
+            "miss": true
+          },
+          {
+            "name": "AIR_Inspector",
+            "hit": false,
+            "miss": true
+          }
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "Same-length edit class favors position-sensitive caching.",
+    "Time is end-to-end notification latency, not resolver CPU.",
+    "GC allocated bytes are entire in-process client+server; not isolated resolver memory.",
+    "Sequential modes on one CI runner are not randomized or independent speedup evidence.",
+    "Dafny semantic resolver is tested, not CNF satisfiability.",
+    "The no-resolution-cache mode still uses Dafny's parser cache."
+  ]
+}

@@ -1,0 +1,437 @@
+{
+  "schema": "dafny-differential-v1",
+  "comparison": [
+    {
+      "scenario": "independent",
+      "revision": 0,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "independent",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "independent",
+      "revision": 0,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "independent",
+      "revision": 1,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "independent",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "independent",
+      "revision": 1,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "independent",
+      "revision": 2,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "independent",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "independent",
+      "revision": 2,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "independent",
+      "revision": 3,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "independent",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "independent",
+      "revision": 3,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 0,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 0,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 1,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 1,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 2,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 2,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 3,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "dependency",
+      "revision": 3,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 0,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 0,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 1,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 1,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 2,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "shadowing",
+      "revision": 2,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "roster",
+      "revision": 0,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "roster",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "roster",
+      "revision": 0,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "roster",
+      "revision": 1,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "roster",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "roster",
+      "revision": 1,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "roster",
+      "revision": 2,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "roster",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "roster",
+      "revision": 2,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 0,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 0,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 0,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 1,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 1,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 1,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 2,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 2,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 2,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 3,
+      "mode": "original",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 3,
+      "mode": "patched-baseline",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    },
+    {
+      "scenario": "recovery",
+      "revision": 3,
+      "mode": "experimental",
+      "status": "MATCH",
+      "actual": null,
+      "oracle": null
+    }
+  ]
+}

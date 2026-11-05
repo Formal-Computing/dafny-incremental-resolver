@@ -1,0 +1,24 @@
+{
+  "schema": "dafny-air662-diagnostic-archive-v1",
+  "run_id": 41450471990,
+  "github_ci_url": "https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41450471990",
+  "ci_prototype_commit": "be5eec4",
+  "dafny_source_commit": "de36f2ec1f9c530080eff7929ae28229f45da069",
+  "scenarios": [
+    "air_semantic_662"
+  ],
+  "revisions": 7,
+  "diagnostic_comparisons": 28,
+  "selected_semantic_queries": 0,
+  "matched_informative_comparisons": 28,
+  "divergences": 0,
+  "limitation": "An upstream go-to-definition query exceeded 180 seconds in an earlier isolated run; this large-corpus trace compares diagnostics only.",
+  "sha256": {
+    "original-air_semantic_662.json": "e33463904d1621bfcc4ad819f9946d8f225321863005922d0220a603b35d4002",
+    "patched-baseline-air_semantic_662.json": "de1dfe5a035571478190775111d54ed60abda564f704f2b24230a18e51e74d3d",
+    "experimental-air_semantic_662.json": "79201451f3b95317fec8beb5744f3795af52e0aa4188263b37ba70d9c9c8dc86",
+    "fresh-semantic-air_semantic_662.json": "c6715d35036c9c91811edfba8e2a72fbafc772b4ed0a048513e1f1fc151b8b94",
+    "fresh-air_semantic_662.json": "46fa37ea66ede51c1950610653bec8243dd49e04026adab41aeda3c9c6cb57fe",
+    "differential-report.json": "9e0f9b719b00a0ef812bb3464b7f26f6315cba3180a9b41b88dbdc87b343fff7"
+  }
+}

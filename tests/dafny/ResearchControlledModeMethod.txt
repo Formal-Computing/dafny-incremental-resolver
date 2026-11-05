@@ -1,0 +1,20 @@
+// Test the opt-in mode is really active in the pinned C# implementation;
+// merely running with an environment variable would not establish that.
+  [Fact]
+  public void ResearchControlledRevalidationModeIsActive() {
+    Assert.Equal("1", Environment.GetEnvironmentVariable("DAFNY_RESEARCH_SAFE_REVALIDATE"));
+    var field = typeof(Microsoft.Dafny.LanguageServer.Language.CachingResolver)
+      .GetField("ResearchSafeRevalidate",
+        System.Reflection.BindingFlags.NonPublic |
+        System.Reflection.BindingFlags.Static);
+    Assert.NotNull(field);
+    Assert.Equal(true, field.GetValue(null));
+    var primitiveStore = typeof(Microsoft.Dafny.LanguageServer.Language.ResolutionCache)
+      .GetProperty("ResearchAuditFingerprints",
+        System.Reflection.BindingFlags.Instance |
+        System.Reflection.BindingFlags.NonPublic |
+        System.Reflection.BindingFlags.Public);
+    Assert.NotNull(primitiveStore);
+    Assert.Equal(typeof(System.Collections.Generic.Dictionary<string, System.Collections.Immutable.ImmutableArray<byte>>),
+      primitiveStore.PropertyType);
+  }

@@ -1,0 +1,28 @@
+{
+  "schema": "immutable-export-summary-empirical-evidence-v1",
+  "ci_run": 41479386215,
+  "url": "https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41479386215",
+  "source_commit": "9729416",
+  "pinned_dafny": "de36f2ec1f9c530080eff7929ae28229f45da069",
+  "modes": [
+    "fresh-semantic",
+    "immutable-export"
+  ],
+  "runtime_hit_miss_test": "passed on pinned C# language server; distinct export declarations",
+  "comparison": {
+    "diagnostics": 4,
+    "selected_semantic": 4,
+    "terminal_verification": 4,
+    "difference": 0
+  },
+  "formal_model": "6 verified, 0 errors, local and formal CI",
+  "caveat": "Optimizes only a no-op ModuleExportDecl resolution branch; no general semantic-key completeness, arbitrary-graph reconstruction, or measured end-to-end speedup.",
+  "sha256": {
+    "fresh-semantic-export_summary.json": "b2ab15ad74f94a00ccccf3ee0559f97a060cc7ac8c8a1c91e24d7b66a8ac0968",
+    "fresh-semantic-verification-export-proof.json": "243b09eff6272995b6ee58541823e3845ac99b2d0fe5eabb5378f036ee950382",
+    "immutable-export-export_summary.json": "62f8fc8d7137964db586be05cb6c0d0cca89431e61f38c350451879a8ed084d4",
+    "immutable-export-verification-export-proof.json": "0c6ea05c8e7e79e679856e1650ffa860cba74fb558494339c1729f364dcf547a",
+    "immutable-export-report.json": "967bc5148464500435686f6d8c5774561cb40d51717436bf2b45b6c5d696de0d",
+    "export-contract-audit.json": "68e715eba10c9d494f9753b98eae356e66171fb7cff7702b4d09be77d83a505d"
+  }
+}

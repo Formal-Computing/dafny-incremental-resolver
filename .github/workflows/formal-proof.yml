@@ -1,0 +1,35 @@
+name: Formal cache-model proof
+
+on:
+  push:
+    paths:
+      - 'tests/formal/**'
+      - '.github/workflows/formal-proof.yml'
+  pull_request:
+    paths:
+      - 'tests/formal/**'
+      - '.github/workflows/formal-proof.yml'
+  workflow_dispatch:
+
+jobs:
+  verify-model:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Install Dafny 4.11.0 and Z3
+        run: |
+          dotnet tool install --tool-path "$RUNNER_TEMP/dafny-tool" Dafny --version 4.11.0
+          sudo apt-get update -qq
+          sudo apt-get install -y z3
+      - name: Verify abstract incremental-cache contract
+        run: |
+          "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/CacheSoundness.dfy --solver-path /usr/bin/z3
+          "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/CacheRefinement.dfy --solver-path /usr/bin/z3
+          "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/MutableReuseAndKeyCompleteness.dfy --solver-path /usr/bin/z3
+          "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/ControlledRevalidationRefinement.dfy --solver-path /usr/bin/z3
+          "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/ImmutableExportSummaryRefinement.dfy --solver-path /usr/bin/z3
+          "$RUNNER_TEMP/dafny-tool/dafny" verify tests/formal/NonemptyImmutableSummaryRefinement.dfy --solver-path /usr/bin/z3

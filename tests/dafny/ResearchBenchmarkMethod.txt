@@ -1,0 +1,55 @@
+  /// <summary>
+  /// Exploratory end-to-end LSP update latency; NOT pure resolver timing.
+  /// Twenty same-length edits in a single persistent server after document open.
+  /// </summary>
+  [Fact]
+  public async Task ResearchPersistentEditLatency() {
+    var source = @"module Alpha {
+  function Value(): int { 11 }
+}
+module Beta {
+  function Value(): int { 21 }
+}
+";
+    var dir = Path.Combine(Directory.GetCurrentDirectory(), "Synchronization/TestFiles");
+    var doc = CreateTestDocument(source,
+      Path.Combine(dir, "research-persistent-benchmark.dfy"));
+    await client.OpenDocumentAndWaitAsync(doc, CancellationToken);
+    await AssertNoDiagnosticsAreComing(CancellationToken);
+
+    var samples = new System.Collections.Generic.List<object>();
+    for (int iteration = 0; iteration < 20; iteration++) {
+      var replacement = iteration % 2 == 0 ? "22" : "21";
+      var beforeLogs = sink.Snapshot().LogEvents.Count();
+      var elapsed = System.Diagnostics.Stopwatch.StartNew();
+      ApplyChange(ref doc, ((4, 26), (4, 28)), replacement);
+      await client.WaitForNotificationCompletionAsync(doc.Uri, CancellationToken);
+      elapsed.Stop();
+      var messages = sink.Snapshot().LogEvents.Skip(beforeLogs)
+        .Select(e => e.MessageTemplate.Text).ToArray();
+      samples.Add(new {
+        iteration,
+        warmup = iteration < 3,
+        milliseconds = elapsed.Elapsed.TotalMilliseconds,
+        alphaHit = messages.Any(m => m.Contains("Resolution cache hit") && m.Contains("Alpha")),
+        alphaMiss = messages.Any(m => m.Contains("Resolution cache miss") && m.Contains("Alpha")),
+        betaMiss = messages.Any(m => m.Contains("Resolution cache miss") && m.Contains("Beta"))
+      });
+    }
+    var output = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_OUTPUT_DIR");
+    var mode = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_MODE");
+    if (string.IsNullOrWhiteSpace(output) || string.IsNullOrWhiteSpace(mode)) {
+      throw new InvalidOperationException("Research mode/output environment missing");
+    }
+    Directory.CreateDirectory(output);
+    File.WriteAllText(Path.Combine(output, mode + "-benchmark.json"),
+      System.Text.Json.JsonSerializer.Serialize(new {
+        mode,
+        kind = "end-to-end-lsp-update-completion",
+        note = "Includes client scheduling/notification overhead; not resolver-only time",
+        dotnet = Environment.Version.ToString(),
+        os = System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+        samples
+      }, new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
+    Assert.Equal(20, samples.Count);
+  }

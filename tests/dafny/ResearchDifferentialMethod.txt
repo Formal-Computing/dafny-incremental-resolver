@@ -1,0 +1,234 @@
+  // Research differential harness: same edit trace, either persistent resolver cache
+  // or fresh ProgramResolver (UseCaching=false) on EVERY document revision.
+  public override Task InitializeAsync() {
+    return Environment.GetEnvironmentVariable("DAFNY_RESEARCH_MODE") == "fresh"
+      ? SetUp(options => options.Set(
+          Microsoft.Dafny.LanguageServer.Language.Symbols.DafnyLangSymbolResolver.UseCaching, false))
+      : base.InitializeAsync();
+  }
+
+  [Theory]
+  [InlineData("independent")]
+  [InlineData("dependency")]
+  [InlineData("shadowing")]
+  [InlineData("roster")]
+  [InlineData("recovery")]
+  [InlineData("negative")]
+  [InlineData("fault_probe")]
+  [InlineData("stress_graph")]
+  [InlineData("stress_scope")]
+  [InlineData("air_semantic")]
+  public Task ResearchDifferentialTrace(string scenario) =>
+    RunResearchDifferentialTrace(scenario);
+
+  // A dedicated export-summary trace; not part of the older 10-scenario oracle.
+  [Fact]
+  public Task ResearchExportSummaryDifferentialTrace() =>
+    RunResearchDifferentialTrace("export_summary");
+
+  // Intentionally isolated: the 662-clause LSP test may require a different
+  // resource budget and must not prevent collection of the primary traces.
+  [Fact]
+  public Task ResearchAir662DifferentialTrace() =>
+    RunResearchDifferentialTrace("air_semantic_662");
+
+  private async Task RunResearchDifferentialTrace(string scenario) {
+    string[] revisions = scenario switch {
+      "independent" => new[] {
+        "module Alpha {\n function Value(): int { 11 }\n}\nmodule Beta {\n function Value(): int { 21 }\n}\n",
+        "module Alpha {\n function Value(): int { 11 }\n}\nmodule Beta {\n function Value(): int { 22 }\n}\n",
+        "module Alpha {\n function Value(): int { 11 }\n}\nmodule Beta {\n function Value(): int { 222 }\n}\n",
+        "\nmodule Alpha {\n function Value(): int { 11 }\n}\nmodule Beta {\n function Value(): int { 222 }\n}\n"
+      },
+      "dependency" => new[] {
+        "module Provider { function Value(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Value() } }\n",
+        "module Provider { function Value(): bool { true } }\nmodule User { import opened Provider function Result(): int { Value() } }\n",
+        "module Provider { function Value(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Value() } }\n",
+        "module Provider { function Renamed(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Value() } }\n"
+      },
+      "shadowing" => new[] {
+        "module Shared { function Value(): int { 1 } }\nmodule User { import opened Shared function Result(): int { Value() } }\n",
+        "module Shared { function Value(): int { 1 } }\nmodule User { import opened Shared function Value(): int { 9 } function Result(): int { Value() } }\n",
+        "module Shared { function Value(): int { 1 } }\nmodule User { import opened Shared function Result(): int { Value() } }\n"
+      },
+      "roster" => new[] {
+        "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { 21 } }\n",
+        "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { 21 } }\nmodule Gamma { function Value(): int { 33 } }\n",
+        "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { 21 } }\nmodule Alpha { function Value(): int { 33 } }\n"
+      },
+      "recovery" => new[] {
+        "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { 21 } }\n",
+        "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { } }\n",
+        "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { 21 } }\n",
+        "module Alpha { function Value(): int { 11 } }\nmodule Beta { function Value(): int { true } }\n"
+      },
+      "negative" => new[] {
+        "module Provider { function Existing(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n",
+        "module Provider { function Existing(): int { 1 } function Missing(): int { 2 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n",
+        "module Provider { function Existing(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n",
+        "module Provider { function Existing(): int { 1 } function Missing(): int { 3 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n"
+      },
+      "fault_probe" => new[] {
+        "module Beta { function Value(): int { 1 } }\nmodule User { import opened Beta function Result(): int { Value() } }\n",
+        "module Beta { function Value(): bool { true } }\nmodule User { import opened Beta function Result(): int { Value() } }\n",
+        "module Beta { function Value(): int { 1 } }\nmodule User { import opened Beta function Result(): int { Value() } }\n"
+      },
+      "export_summary" => new[] {
+        "module ExportSummaryA { export reveals T\n type T = int }\n" +
+        "module ExportSummaryB { export reveals U\n type U = int }\n" +
+        "module ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n" +
+        " method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n",
+        "module ExportSummaryA { export reveals T\n type T = bool }\n" +
+        "module ExportSummaryB { export reveals U\n type U = int }\n" +
+        "module ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n" +
+        " method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n",
+        "module ExportSummaryA { export reveals T\n type T = int }\n" +
+        "module ExportSummaryB { export reveals U\n type U = int }\n" +
+        "module ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n" +
+        " method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n",
+        "// source shift\nmodule ExportSummaryA { export reveals T\n type T = int }\n" +
+        "module ExportSummaryB { export reveals U\n type U = nat }\n" +
+        "module ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n" +
+        " method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n"
+      },
+      "stress_graph" => Enumerable.Range(0, 24).Select(i => {
+        var a = i % 6 == 2 ? "function ValueA(): bool { true }" :
+          i % 6 == 4 ? "function Renamed(): int { 8 }" :
+          "function ValueA(): int { " + (1 + i % 3) + " }";
+        var b = i % 8 == 5 ? "function ValueB(): bool { false }" :
+          "function ValueB(): int { " + (2 + i % 4) + " }";
+        var prefix = i % 4 == 0 ? "// prefix position shift\n" : "";
+        var added = i % 9 == 6 ? "module Added { function Extra(): int { 8 } }\n" : "";
+        return prefix +
+          "module Provider { " + a + " }\n" +
+          "module Secondary { " + b + " }\n" +
+          "module Inspector {\n import opened Provider\n import opened Secondary\n" +
+          " function Calculate(): int { ValueA() + ValueB() }\n}\n" +
+          added + "module Tail { function RevisionTag(): int { " + i + " } }\n";
+      }).ToArray(),
+      "stress_scope" => Enumerable.Range(0, 18).Select(i => {
+        var a = i % 5 == 1 ? "function Value(): bool { true }" :
+          i % 5 == 3 ? "function Renamed(): int { 3 }" :
+          "function Value(): int { " + (i + 1) + " }";
+        var import = i % 6 == 2 ? "import opened B\n" : "import opened A\n";
+        var local = i % 7 == 3 ? "function Value(): int { 99 }\n" : "";
+        var secondImport = i % 8 == 4 ? "import opened B\n" : "";
+        return (i % 3 == 0 ? "// varying prefix\n" : "") +
+          "module A { " + a + " }\n" +
+          "module B { function Value(): int { 2 } }\n" +
+          "module Consumer {\n " + import + " " + secondImport + " " + local +
+          " function Result(): int { Value() }\n}\n" +
+          "module Unrelated { function V(): int { " + i + " } }\n";
+      }).ToArray(),
+      "air_semantic" => new[] {
+        AIR_STRESS_FIXTURE,
+        AIR_STRESS_FIXTURE.Replace("C000: seq<int> := [-3, 36, 7]",
+          "C000: seq<int> := [-3, 37, 7]"),
+        AIR_STRESS_FIXTURE,
+        AIR_STRESS_FIXTURE.Replace("RevisionTag(): int { 10 }",
+          "RevisionTag(): int { 100 }"),
+        AIR_STRESS_FIXTURE,
+        "// shifted origins\n" + AIR_STRESS_FIXTURE,
+        AIR_STRESS_FIXTURE.Replace("C000: seq<int> := [-3, 36, 7]",
+          "C000: seq<int> := [-3, true, 7]"),
+        AIR_STRESS_FIXTURE
+      },
+      "air_semantic_662" => new[] {
+        AIR_STRESS_662_FIXTURE,
+        AIR_STRESS_662_FIXTURE.Replace("C000: seq<int> := [-3, 36, 7]",
+          "C000: seq<int> := [-3, 37, 7]"),
+        AIR_STRESS_662_FIXTURE,
+        AIR_STRESS_662_FIXTURE.Replace("RevisionTag(): int { 10 }",
+          "RevisionTag(): int { 100 }"),
+        "// shifted origins on 662 clauses\\n" + AIR_STRESS_662_FIXTURE,
+        AIR_STRESS_662_FIXTURE.Replace("C000: seq<int> := [-3, 36, 7]",
+          "C000: seq<int> := [-3, true, 7]"),
+        AIR_STRESS_662_FIXTURE
+      },
+      _ => throw new ArgumentException(scenario)
+    };
+    var path = Path.Combine(Directory.GetCurrentDirectory(),
+      "Synchronization/TestFiles/research-differential-" + scenario + ".dfy");
+    var document = CreateTestDocument(revisions[0], path);
+    await client.OpenDocumentAndWaitAsync(document, CancellationTokenWithHighTimeout);
+    var records = new System.Collections.Generic.List<object>();
+    Diagnostic[] lastPublishedDiagnostics = Array.Empty<Diagnostic>();
+    string mode = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_MODE") ?? "unconfigured";
+    for (int index = 0; index < revisions.Length; index++) {
+      if (index != 0) {
+        var oldLines = revisions[index - 1].Split('\n');
+        ApplyChange(ref document, new Range(0, 0, oldLines.Length - 1,
+          oldLines[oldLines.Length - 1].Length), revisions[index]);
+        await client.WaitForNotificationCompletionAsync(document.Uri, CancellationTokenWithHighTimeout);
+      }
+      // A valid edit may publish no new diagnostics; do not block waiting for one.
+      // Preserve the last published diagnostic snapshot when no event is emitted.
+      var published = diagnosticsReceiver.GetLatestAndClearQueue(d => d.Uri == document.Uri);
+      if (published != null) {
+        lastPublishedDiagnostics = published.Diagnostics.ToArray();
+      }
+      var diagnostics = lastPublishedDiagnostics;
+      var normalized = diagnostics.Select(d => new {
+        message = d.Message,
+        severity = d.Severity?.ToString(),
+        code = d.Code.HasValue ? (d.Code.Value.IsString ? d.Code.Value.String : d.Code.Value.Long.ToString()) : null,
+        source = d.Source,
+        from = new[] { d.Range.Start.Line, d.Range.Start.Character },
+        to = new[] { d.Range.End.Line, d.Range.End.Character },
+        related = d.RelatedInformation == null ? Array.Empty<string>() :
+          d.RelatedInformation.Select(r => r.Message + "@" +
+            r.Location.Uri.ToString() + ":" +
+            r.Location.Range.Start.Line + ":" + r.Location.Range.Start.Character).ToArray()
+      }).OrderBy(d => d.from[0]).ThenBy(d => d.from[1])
+        .ThenBy(d => d.message).ToArray();
+      object? semantic = null;
+      string? target = scenario switch {
+        "dependency" or "shadowing" or "fault_probe" => "Value()",
+        "negative" => "Missing()",
+        "stress_graph" => "ValueA()",
+        "stress_scope" => "Value()",
+        "export_summary" => "ExportSummaryA.T",
+        "air_semantic" => "Clauses",
+        // 662 clauses: diagnostics are compared, while LSP definition requests\n        // time out even on original upstream; keep this known limitation explicit.\n        "air_semantic_662" => null,
+        _ => null
+      };
+      if (target != null) {
+        int offset = revisions[index].LastIndexOf(target, StringComparison.Ordinal);
+        Assert.True(offset >= 0, "Missing semantic query target");
+        var prefix = revisions[index][..offset];
+        var position = new Position(prefix.Count(c => c == '\n'),
+          offset - prefix.LastIndexOf('\n') - 1);
+        // The ordinary test-base token expires after ~60s. Large synthetic
+        // modules can require longer for LSP symbol indexing. Use the test
+        // fixture's explicit 180-second high-timeout token for actual queries.
+        var definitions = await client.RequestDefinition(
+          new DefinitionParams { TextDocument = document.Uri, Position = position },
+          CancellationTokenWithHighTimeout).AsTask();
+        var hover = await client.RequestHover(
+          new HoverParams { TextDocument = document.Uri, Position = position },
+          CancellationTokenWithHighTimeout);
+        semantic = new {
+          definitions = definitions.Select(d => new {
+            uri = d.Location?.Uri.ToString(),
+            from = d.Location == null ? (int[]?)null :
+              new[] { d.Location.Range.Start.Line, d.Location.Range.Start.Character },
+            to = d.Location == null ? (int[]?)null :
+              new[] { d.Location.Range.End.Line, d.Location.Range.End.Character }
+          }).OrderBy(d => d.uri).ThenBy(d => d.from == null ? -1 : d.from[0])
+            .ThenBy(d => d.from == null ? -1 : d.from[1]).ToArray(),
+          hover = hover?.Contents.MarkupContent?.Value
+        };
+      }
+      records.Add(new { revision = index, source = revisions[index],
+        diagnostics = normalized, semantic });
+    }
+    var output = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_OUTPUT_DIR");
+    if (string.IsNullOrWhiteSpace(output)) {
+      throw new InvalidOperationException("DAFNY_RESEARCH_OUTPUT_DIR missing");
+    }
+    Directory.CreateDirectory(output);
+    File.WriteAllText(Path.Combine(output, mode + "-" + scenario + ".json"),
+      System.Text.Json.JsonSerializer.Serialize(new { mode, scenario, records },
+        new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
+    Assert.Equal(revisions.Length, records.Count);
+  }

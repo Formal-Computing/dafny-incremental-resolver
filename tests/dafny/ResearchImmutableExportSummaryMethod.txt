@@ -1,0 +1,38 @@
+
+  [Fact]
+  public async Task ResearchImmutableExportSummaryActuallySkipsResolver() {
+    Assert.Equal("1", Environment.GetEnvironmentVariable(
+      "DAFNY_RESEARCH_IMMUTABLE_EXPORT_SUMMARY"));
+
+    var source = @"
+module ResearchExportFirst {
+  export reveals T
+  type T = int
+}
+module ResearchExportSecond {
+  export reveals U
+  type U = nat
+}
+module ResearchExportConsumer {
+  import ResearchExportFirst
+  import ResearchExportSecond
+  method Check() {
+    var x: ResearchExportFirst.T := 1;
+    assert x == 1;
+  }
+}".Trim();
+    await CreateOpenAndWaitForResolve(source,
+      Path.Combine("Synchronization/TestFiles", "research-export-summary-hot.dfy"));
+
+    // Both events must arise from the current document's distinct export
+    // declarations. HIT is emitted ONLY on the reconstruction branch that
+    // does not call ModuleResolver.ResolveModuleDeclaration.
+    var events = sink.Snapshot().LogEvents
+      .Select(e => e.RenderMessage()).ToArray();
+    Assert.Contains(events, e => e.Contains("ResearchExportSummary|MISS|", StringComparison.Ordinal)
+      && (e.Contains("ResearchExportFirst", StringComparison.Ordinal) ||
+          e.Contains("ResearchExportSecond", StringComparison.Ordinal)));
+    Assert.Contains(events, e => e.Contains("ResearchExportSummary|HIT|", StringComparison.Ordinal)
+      && (e.Contains("ResearchExportFirst", StringComparison.Ordinal) ||
+          e.Contains("ResearchExportSecond", StringComparison.Ordinal)));
+  }

@@ -1,0 +1,48 @@
+--- a/Source/DafnyLanguageServer/Language/CachingResolver.cs
++++ b/Source/DafnyLanguageServer/Language/CachingResolver.cs
+@@ -58,13 +58,31 @@
+   }
+ 
+   protected override ModuleResolutionResult ResolveModuleDeclaration(CompilationData compilation, ModuleDecl decl) {
++    // Research instrumentation is opt-in and does not change caching decisions.
++    // Hashing and module-resolution body are measured separately. The latter is
++    // an INCLUSIVE synchronous region; nested resolutions may be double counted.
++    var profile = Environment.GetEnvironmentVariable("DAFNY_RESEARCH_PROFILE_RESOLVER") == "1";
++    var hashStart = profile ? System.Diagnostics.Stopwatch.GetTimestamp() : 0;
++    var hashBytesBefore = profile ? GC.GetAllocatedBytesForCurrentThread() : 0;
+     var hash = GetHash(decl);
++    var hashMicroseconds = profile
++      ? System.Diagnostics.Stopwatch.GetElapsedTime(hashStart).TotalMicroseconds : 0;
++    var hashAllocatedBytes = profile ? GC.GetAllocatedBytesForCurrentThread() - hashBytesBefore : 0;
+     hashes[decl] = hash;
+ 
+-    if (!cache.Modules.TryGet(hash, out var result)) {
++    var hit = cache.Modules.TryGet(hash, out var result);
++    double resolveMicroseconds = 0;
++    long resolveAllocatedBytes = 0;
++    if (!hit) {
+       logger.LogDebug($"Resolution cache miss for {decl}");
+       var beforeResolution = DateTime.Now;
++      var resolveStart = profile ? System.Diagnostics.Stopwatch.GetTimestamp() : 0;
++      var resolveBytesBefore = profile ? GC.GetAllocatedBytesForCurrentThread() : 0;
+       result = base.ResolveModuleDeclaration(compilation, decl);
++      if (profile) {
++        resolveMicroseconds = System.Diagnostics.Stopwatch.GetElapsedTime(resolveStart).TotalMicroseconds;
++        resolveAllocatedBytes = GC.GetAllocatedBytesForCurrentThread() - resolveBytesBefore;
++      }
+       // An error-bearing result is not safe to retain across revisions
+       // without tracking failed name lookups and diagnostic origins.
+       if (!UnsafeResearchCrossRevisionReuse || !result.ErrorReporter.AllMessages.Any()) {
+@@ -73,6 +91,12 @@
+       telemetryPublisher.PublishTime("ModuleResolution", decl.FullName, DateTime.Now - beforeResolution);
+     } else {
+       logger.LogDebug($"Resolution cache hit for {decl}");
++    }
++    if (profile) {
++      // Millisecond LSP latency is not resolver time. These metrics isolate
++      // synchronous per-module hash/body regions and current-thread allocations.
++      // | delimits exact fields, enabling deterministic machine parsing.
++      logger.LogInformation($"ResearchResolverMetric|{decl.FullName}|{(hit ? "HIT" : "MISS")}|{hashMicroseconds.ToString("F3", System.Globalization.CultureInfo.InvariantCulture)}|{resolveMicroseconds.ToString("F3", System.Globalization.CultureInfo.InvariantCulture)}|{hashAllocatedBytes}|{resolveAllocatedBytes}");
+     }
+     return result!;
+   }
