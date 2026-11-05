@@ -28,7 +28,9 @@ module ResearchNonemptyConsumer {
 
     var events = sink.Snapshot().LogEvents
       .Select(e => e.RenderMessage()).ToArray();
-    Assert.True(events.Any(e => e.Contains("ResearchNonemptyAudit|MISS|", StringComparison.Ordinal)),
+    Assert.True(events.Any(e => e.Contains("ResearchNonemptyAudit|", StringComparison.Ordinal) &&
+      e.Contains("MISS", StringComparison.Ordinal) &&
+      e.Contains("ResearchNonemptyProvider", StringComparison.Ordinal)),
       "Missing nonempty audit. Relevant logs: " + string.Join(" || ", events
         .Where(e => e.Contains("Research", StringComparison.Ordinal) ||
                     e.Contains("resolution", StringComparison.OrdinalIgnoreCase))
