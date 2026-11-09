@@ -18,6 +18,7 @@ method += "\n" + (base/"tests/dafny/ResearchBenchmarkMethod.txt").read_text()
 method += "\n" + (base/"tests/dafny/ResearchImmutableExportSummaryMethod.txt").read_text()
 method += "\n" + (base/"tests/dafny/ResearchNonemptyFallbackMethod.txt").read_text()
 method += "\n" + (base/"tests/dafny/ResearchAuditCollisionMethod.txt").read_text()
+method += "\n" + (base/"tests/dafny/ResearchIssue18NegativeAliasMethod.txt").read_text()
 anchor="  [Fact]\n  public async Task ChangedImportAffectsExport() {"
 assert "ResearchDifferentialTrace" not in text
 assert anchor in text

@@ -14,6 +14,7 @@
   [InlineData("roster")]
   [InlineData("recovery")]
   [InlineData("negative")]
+  [InlineData("negative_alias")]
   [InlineData("fault_probe")]
   [InlineData("stress_graph")]
   [InlineData("stress_scope")]
@@ -68,6 +69,18 @@
         "module Provider { function Existing(): int { 1 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n",
         "module Provider { function Existing(): int { 1 } function Missing(): int { 3 } }\nmodule User { import opened Provider function Result(): int { Missing() } }\n"
       },
+      // The consumer lookup remains identical as the provider export set
+      // gains and loses Missing through an import alias.
+      "negative_alias" => new[] {
+        "module Provider { export provides Existing\n function Existing(): int { 1 } }\n" +
+        "module Consumer { import P = Provider\n function Result(): int { P.Missing() } }\n",
+        "module Provider { export provides Existing, Missing\n function Existing(): int { 1 } function Missing(): int { 2 } }\n" +
+        "module Consumer { import P = Provider\n function Result(): int { P.Missing() } }\n",
+        "module Provider { export provides Existing\n function Existing(): int { 1 } }\n" +
+        "module Consumer { import P = Provider\n function Result(): int { P.Missing() } }\n",
+        "module Provider { export provides Existing, Missing\n function Existing(): int { 1 } function Missing(): int { 3 } }\n" +
+        "module Consumer { import P = Provider\n function Result(): int { P.Missing() } }\n"
+      },
       "fault_probe" => new[] {
         "module Beta { function Value(): int { 1 } }\nmodule User { import opened Beta function Result(): int { Value() } }\n",
         "module Beta { function Value(): bool { true } }\nmodule User { import opened Beta function Result(): int { Value() } }\n",
@@ -90,6 +103,26 @@
         "module ExportSummaryB { export reveals U\n type U = nat }\n" +
         "module ExportSummaryConsumer { import ExportSummaryA\n import ExportSummaryB\n" +
         " method Check() { var x: ExportSummaryA.T := 1; assert x == 1; } }\n"
+      },
+      // Provider export visibility/signature changes while consumer source
+      // remains byte-for-byte identical. B is the stable imported control.
+      "provider_visibility" => new[] {
+        "module VisibilityA { export provides T\n type T = int }\n" +
+        "module VisibilityB { export reveals U\n type U = int }\n" +
+        "module VisibilityConsumer { import VisibilityA\n import VisibilityB\n" +
+        " method Check() { var x: VisibilityA.T := 1; assert x == 1; } }\n",
+        "module VisibilityA { export reveals T\n type T = bool }\n" +
+        "module VisibilityB { export reveals U\n type U = int }\n" +
+        "module VisibilityConsumer { import VisibilityA\n import VisibilityB\n" +
+        " method Check() { var x: VisibilityA.T := 1; assert x == 1; } }\n",
+        "module VisibilityA { export reveals T\n type T = int }\n" +
+        "module VisibilityB { export reveals U\n type U = int }\n" +
+        "module VisibilityConsumer { import VisibilityA\n import VisibilityB\n" +
+        " method Check() { var x: VisibilityA.T := 1; assert x == 1; } }\n",
+        "module VisibilityA { export reveals T\n type T = int }\n" +
+        "module VisibilityB { export reveals U\n type U = nat }\n" +
+        "module VisibilityConsumer { import VisibilityA\n import VisibilityB\n" +
+        " method Check() { var x: VisibilityA.T := 1; assert x == 1; } }\n"
       },
       "stress_graph" => Enumerable.Range(0, 24).Select(i => {
         var a = i % 6 == 2 ? "function ValueA(): bool { true }" :
@@ -185,9 +218,11 @@
       string? target = scenario switch {
         "dependency" or "shadowing" or "fault_probe" => "Value()",
         "negative" => "Missing()",
+        "negative_alias" => "P.Missing()",
         "stress_graph" => "ValueA()",
         "stress_scope" => "Value()",
         "export_summary" => "ExportSummaryA.T",
+        "provider_visibility" => "VisibilityA.T",
         "air_semantic" => "Clauses",
         // 662 clauses: diagnostics are compared, while LSP definition requests\n        // time out even on original upstream; keep this known limitation explicit.\n        "air_semantic_662" => null,
         _ => null
@@ -195,6 +230,7 @@
       if (target != null) {
         int offset = revisions[index].LastIndexOf(target, StringComparison.Ordinal);
         Assert.True(offset >= 0, "Missing semantic query target");
+        if (scenario == "negative_alias") offset += 2; // Query Missing, not alias P.
         var prefix = revisions[index][..offset];
         var position = new Position(prefix.Count(c => c == '\n'),
           offset - prefix.LastIndexOf('\n') - 1);

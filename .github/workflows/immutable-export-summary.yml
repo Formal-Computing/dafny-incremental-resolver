@@ -47,6 +47,7 @@ jobs:
           python3 prototype/scripts/install_verifier_outcome_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/VerificationStatusTest.cs
           python3 prototype/scripts/install_differential_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs
           python3 prototype/scripts/compare_immutable_export.py --selftest
+          python3 prototype/scripts/test_compare_differential.py
           (cd dafny && dotnet tool restore)
           sudo apt-get update -qq
           sudo apt-get install -y z3
@@ -103,7 +104,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchExportSummaryDifferentialTrace'
+          --filter 'FullyQualifiedName~CachingTest.ResearchExportSummaryDifferentialTrace|FullyQualifiedName~CachingTest.ResearchIssue18NegativeAliasTrace'
       - name: Immutable export summary definition and diagnostics
         working-directory: dafny
         env:
@@ -114,7 +115,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchExportSummaryDifferentialTrace'
+          --filter 'FullyQualifiedName~CachingTest.ResearchExportSummaryDifferentialTrace|FullyQualifiedName~CachingTest.ResearchIssue18NegativeAliasTrace'
       - name: Fresh terminal verifier outcome oracle
         working-directory: dafny
         env:
@@ -138,6 +139,8 @@ jobs:
           --filter 'FullyQualifiedName~VerificationStatusTest.ResearchExportProofOutcomeTrace'
       - name: Strict source and semantic comparison
         run: python3 prototype/scripts/compare_immutable_export.py research-results
+      - name: Calibrate stale alias binding against two-mode immutable-export oracle
+        run: python3 prototype/scripts/calibrate_immutable_alias.py research-results
       - name: Archive all evidence even on failure
         if: always()
         uses: actions/upload-artifact@v4

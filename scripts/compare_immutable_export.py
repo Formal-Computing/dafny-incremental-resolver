@@ -10,6 +10,7 @@ def compare(folder):
     matched={"diagnostics":0,"selected_semantic":0,"final_verification":0}
     for category,scenario,suffix in (
         ("differential","export_summary",""),
+        ("differential","negative_alias",""),
         ("verification","export-proof","verification-")
     ):
         snapshots={}
@@ -29,9 +30,9 @@ def compare(folder):
                 bad.append([category,i,"INPUT_MISMATCH"])
                 continue
             if category=="differential":
-                if i==1 and not a.get("diagnostics"):
+                if scenario=="export_summary" and i==1 and not a.get("diagnostics"):
                     bad.append([category,i,"EXPECTED_TYPE_ERROR_NOT_TRIGGERED"])
-                if not a.get("semantic") or not a["semantic"].get("definitions"):
+                if scenario=="export_summary" and (not a.get("semantic") or not a["semantic"].get("definitions")):
                     bad.append([category,i,"UNEXERCISED_GOTO_DEFINITION"])
                 if "diagnostics" not in a or "diagnostics" not in b:
                     bad.append([category,i,"MISSING_DIAGNOSTIC"])
@@ -43,6 +44,30 @@ def compare(folder):
                 elif stable_semantic(a["semantic"])!=stable_semantic(b["semantic"]):
                     bad.append([category,i,"SEMANTIC_DIFFERENCE"])
                 else: matched["selected_semantic"]+=1
+                if scenario=="negative_alias":
+                    expected_diagnostics=(1,0,1,0)
+                    expected_semantic=(False,True,False,True)  # binding presence
+                    if len(a.get("diagnostics",[]))!=expected_diagnostics[i]:
+                        bad.append([category,i,"UNEXPECTED_NEGATIVE_DIAGNOSTIC_COUNT"])
+                    semantic=a.get("semantic")
+                    candidate=b.get("semantic")
+                    for label,query in (("fresh",semantic),("immutable",candidate)):
+                        if not isinstance(query,dict):
+                            bad.append([category,i,"MISSING_NEGATIVE_SEMANTIC_QUERY",label])
+                            continue
+                        resolved=bool(query.get("definitions"))
+                        if resolved!=expected_semantic[i]:
+                            bad.append([category,i,"UNEXPECTED_NEGATIVE_BINDING_PRESENCE",label])
+                    if expected_semantic[i] and isinstance(semantic,dict):
+                        import re
+                        if (not semantic.get("definitions") or
+                                not isinstance(semantic.get("hover"),str) or
+                                not re.search(r"\bfunction\s+Missing\s*\(\s*\)\s*:\s*int\b",semantic["hover"])):
+                            bad.append([category,i,"INCOMPLETE_NEGATIVE_SEMANTIC"])
+                        if (not isinstance(candidate,dict) or
+                                not re.search(r"\bfunction\s+Missing\s*\(\s*\)\s*:\s*int\b",
+                                              candidate.get("hover", ""))):
+                            bad.append([category,i,"INCOMPLETE_CANDIDATE_NEGATIVE_SEMANTIC"])
             else:
                 aa=a.get("verification")
                 bb=b.get("verification")
@@ -61,7 +86,7 @@ def compare(folder):
     (folder/"immutable-export-report.json").write_text(json.dumps(obj,indent=2)+"\n")
     print("Immutable export summary:",matched,"errors",len(bad))
     for row in bad[:15]: print("FAIL",row)
-    return not bad and matched=={"diagnostics":4,"selected_semantic":4,"final_verification":4}
+    return not bad and matched=={"diagnostics":8,"selected_semantic":8,"final_verification":4}
 
 def selftest():
     import tempfile
@@ -77,6 +102,16 @@ def selftest():
                     else:r["verification"]=[{"from":[0,0],"to":[0,3],"outcome":"Error" if i==1 else "Correct"}]
                     records.append(r)
                 (root/f"{mode}-{suffix}{scenario}.json").write_text(json.dumps({"mode":mode,"scenario":scenario,"records":records}))
+            alias_records=[]
+            for i in range(4):
+                semantic=({"definitions":[{"uri":"file:///provider.dfy"}],
+                           "hover":"```dafny\nfunction Missing(): int\n```"}
+                          if i in (1,3) else {"definitions":[],"hover":None})
+                alias_records.append({"revision":i,"source":f"alias-source-{i}",
+                                      "diagnostics":[{"message":"unresolved"}] if i in (0,2) else [],
+                                      "semantic":semantic})
+            (root/f"{mode}-negative_alias.json").write_text(json.dumps(
+                {"mode":mode,"scenario":"negative_alias","records":alias_records}))
         assert compare(root)
         p=root/"immutable-export-verification-export-proof.json"
         obj=json.loads(p.read_text())
