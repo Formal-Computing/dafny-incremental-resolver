@@ -35,21 +35,28 @@ with tempfile.TemporaryDirectory(prefix="dafny-research-calibration-") as td:
         capture_output=True, text=True, timeout=30)
     if run.returncode != 1 or "DIFFERENCE" not in run.stdout:
         raise SystemExit("FAIL: comparison did not detect deliberately corrupted diagnostic")
-    # Also prove the new alias negative-lookup oracle rejects a stale positive
-    # result at the revision where the provider withdrew Missing.
-    alias = dest / "fresh-semantic-negative_alias.json"
+    # Calibrate an actual stale POSITIVE in the CANDIDATE while the fresh
+    # oracle remains untouched: Missing was withdrawn at revision 2.
+    for path in required:
+        shutil.copyfile(path, dest / path.name)
+    alias = dest / "experimental-negative_alias.json"
     if not alias.is_file():
-        raise SystemExit("Missing alias-mediated negative-lookup oracle trace")
+        raise SystemExit("Missing experimental alias lookup trace")
     obj = json.loads(alias.read_text())
-    if len(obj["records"]) != 4:
+    if len(obj.get("records", [])) != 4:
         raise SystemExit("Alias negative-lookup trace must have four revisions")
-    target = obj["records"][2]
-    target["diagnostics"] = [{"message": "stale positive"}]
-    target["semantic"] = None
+    withdrawn = obj["records"][2]
+    if not withdrawn.get("diagnostics") or (withdrawn.get("semantic") or {}).get("definitions"):
+        raise SystemExit("Expected unresolved lookup after provider withdrawal")
+    withdrawn["diagnostics"] = []
+    withdrawn["semantic"] = {
+        "definitions": [{"uri": "file:///stale-provider.dfy", "from": [0, 0], "to": [0, 7]}],
+        "hover": "```dafny\nfunction Missing(): int\n```",
+    }
     alias.write_text(json.dumps(obj, indent=2))
     run = subprocess.run(
         [sys.executable, str(pathlib.Path(__file__).with_name("compare_differential.py")), str(dest)],
         capture_output=True, text=True, timeout=30)
-    if run.returncode != 1 or "UNEXPECTED_NEGATIVE_" not in run.stdout:
-        raise SystemExit("FAIL: alias stale-positive calibration was not rejected")
-    print("PASS: corrupted diagnostic and stale alias-mediated positive result were rejected")
+    if run.returncode != 1 or "DIFFERENCE" not in run.stdout:
+        raise SystemExit("FAIL: stale alias-binding corruption was not rejected")
+    print("PASS: corrupted diagnostic and stale experimental alias binding were rejected")
