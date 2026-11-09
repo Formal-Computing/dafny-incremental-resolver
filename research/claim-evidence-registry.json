@@ -1,0 +1,145 @@
+{
+  "schema": "dafny-claim-evidence-registry-v1",
+  "purpose": "Claim-to-CI-run-to-artifact index for the evidence available in this checkout; historical evidence is not a run of this checkout.",
+  "repository": "https://github.com/Formal-Computing/dafny-incremental-resolver",
+  "claims": [
+    {
+      "id": "AIR-CACHE-MISSES-32-TO-8",
+      "claim": "Across four measured same-length edits of the 298-clause AIR/SATLIB Dafny input, the experimental mode recorded 8 resolver-cache misses versus 32 in patched baseline: 24 fewer misses for this trace.",
+      "tier": "direct_run",
+      "evidence_status": "partial",
+      "quantity": {"experimental_misses": 8, "patched_baseline_misses": 32, "avoided_misses": 24, "measured_edits": 4},
+      "runs": [
+        {
+          "url": "https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41329209347",
+          "commit": null,
+          "commit_as_recorded": "No prototype commit recorded in archived files.",
+          "artifacts": [
+            "experiments/results/2026-11-01-profiler-41329209347/patched-baseline-air-satlib.json",
+            "experiments/results/2026-11-01-profiler-41329209347/experimental-air-satlib.json",
+            "experiments/results/2026-11-01-profiler-41329209347/air-satlib-summary.json"
+          ]
+        },
+        {
+          "url": "https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41329569628",
+          "commit": null,
+          "commit_as_recorded": "24c2f0d (short hash in research/air-satlib-case-study.md; full hash not preserved)",
+          "artifacts": [
+            "experiments/results/2026-11-01-mixed-profile-41329569628/patched-baseline-air-satlib.json",
+            "experiments/results/2026-11-01-mixed-profile-41329569628/experimental-air-satlib.json",
+            "experiments/results/2026-11-01-mixed-profile-41329569628/air-satlib-summary.json"
+          ]
+        }
+      ],
+      "input_mode": "Pinned Dafny language-server profiler; original fixture is 298 typed clauses / 359 lines from cdcl-sat-solver@88247ab; four same-length RevisionTag edits; patched-baseline and experimental cache modes.",
+      "oracle": "Cache hit/miss counters and synchronous resolver profiler events; no independent semantic oracle in these profiler runs.",
+      "denominator": "32 vs 8 cache misses accumulated over four measured edits in each mode; four edit decisions. Warmups and prefix-insertion negative control are excluded from this headline count.",
+      "scope": "Repeated resolver work avoided in this controlled input trace only. This is not a latency, CPU, allocation, memory, or general workload speedup claim.",
+      "limitations": ["The raw archived counters support the values, but exact 40-character CI prototype commits are not preserved in the checkout.", "The mixed-edit run reports this figure as a second profiling result; its paper separately describes edit-specific mixed changes."],
+      "missing": ["Full commit SHA for run 41329209347.", "Full commit SHA for run 41329569628; only 24c2f0d is recorded."]
+    },
+    {
+      "id": "SEMANTIC-STRESS-584-INFORMATIVE-COMPARISONS",
+      "claim": "Two archived differential workflows report 584/584 informative matches: 328 diagnostic comparisons and 256 selected stable symbol-query comparisons across 82 source revisions and 11 scenarios.",
+      "tier": "direct_run",
+      "evidence_status": "partial",
+      "quantity": {"informative_matches": 584, "informative_denominator": 584, "diagnostic_comparisons": 328, "selected_symbol_query_comparisons": 256, "source_revisions": 82, "scenarios": 11},
+      "runs": [
+        {
+          "url": "https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41449269625",
+          "commit": "caa58b524d2fc5a94b6a14bb5c2dfdb570bca613",
+          "commit_as_recorded": "caa58b524d2fc5a94b6a14bb5c2dfdb570bca613",
+          "artifacts": ["experiments/results/2026-11-02-semantic-stress-41449269625/manifest.json", "experiments/results/2026-11-02-semantic-stress-41449269625/differential-report.json"]
+        },
+        {
+          "url": "https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41450471990",
+          "commit": null,
+          "commit_as_recorded": "be5eec4 (short hash in archived manifest; full hash not preserved)",
+          "artifacts": ["experiments/results/2026-11-02-air662-41450471990/manifest.json", "experiments/results/2026-11-02-air662-41450471990/differential-report.json"]
+        }
+      ],
+      "input_mode": "Run 41449269625: original upstream, patched baseline, explicitly unsafe experimental, fresh-semantic (parser cache retained), and fully uncached modes over 10 controlled edit scenarios / 75 revisions. Run 41450471990: same five modes on separate 662-clause input / 7 revisions.",
+      "oracle": "Fresh-semantic mode; exact diagnostics and selected definition targets plus stable fenced Dafny hover type/signature blocks. Comparator v3 excludes asynchronous verification-progress hover text; large 662-clause run is diagnostic-only.",
+      "denominator": "Run 41449269625: 300 diagnostic + 256 selected semantic comparisons = 556. Run 41450471990: 28 diagnostic comparisons and zero selected semantic queries. Combined 584 comparisons; not 584 distinct programs. 16 volatile verification-progress hover differences are reported separately.",
+      "scope": "Empirical equality of selected stable observations on the sampled edit traces. Does not establish verifier-outcome equivalence, complete semantic equivalence, general cache soundness, or production readiness.",
+      "limitations": ["The primary run commit is exact; the second run's full commit is absent.", "The large corpus contributes diagnostics only because the upstream definition query exceeded its timeout.", "Unsafe experimental mode is an explicitly unsafe research configuration."],
+      "missing": ["Full commit SHA for run 41450471990."]
+    },
+    {
+      "id": "TERMINAL-VERIFIER-48",
+      "claim": "Selected terminal per-declaration Correct/Error outcomes match fresh-semantic results in 48 informative cross-mode comparisons.",
+      "tier": "direct_run",
+      "evidence_status": "partial",
+      "quantity": {"matches": 48, "denominator": 48, "scenarios": 3, "revisions_per_scenario": 4, "configurations_including_oracle": 5},
+      "runs": [{
+        "url": "https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41454697762",
+        "commit": null,
+        "commit_as_recorded": "2c8c8fa (short hash in archived manifest; full hash not preserved)",
+        "artifacts": ["experiments/results/2026-11-02-verifier-41454697762/manifest.json", "experiments/results/2026-11-02-verifier-41454697762/verification-report.json"]
+      }],
+      "input_mode": "Five modes: original upstream, uncached, fresh-semantic, guarded patched baseline, and explicitly unsafe experimental; three controlled scenarios with four revisions each.",
+      "oracle": "Fresh-semantic oracle with explicit wait for current-version terminal NamedVerifiableStatus Correct or Error; missing, nonterminal, and corrupted outcomes fail closed.",
+      "denominator": "48 informative cross-mode comparisons; original 60-check report included 12 oracle-to-itself checks, removed in corrected report.",
+      "scope": "Selected declaration name ranges and terminal LSP verifier statuses in 12 controlled revisions. Not equality of Boogie VC, SMT-LIB, prover traces, counterexamples, resource use, or all Dafny projects.",
+      "limitations": ["The archived manifest has only an abbreviated prototype commit.", "A formal verifier proof boundary is not implied by these empirical comparisons."],
+      "missing": ["Full commit SHA for run 41454697762."]
+    },
+    {
+      "id": "SAFE-REVALIDATION-151",
+      "claim": "The safe-audit mode matches a fresh-semantic oracle on 151 informative comparisons while always computing a fresh resolver graph.",
+      "tier": "direct_run",
+      "evidence_status": "partial",
+      "quantity": {"matches": 151, "denominator": 151, "diagnostic_revision_pairs": 75, "selected_definition_hover_revision_pairs": 64, "verifier_status_revision_pairs": 12},
+      "runs": [{
+        "url": "https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41471521253",
+        "commit": null,
+        "commit_as_recorded": "8c6117d (short hash in archived manifest; full hash not preserved)",
+        "artifacts": ["experiments/results/2026-11-02-controlled-revalidation-41471521253/manifest.json", "experiments/results/2026-11-02-controlled-revalidation-41471521253/safe-revalidation-report.json"]
+      }],
+      "input_mode": "Fresh-semantic versus safe-audit across the archived controlled diagnostic, definition/hover, and verifier traces; audit candidate hash never licenses a cached result.",
+      "oracle": "Independent fresh-semantic resolution; exact diagnostic snapshots, selected stable definition/hover observations, and terminal verifier outcomes.",
+      "denominator": "75 diagnostic + 64 selected definition/hover + 12 terminal verifier comparisons = 151 informative comparisons.",
+      "scope": "Runtime observational agreement for this sampled safe audit. It demonstrates no optimized reuse and no speedup; it does not establish general key soundness.",
+      "limitations": ["Exact 40-character run commit is not preserved.", "Hover excludes asynchronous proof-progress text."],
+      "missing": ["Full commit SHA for run 41471521253."]
+    },
+    {
+      "id": "RESTRICTED-EXPORT-SUMMARY-MISS-TO-HIT",
+      "claim": "A pinned real-Dafny test observed a restricted immutable-export-summary MISS followed by a HIT on a second export declaration, skipping the no-op ModuleResolver export branch.",
+      "tier": "direct_run",
+      "evidence_status": "partial",
+      "quantity": {"observed_sequence": ["MISS", "HIT"], "distinct_export_declarations": 2},
+      "runs": [{
+        "url": "https://github.com/Formal-Computing/dafny-incremental-resolver/actions/runs/41479386215",
+        "commit": null,
+        "commit_as_recorded": "9729416 (short hash in archived manifest; full hash not preserved)",
+        "artifacts": ["experiments/results/2026-11-02-immutable-export-41479386215/manifest.json", "experiments/results/2026-11-02-immutable-export-41479386215/immutable-export-report.json", "experiments/results/2026-11-02-immutable-export-41479386215/export-contract-audit.json"]
+      }],
+      "input_mode": "Pinned Dafny C# language server with opt-in immutable export summary; two distinct eligible ModuleExportDecl declarations. Only the empty semantic payload of the no-op export dispatch is summarized.",
+      "oracle": "Runtime MISS/HIT instrumentation for hotpath behavior; separate fresh-semantic differential oracle reports 4/4 diagnostic, 4/4 selected semantic, and 4/4 terminal verifier matches.",
+      "denominator": "One observed MISS then one HIT across two distinct export declarations; separate differential denominators are 4 + 4 + 4 and are not hit/miss counts.",
+      "scope": "Restricted empty ModuleExportDecl branch for pinned Dafny source. No claim for nonempty module results, arbitrary AST reconstruction, general key completeness, or end-to-end speedup.",
+      "limitations": ["Exact 40-character prototype run commit is not preserved.", "The green CI run predates stricter source-branch and nontrivial assertions added later; those checks passed locally on archived evidence per research/immutable-export-summary-refinement.md."],
+      "missing": ["Full commit SHA for run 41479386215."]
+    },
+    {
+      "id": "ABSTRACT-PROOF-BOUNDARIES",
+      "claim": "Formal results are conditional model results: memoization correctness assumes complete exact semantic keys and pure immutable observations; the refinement model establishes guarded key-decision parity with upstream semantics, not C# resolver soundness. Restricted export-summary refinement applies only to the modeled empty export payload.",
+      "tier": "model",
+      "evidence_status": "partial",
+      "quantity": null,
+      "runs": [{
+        "url": null,
+        "commit": "97294166fd95c3bfdf8e03209a8513c08d3e6c20",
+        "commit_as_recorded": "97294166fd95c3bfdf8e03209a8513c08d3e6c20 (model source revision in this checkout; not a CI run commit)",
+        "artifacts": ["tests/formal/CacheSoundness.dfy", "tests/formal/CacheRefinement.dfy", "tests/formal/ImmutableExportSummaryRefinement.dfy", "research/verified-cache-contract.md", "research/implementation-refinement.md", "research/immutable-export-summary-refinement.md"]
+      }],
+      "input_mode": "Dafny abstract state/model proofs; local proof execution details in research/implementation-refinement.md report Dafny 4.11.0 and 8 verified / 0 errors for CacheSoundness and CacheRefinement. Export-summary model result is separately described in its refinement document.",
+      "oracle": "Dafny verifier for the abstract models; no C# source-level refinement checker or independent implementation oracle.",
+      "denominator": "Model-specific verified lemmas (CacheSoundness and CacheRefinement each report 8 verified / 0 errors locally); this is not an empirical comparison denominator. No exact CI run or execution commit is preserved for those local results.",
+      "scope": "Conditional abstract results and a restricted model refinement. Actual mutable ModuleResolutionResult reattachment, complete semantic context, option/plugin/negative-lookup coverage, and general Dafny resolver soundness remain unproved.",
+      "limitations": ["The recorded source commit is not asserted to be the commit at which local proof commands were executed.", "The export refinement does not certify arbitrary nonempty module summaries."],
+      "missing": ["Exact commit and URL for the local formal verification execution.", "An implementation-level proof connecting the abstract models to the pinned C# resolver."]
+    }
+  ]
+}
