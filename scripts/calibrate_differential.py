@@ -35,4 +35,21 @@ with tempfile.TemporaryDirectory(prefix="dafny-research-calibration-") as td:
         capture_output=True, text=True, timeout=30)
     if run.returncode != 1 or "DIFFERENCE" not in run.stdout:
         raise SystemExit("FAIL: comparison did not detect deliberately corrupted diagnostic")
-    print("PASS: mutated experimental diagnostic was rejected by fresh oracle")
+    # Also prove the new alias negative-lookup oracle rejects a stale positive
+    # result at the revision where the provider withdrew Missing.
+    alias = dest / "fresh-semantic-negative_alias.json"
+    if not alias.is_file():
+        raise SystemExit("Missing alias-mediated negative-lookup oracle trace")
+    obj = json.loads(alias.read_text())
+    if len(obj["records"]) != 4:
+        raise SystemExit("Alias negative-lookup trace must have four revisions")
+    target = obj["records"][2]
+    target["diagnostics"] = [{"message": "stale positive"}]
+    target["semantic"] = None
+    alias.write_text(json.dumps(obj, indent=2))
+    run = subprocess.run(
+        [sys.executable, str(pathlib.Path(__file__).with_name("compare_differential.py")), str(dest)],
+        capture_output=True, text=True, timeout=30)
+    if run.returncode != 1 or "UNEXPECTED_NEGATIVE_" not in run.stdout:
+        raise SystemExit("FAIL: alias stale-positive calibration was not rejected")
+    print("PASS: corrupted diagnostic and stale alias-mediated positive result were rejected")
