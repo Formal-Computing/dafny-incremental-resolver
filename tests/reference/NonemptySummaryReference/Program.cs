@@ -28,6 +28,12 @@ record SemanticKey(string Locals, string Imports, string Options, string Plugins
 record ImmutableSummary(SemanticKey Key, ImmutableArray<Symbol> Symbols);
 record Resolved(int Owner, Dictionary<string, Symbol> Symbols);
 
+// Synthetic shape used to demonstrate the C# record-copy rule. It is not the
+// upstream Dafny type and does not execute the production resolver.
+record MutableResolutionResult(
+    int Owner,
+    Dictionary<string, Dictionary<string, Symbol>> ClassMembers);
+
 sealed class ReferenceCache
 {
     private readonly ConcurrentDictionary<SemanticKey, ImmutableSummary> summaries = new();
@@ -93,6 +99,42 @@ static class Program
         Check(!original.Imports.SequenceEqual(ImmutableArray<Symbol>.Empty),
             "Different semantics must be observable");
 
-        Console.WriteLine("PASS: nonempty MISS/HIT, owner reattachment, mutation isolation, 4 dependency invalidations, missing-import witness");
+        // A C# record with-expression is a shallow memberwise copy. The
+        // synthetic result below contains the nested mutable dictionary shape
+        // noted in the pinned upstream ModuleResolutionResult declaration.
+        var nested = new Dictionary<string, Dictionary<string, Symbol>> {
+            ["C"] = new Dictionary<string, Symbol> { ["m"] = a }
+        };
+        var sourceResult = new MutableResolutionResult(20, nested);
+        var shallowCopy = sourceResult with { Owner = 21 };
+        Check(!ReferenceEquals(sourceResult, shallowCopy), "Record with-expression must create a new outer record");
+        Check(ReferenceEquals(sourceResult.ClassMembers, shallowCopy.ClassMembers),
+            "Shallow record copy unexpectedly copied outer dictionary");
+        Check(ReferenceEquals(sourceResult.ClassMembers["C"], shallowCopy.ClassMembers["C"]),
+            "Shallow record copy unexpectedly copied nested dictionary");
+        shallowCopy.ClassMembers["C"].Remove("m");
+        Check(!sourceResult.ClassMembers["C"].ContainsKey("m"),
+            "Mutation through shallow copy must be visible through source alias");
+
+        // Positive ownership case: reconstruct the mutable graph for each
+        // owner from immutable semantic values instead of reattaching it.
+        MutableResolutionResult Reconstruct(int owner, Symbol member) =>
+            new(owner, new Dictionary<string, Dictionary<string, Symbol>> {
+                ["C"] = new Dictionary<string, Symbol> { ["m"] = member }
+            });
+
+        var reconstructedFirst = Reconstruct(30, a);
+        var reconstructedSecond = Reconstruct(31, a);
+        Check(reconstructedFirst.Owner == 30 && reconstructedSecond.Owner == 31,
+            "Fresh reconstruction must attach each current owner");
+        Check(!ReferenceEquals(reconstructedFirst.ClassMembers, reconstructedSecond.ClassMembers),
+            "Fresh reconstruction shared outer dictionary");
+        Check(!ReferenceEquals(reconstructedFirst.ClassMembers["C"], reconstructedSecond.ClassMembers["C"]),
+            "Fresh reconstruction shared nested dictionary");
+        reconstructedSecond.ClassMembers["C"].Remove("m");
+        Check(reconstructedFirst.ClassMembers["C"].ContainsKey("m"),
+            "Mutation leaked between independently reconstructed graphs");
+
+        Console.WriteLine("PASS: cache reference checks; synthetic shallow nested-dictionary alias; fresh-owner graph reconstruction isolation");
     }
 }
