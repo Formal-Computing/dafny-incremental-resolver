@@ -71,13 +71,13 @@
       // The consumer lookup remains identical as the provider export set
       // gains and loses Missing through an import alias.
       "negative_alias" => new[] {
-        "module Provider { export Visible provides Existing\n function Existing(): int { 1 } }\n" +
+        "module Provider { export provides Existing\n function Existing(): int { 1 } }\n" +
         "module Consumer { import P = Provider\n function Result(): int { P.Missing() } }\n",
-        "module Provider { export Visible provides Existing, Missing\n function Existing(): int { 1 } function Missing(): int { 2 } }\n" +
+        "module Provider { export provides Existing, Missing\n function Existing(): int { 1 } function Missing(): int { 2 } }\n" +
         "module Consumer { import P = Provider\n function Result(): int { P.Missing() } }\n",
-        "module Provider { export Visible provides Existing\n function Existing(): int { 1 } }\n" +
+        "module Provider { export provides Existing\n function Existing(): int { 1 } }\n" +
         "module Consumer { import P = Provider\n function Result(): int { P.Missing() } }\n",
-        "module Provider { export Visible provides Existing, Missing\n function Existing(): int { 1 } function Missing(): int { 3 } }\n" +
+        "module Provider { export provides Existing, Missing\n function Existing(): int { 1 } function Missing(): int { 3 } }\n" +
         "module Consumer { import P = Provider\n function Result(): int { P.Missing() } }\n"
       },
       "fault_probe" => new[] {
@@ -229,6 +229,7 @@
       if (target != null) {
         int offset = revisions[index].LastIndexOf(target, StringComparison.Ordinal);
         Assert.True(offset >= 0, "Missing semantic query target");
+        if (scenario == "negative_alias") offset += 2; // Query Missing, not alias P.
         var prefix = revisions[index][..offset];
         var position = new Position(prefix.Count(c => c == '\n'),
           offset - prefix.LastIndexOf('\n') - 1);

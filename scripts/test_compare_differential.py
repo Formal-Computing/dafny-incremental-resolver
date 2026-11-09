@@ -22,7 +22,7 @@ def write_traces(root, corrupt=None, scenarios=SCENARIOS):
                                      ] if i in (0, 2) else []),
                     "semantic": ({"hover": "```dafny\nfunction Missing(): int\n```",
                                   "definitions": [{"uri": "file:///provider.dfy"}]}
-                                 if i in (1, 3) else None)
+                                 if i in (1, 3) else {"hover": None, "definitions": []})
                 } for i in range(4)] if scenario in ("negative", "negative_alias") else [{
                     "revision": 0, "source": "module X {}",
                     "diagnostics": [],
@@ -39,9 +39,14 @@ def write_traces(root, corrupt=None, scenarios=SCENARIOS):
                                     for record in value["records"]]
             if corrupt == ("negative_diagnostic", mode, scenario):
                 value["records"][0]["diagnostics"] = []
+            if corrupt == ("absent_semantic", mode, scenario):
+                value["records"] = [{**record, "semantic": None}
+                                    for record in value["records"]]
             if corrupt == ("stale_alias_positive", mode, scenario):
                 value["records"][2]["diagnostics"] = [{"message": "stale positive"}]
-                value["records"][2]["semantic"] = None
+                value["records"][2]["semantic"] = {
+                    "hover": "```dafny\nfunction Missing(): int\n```",
+                    "definitions": [{"uri": "file:///provider.dfy"}]}
             with open(root / f"{mode}-{scenario}.json", "w") as stream:
                 json.dump(value, stream)
 
@@ -65,6 +70,11 @@ def run():
             write_traces(path, fault)
             assert any(x["status"].startswith(("UNEXPECTED_NEGATIVE_", "NONINFORMATIVE_"))
                        for x in compare(path)["comparison"]), fault
+        # An unresolved query is still an explicit semantic response object.
+        write_traces(path, ("absent_semantic", "fresh-semantic", "negative_alias"),
+                     scenarios=EXTENDED_SCENARIOS)
+        assert any(x["status"] == "MISSING_NEGATIVE_SEMANTIC_QUERY"
+                   for x in compare(path, ("negative_alias",))["comparison"])
         write_traces(path, scenarios=EXTENDED_SCENARIOS)
         assert all(x["status"] == "MATCH" for x in compare(path, ("negative_alias",))["comparison"])
         write_traces(path, ("stale_alias_positive", "experimental", "negative_alias"),

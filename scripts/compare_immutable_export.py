@@ -39,28 +39,35 @@ def compare(folder):
                 elif a["diagnostics"]!=b["diagnostics"]:
                     bad.append([category,i,"DIAGNOSTIC_DIFFERENCE"])
                 else: matched["diagnostics"]+=1
-                if scenario=="negative_alias" and i in (0,2):
-                    if a.get("semantic") is not None or b.get("semantic") is not None:
-                        bad.append([category,i,"UNEXPECTED_NEGATIVE_SEMANTIC_PRESENCE"])
-                elif not isinstance(a.get("semantic"),dict) or not isinstance(b.get("semantic"),dict):
+                if not isinstance(a.get("semantic"),dict) or not isinstance(b.get("semantic"),dict):
                     bad.append([category,i,"MISSING_SEMANTIC"])
                 elif stable_semantic(a["semantic"])!=stable_semantic(b["semantic"]):
                     bad.append([category,i,"SEMANTIC_DIFFERENCE"])
                 else: matched["selected_semantic"]+=1
                 if scenario=="negative_alias":
                     expected_diagnostics=(1,0,1,0)
-                    expected_semantic=(False,True,False,True)
+                    expected_semantic=(False,True,False,True)  # binding presence
                     if len(a.get("diagnostics",[]))!=expected_diagnostics[i]:
                         bad.append([category,i,"UNEXPECTED_NEGATIVE_DIAGNOSTIC_COUNT"])
                     semantic=a.get("semantic")
-                    if (semantic is not None)!=expected_semantic[i]:
-                        bad.append([category,i,"UNEXPECTED_NEGATIVE_SEMANTIC_PRESENCE"])
-                    if expected_semantic[i] and semantic is not None:
+                    candidate=b.get("semantic")
+                    for label,query in (("fresh",semantic),("immutable",candidate)):
+                        if not isinstance(query,dict):
+                            bad.append([category,i,"MISSING_NEGATIVE_SEMANTIC_QUERY",label])
+                            continue
+                        resolved=bool(query.get("definitions"))
+                        if resolved!=expected_semantic[i]:
+                            bad.append([category,i,"UNEXPECTED_NEGATIVE_BINDING_PRESENCE",label])
+                    if expected_semantic[i] and isinstance(semantic,dict):
                         import re
                         if (not semantic.get("definitions") or
                                 not isinstance(semantic.get("hover"),str) or
                                 not re.search(r"\bfunction\s+Missing\s*\(\s*\)\s*:\s*int\b",semantic["hover"])):
                             bad.append([category,i,"INCOMPLETE_NEGATIVE_SEMANTIC"])
+                        if (not isinstance(candidate,dict) or
+                                not re.search(r"\bfunction\s+Missing\s*\(\s*\)\s*:\s*int\b",
+                                              candidate.get("hover", ""))):
+                            bad.append([category,i,"INCOMPLETE_CANDIDATE_NEGATIVE_SEMANTIC"])
             else:
                 aa=a.get("verification")
                 bb=b.get("verification")
@@ -79,7 +86,7 @@ def compare(folder):
     (folder/"immutable-export-report.json").write_text(json.dumps(obj,indent=2)+"\n")
     print("Immutable export summary:",matched,"errors",len(bad))
     for row in bad[:15]: print("FAIL",row)
-    return not bad and matched=={"diagnostics":8,"selected_semantic":6,"final_verification":4}
+    return not bad and matched=={"diagnostics":8,"selected_semantic":8,"final_verification":4}
 
 def selftest():
     import tempfile
@@ -99,7 +106,7 @@ def selftest():
             for i in range(4):
                 semantic=({"definitions":[{"uri":"file:///provider.dfy"}],
                            "hover":"```dafny\nfunction Missing(): int\n```"}
-                          if i in (1,3) else None)
+                          if i in (1,3) else {"definitions":[],"hover":None})
                 alias_records.append({"revision":i,"source":f"alias-source-{i}",
                                       "diagnostics":[{"message":"unresolved"}] if i in (0,2) else [],
                                       "semantic":semantic})
