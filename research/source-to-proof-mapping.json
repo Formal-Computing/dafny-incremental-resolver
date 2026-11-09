@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "pinned_upstream": {
+    "repository": "https://github.com/dafny-lang/dafny",
+    "revision": "de36f2ec1f9c530080eff7929ae28229f45da069",
+    "base_url": "https://github.com/dafny-lang/dafny/blob/de36f2ec1f9c530080eff7929ae28229f45da069/"
+  },
+  "proof_model": {
+    "files": ["tests/formal/CacheSoundness.dfy", "tests/formal/CacheRefinement.dfy", "tests/formal/ControlledRevalidationRefinement.dfy", "tests/formal/ImmutableExportSummaryRefinement.dfy", "tests/formal/NonemptyImmutableSummaryRefinement.dfy"],
+    "claim_boundary": "Abstract Dafny lemmas prove properties of their mathematical models only. They do not verify pinned C# code or establish the C#-to-model refinement."
+  },
+  "mappings": [
+    {
+      "id": "cache-entry-and-key",
+      "upstream": [{"path":"Source/DafnyLanguageServer/Language/CachingResolver.cs","symbol":"ResolutionCache.Modules; CachingResolver.ResolveModuleDeclaration; CachingResolver.GetHash"}],
+      "proof": [{"file":"tests/formal/CacheSoundness.dfy","symbol":"SemanticKey; ValidCache; ResolveIncrementally"},{"file":"tests/formal/CacheRefinement.dfy","symbol":"ResolverContext; UpstreamKey; ResearchKey; SelectedKey"}],
+      "field_mapping": [{"upstream_field":"Modules: PruneIfNotUsedSinceLastPruneCache<byte[], ModuleResolutionResult>","abstract_field":"map<SemanticKey, Observation> or selected structural key functions","status":"partial","unverified_premise":"Byte-array equality, SHA-256 collision behavior, cache pruning/lifecycle, and actual mapping to SemanticKey are not proved."},{"upstream_field":"GetHash dependency successors, builtins hash, CloneId","abstract_field":"ResolverContext.dependencyHashes, builtins, cloneId; UpstreamKey","status":"modeled","unverified_premise":"Exact C# traversal, ordering, serialization, and resulting key equality are not refined to Dafny values."}],
+      "evidence_kind":"abstract mathematical lemma plus source inspection",
+      "source_behavior_tested":false,
+      "unverified_premises":["C# key calculation corresponds to the abstract key functions.","A key hit implies equivalent resolver observations."]
+    },
+    {
+      "id": "module-resolution-result-payload",
+      "upstream": [{"path":"Source/DafnyCore/Resolver/ModuleResolver.cs","symbol":"ModuleResolutionResult"}],
+      "proof": [{"file":"tests/formal/CacheSoundness.dfy","symbol":"Observation"},{"file":"tests/formal/ControlledRevalidationRefinement.dfy","symbol":"SemanticResult; MutableCandidate; AuditEntry"},{"file":"tests/formal/ImmutableExportSummaryRefinement.dfy","symbol":"Result; ExportSummary"}],
+      "field_mapping": [{"upstream_field":"ResolvedDeclaration: ModuleDecl","abstract_field":"Result.declIdentity; current owner wrapper","status":"partial","unverified_premise":"No object identity, AST graph, or ownership refinement is proved."},{"upstream_field":"ErrorReporter: BatchErrorReporter","abstract_field":"Result.diagnostics / Observation.diagnosticCodes","status":"partial","unverified_premise":"Reporter mutability, message provenance, replay and exact diagnostic correspondence are unproved."},{"upstream_field":"Signatures: Dictionary<ModuleDefinition, ModuleSignature>","abstract_field":"Result.signatures; Observation.symbolBindings; seq<Symbol>","status":"partial","unverified_premise":"Dictionary keys, scopes, signatures, type bindings, and symbol identity are not represented field-for-field."},{"upstream_field":"ClassMembers: Dictionary<TopLevelDeclWithMembers, Dictionary<string, MemberDecl>>","abstract_field":"Result.classMembers; Observation.symbolBindings; seq<Symbol>","status":"partial","unverified_premise":"Nested mutable dictionary/member graph and owner identity are not represented."}],
+      "evidence_kind":"abstract mathematical lemma plus pinned declaration inspection",
+      "source_behavior_tested":false,
+      "unverified_premises":["C# result fields refine abstract value observations.","Cached references remain safe under mutation and reattachment."]
+    },
+    {
+      "id":"module-declarations-and-resolution-context",
+      "upstream":[{"path":"Source/DafnyCore/AST/Modules/ModuleDecl.cs","symbol":"ModuleDecl; CloneId; token/span and clone members"},{"path":"Source/DafnyCore/Resolver/ModuleResolver.cs","symbol":"ModuleResolver.ResolveModuleDeclaration"},{"path":"Source/DafnyCore/Resolver/ProgramResolver.cs","symbol":"dependency graph; ProcessDeclarationResolutionResult; pre/post rewriters"}],
+      "proof":[{"file":"tests/formal/CacheRefinement.dfy","symbol":"ResolverContext; FullSemanticContext; UnsafeResearchKeyIsNotComplete"},{"file":"tests/formal/MutableReuseAndKeyCompleteness.dfy","symbol":"Context; ContentKey; CompleteSemanticObservation"},{"file":"tests/formal/ControlledRevalidationRefinement.dfy","symbol":"CompleteContext; FreshResolve; CompleteKeySpec"}],
+      "field_mapping":[{"upstream_field":"ModuleDecl source/token origin, dependency and module identity","abstract_field":"ResolverContext.text/origin/dependencyHashes/moduleRoster/cloneId; CompleteContext.source/importedNames","status":"partial","unverified_premise":"Not every source field, synthetic module kind, or graph edge has a declared mapping."},{"upstream_field":"ModuleResolver inputs and project/compiler environment","abstract_field":"CompleteContext.options/rewriters/negativeLookups/builtins; SemanticKey.environment/namesInScope/pluginAndRewriterState","status":"explicitly incomplete","unverified_premise":"Failed lookups, exports/opened-import visibility, all options, plugins, cancellation and ambient state are not exhaustively inventoried or mapped."}],
+      "evidence_kind":"abstract counterexamples and source inspection",
+      "source_behavior_tested":false,
+      "unverified_premises":["The modeled context contains every C# resolution input.","The dependency graph captures all positive and negative name lookup effects."]
+    },
+    {
+      "id":"reporters-rewriters-and-symbol-observations",
+      "upstream":[{"path":"Source/DafnyCore/Resolver/ProgramResolver.cs","symbol":"ProcessDeclarationResolutionResult; RewriterCollection.GetRewriters; PreResolve; PostResolve"},{"path":"Source/DafnyCore/Resolver/ModuleResolver.cs","symbol":"ModuleResolutionResult.ErrorReporter; Signatures; ClassMembers"}],
+      "proof":[{"file":"tests/formal/CacheSoundness.dfy","symbol":"Observation.diagnosticCodes/symbolBindings/verifierInputs"},{"file":"tests/formal/NonemptyImmutableSummaryRefinement.dfy","symbol":"Symbol; ResolveSymbols; Summary"},{"file":"tests/formal/ImmutableExportSummaryRefinement.dfy","symbol":"FreshExport; empty result contract"}],
+      "field_mapping":[{"upstream_field":"BatchErrorReporter messages","abstract_field":"diagnostics","status":"partial","unverified_premise":"String/code snapshots do not model reporter behavior or diagnostic origins."},{"upstream_field":"ModuleSignature and MemberDecl symbol/type structures","abstract_field":"Symbol(name,typeName), symbolBindings, verifierInputs","status":"partial","unverified_premise":"Name-only symbol audit is not complete semantic equivalence; symbol/type identity and rewriter effects are unproved."}],
+      "evidence_kind":"abstract mathematical lemma; limited C# behavior tests exist in repository CI history",
+      "source_behavior_tested":true,
+      "tested_behavior_scope":"Existing pinned integration evidence exercises selected stable diagnostics, symbol queries, verifier outcomes, safe fresh resolution, export-summary branch and nonempty-module exclusion. It does not exhaustively validate every mapped field or prove refinement.",
+      "unverified_premises":["Rewriter side effects are deterministic and represented.","Abstract observations preserve all externally relevant C# behavior."]
+    },
+    {
+      "id":"safe-mode-and-narrow-export-summary",
+      "upstream":[{"path":"Source/DafnyLanguageServer/Language/CachingResolver.cs","symbol":"ResearchSafeRevalidate and ResearchImmutableExportSummary paths (patches 0004/0005)"},{"path":"Source/DafnyCore/Resolver/ModuleResolver.cs","symbol":"ModuleExportDecl branch of ResolveModuleDeclaration"}],
+      "proof":[{"file":"tests/formal/ControlledRevalidationRefinement.dfy","symbol":"ControlledRevalidate; SafeModeRefinesFresh; RevalidateTrace"},{"file":"tests/formal/ImmutableExportSummaryRefinement.dfy","symbol":"ResolveSummary; ResolveSequence; TwoExportDeclarationsActuallyReuseSummary"}],
+      "field_mapping":[{"upstream_field":"fresh ModuleResolutionResult on safe revalidation","abstract_field":"FreshResolve(c); SemanticResult","status":"conditional model correspondence","unverified_premise":"C# safe branch must always call base resolver and never consume cached mutable result."},{"upstream_field":"ModuleExportDecl empty signatures/members/messages; current declaration wrapper","abstract_field":"ExportSummary(version,verifiedEmpty); FreshExport(owner,currentDecl); Result","status":"restricted contract model","unverified_premise":"Pinned branch contract must remain unchanged; arbitrary rewriters and upstream revisions are outside the model."}],
+      "evidence_kind":"abstract mathematical lemma plus tested pinned C# behavior",
+      "source_behavior_tested":true,
+      "tested_behavior_scope":"Repository records pinned integration checks for safe path and restricted export summary. Passing abstract proofs alone provide no C# verification.",
+      "unverified_premises":["Source branch corresponds to the formal branch for all executions.","No side effects outside modeled result fields affect observations."]
+    }
+  ],
+  "evidence_categories": {
+    "abstract_mathematical_lemma":"Dafny verifies only the stated abstract functions, predicates, and methods.",
+    "tested_csharp_behavior":"Finite pinned-source integration tests provide sampled behavioral evidence, not proof.",
+    "unverified_refinement":"Every source-to-model correspondence premise not directly established by an independent refinement proof."
+  }
+}
