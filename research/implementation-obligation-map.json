@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "issue": {
+    "number": 24,
+    "repository": "Formal-Computing/dafny-incremental-resolver",
+    "access": "unverified",
+    "note": "GitHub API access failed in this environment; issue body was not available locally."
+  },
+  "pinned_upstream": {
+    "repository": "https://github.com/dafny-lang/dafny",
+    "revision": "de36f2ec1f9c530080eff7929ae28229f45da069",
+    "base_url": "https://github.com/dafny-lang/dafny/blob/de36f2ec1f9c530080eff7929ae28229f45da069/"
+  },
+  "claim_boundary": "This is an implementation-facing obligation map, not a universal proof. Formal lemmas establish only their Dafny models. Repository C# tests provide finite sampled behavior evidence. No C#-to-model refinement proof or real nonempty-module cross-revision skip is established.",
+  "pr39_cross_revision_aliasing": {
+    "status": "unverified",
+    "note": "PR #39 and external documentation could not be fetched in the sandbox. Local research/verifier-mutability-context-results.md and tests/dafny/ResearchVerificationOutcomeMethod.txt document shallow record-copy aliasing in the pinned C# type; this does not establish downstream mutation of a real cached result across revisions."
+  },
+  "abstract_state": {
+    "context": "Complete resolver inputs: source and origins, successful and negative lookups, import/export visibility, module roster, dependency graph, options/builtins, plugin and rewriter identities/configuration/order/state, and relevant cancellation/completion state.",
+    "cache": "Mathematical map from exact structural semantic key to immutable semantic observation or restricted value summary.",
+    "observation": "Diagnostics including source origin, resolved bindings/signatures/member relationships, verifier inputs/outcomes where claimed, and current owner/declaration identity.",
+    "resolver_assumption": "Fresh resolution is deterministic over the complete context. Determinism is a premise requiring independent implementation evidence, not derived for Dafny C#."
+  },
+  "implementation_state": {
+    "cache": "CachingResolver.ResolutionCache.Modules: PruneIfNotUsedSinceLastPruneCache<byte[], ModuleResolutionResult>.",
+    "payload": "ModuleResolutionResult contains ResolvedDeclaration, ErrorReporter, Signatures, and nested ClassMembers dictionaries; these are reference-bearing C# objects.",
+    "current_path": "Patches 0004-0006 keep ordinary-module safe revalidation fresh. Patch 0005 permits only a value-only empty export summary, rebuilding a result wrapper/reporter/dictionaries for the current declaration. Patch 0006 adds an immutable string-name audit that never authorizes reuse.",
+    "anchors": [
+      {"file":"Source/DafnyLanguageServer/Language/CachingResolver.cs","symbols":"ResolutionCache.Modules; CachingResolver.ResolveModuleDeclaration; CachingResolver.GetHash; CachingResolver.GetUpstreamHash; CachingResolver.GetExperimentalHash"},
+      {"file":"Source/DafnyCore/Resolver/ModuleResolver.cs","symbols":"ModuleResolutionResult; ModuleResolver.ResolveModuleDeclaration"},
+      {"file":"Source/DafnyCore/Resolver/ProgramResolver.cs","symbols":"ProgramResolver.ProcessDeclarationResolutionResult; ProgramResolver.Resolve; RewriterCollection.GetRewriters; PreResolve; PostResolve"},
+      {"file":"Source/DafnyCore/AST/Modules/ModuleDecl.cs","symbols":"ModuleDecl; CloneId; token/span and clone members"}
+    ],
+    "source_checkout": "not present locally; symbol anchors are pinned source identifiers from the existing audit and requested source pin, not independently re-opened in this workspace."
+  },
+  "candidate_simulation_relation": {
+    "relation": "For each current compilation context c, returned C# result r simulates abstract Resolve(c) iff r is observationally equivalent across required diagnostics and origins, bindings/signatures/members, verifier inputs/outcomes, and owner/declaration identity; every reattached mutable reference must be current-owner safe or proven immutable and detached.",
+    "proof_status": "unverified_csharp_to_model_correspondence",
+    "required_determinism": "Equal complete contexts imply equivalent fresh-resolution observations, including diagnostic ordering/provenance where externally observable.",
+    "required_key": "Key equality must imply equality of the complete semantic context. Include successful and failed lookups, scope/visibility and import/export views, module additions/removals/renames and dependency identities, options/builtins, plugins/rewriters and their order/state, source origin and clone/synthetic identity as needed.",
+    "collision": "A digest collision must not be treated as semantic equality unless the implementation confirms full structural context equality; otherwise compare a complete witness or fail closed to fresh resolution. SHA-256 collision behavior is not modeled by the structural Dafny proofs.",
+    "owner_safe_reconstruction": "Never return a prior ModuleResolutionResult graph across compilations unless a verified reconstruction rebases every declaration, token/origin, signature key, member key, scope, and reporter reference. A value-only immutable summary may be reused only when its branch contract is proved and the current graph-owned wrapper and all mutable containers are rebuilt."
+  },
+  "obligations": [
+    {"id":"key-completeness-positive-negative-lookups","abstract":"SemanticKey and FullSemanticContext; UnsafeResearchKeyIsNotComplete; MissingLookupContextBreaksSourceOnlyCaching","implementation":"CachingResolver.GetHash; ModuleResolver.ResolveModuleDeclaration; ProgramResolver module binding/dependency graph","precondition":"Track successful target identities and every failed name query with scope, namespace and visibility/export view; unknown lookup instrumentation invalidates.","fallback":"Fresh resolution; ordinary modules remain fresh under safe mode.","formal_evidence":"abstract_lemma","csharp_evidence":"unverified","status":"open"},
+    {"id":"dependency-roster-imports-aliases","abstract":"ResolverContext.dependencyHashes/moduleRoster; CompleteContext.importedNames","implementation":"CachingResolver.GetHash; ProgramResolver dependency graph; ModuleResolver alias/refinement/import branches","precondition":"Deterministic complete dependency and module roster including edge kind, target identity, exports, re-exports, aliases/refinements, substitutions and visibility.","fallback":"Fresh resolution of affected module and dependents when any edge or roster item is unknown or changed.","formal_evidence":"abstract_lemma","csharp_evidence":"selected_audit_only","status":"open"},
+    {"id":"determinism-and-complete-key","abstract":"CacheSoundness.ValidCache and PureResolve; ControlledRevalidationRefinement.CompleteKeyEqualityImpliesFreshEquivalence","implementation":"ModuleResolver.ResolveModuleDeclaration; ProgramResolver.Resolve; rewriter/plugin dispatch","precondition":"Prove or enforce deterministic observation for the full key, including ambient project and extension state. Candidate SHA digest is not itself a proof of equality.","fallback":"Fresh resolution if determinism, complete context, or collision check is uncertain.","formal_evidence":"abstract_lemma_with_premises","csharp_evidence":"unverified","status":"open"},
+    {"id":"mutable-payload-owner-reconstruction","abstract":"ImmutableExportSummaryRefinement.Result.owner; ControlledRevalidationRefinement.MutableCandidate","implementation":"ModuleResolutionResult fields; CachingResolver.ResolveModuleDeclaration; ProgramResolver.ProcessDeclarationResolutionResult","precondition":"No prior mutable AST, reporter, signature/member dictionary graph is reattached unless a verified owner-aware deep reconstruction establishes simulation.","fallback":"Fresh resolution; for export summary rebuild current declaration wrapper, reporter and empty dictionaries.","formal_evidence":"restricted_export_model_and_alias_countermodel","csharp_evidence":"shallow_record_copy_alias_test_only","status":"open"},
+    {"id":"diagnostics-and-token-origin","abstract":"Observation.diagnosticCodes; Result.diagnostics; ResolverContext.origin","implementation":"ModuleResolutionResult.ErrorReporter; ModuleDecl token/span and clone members; CachingResolver.GetHash","precondition":"Preserve diagnostic content and origin (URI, line, column, offset), token coverage, clone/synthetic and multi-file provenance; reporter must not be shared across owners.","fallback":"Fresh resolution when origin mapping or reporter ownership is uncertain.","formal_evidence":"abstract_observation_only","csharp_evidence":"selected_diagnostic_tests_not_complete","status":"open"},
+    {"id":"rewriters-plugins-options-builtins","abstract":"SemanticKey.environment/pluginAndRewriterState; CompleteContext.options/rewriters/builtins","implementation":"ProgramResolver.Resolve; RewriterCollection.GetRewriters; PreResolve; PostResolve; CachingResolver.GetHash; SystemModuleManager builtins hash","precondition":"Include identity, version, configuration, ordering, state and effects of all plugins/rewriters plus every resolution-affecting option and builtin fingerprint.","fallback":"Unknown or stateful extension/environment state forces fresh resolution.","formal_evidence":"incomplete_key_counterexamples","csharp_evidence":"unverified","status":"open"},
+    {"id":"cancellation-and-partial-state","abstract":"No dedicated complete C# correspondence in models","implementation":"ProgramResolver resolution lifecycle and CachingResolver insertion path; precise cancellation insertion anchor unknown","precondition":"Cancelled or partially completed resolution cannot seed reusable cache or immutable summary.","fallback":"Discard partial state and retry fresh.","formal_evidence":"none","csharp_evidence":"unverified","status":"open"},
+    {"id":"safe-branch-and-nonempty-eligibility","abstract":"ControlledRevalidationRefinement.ControlledRevalidate; NonemptyImmutableSummaryRefinement.NonemptySummarySound","implementation":"Patches 0004/0005/0006 CachingResolver.ResolveModuleDeclaration","precondition":"Safe path always calls base resolver for ordinary declarations. Only exact pinned empty export branch can consume the validated empty summary. Nonempty symbol snapshots are diagnostic-only and never authorize a skip.","fallback":"Every ineligible nonempty branch resolves fresh; failed/missing summary contract resolves fresh.","formal_evidence":"abstract_lemmas","csharp_evidence":"repository_has_pinned_integration_history; not rerun in this task","status":"partially_supported"}
+  ],
+  "evidence_ledger": {
+    "discharged_abstract_lemmas": ["CacheSoundness.ResolveIncrementally under ValidCache and pure deterministic PureResolve", "CacheRefinement.DefaultRefinesUpstream and UnsupportedModuleRefinesUpstream under modeled policy", "ControlledRevalidationRefinement.SafeModeRefinesFresh", "ImmutableExportSummaryRefinement.ResolveSummary under restricted export contract", "NonemptyImmutableSummaryRefinement.NonemptySummarySound for exact structural value summaries"],
+    "executed_csharp_tests_this_task": [],
+    "repository_csharp_evidence_not_rerun": ["tests/dafny/ResearchVerificationOutcomeMethod.txt:ResearchMutableResolutionResultAliasing documents shallow record-copy dictionary aliasing", "research/verifier-mutability-context-results.md reports prior pinned integration outcomes; not re-executed here"],
+    "unverified_correspondence": ["C# key equals complete abstract semantic context", "C# fresh resolver is deterministic over that context", "all returned observations match abstract observations", "owner-safe reconstruction for arbitrary nonempty cached graphs", "all diagnostic/token origins and reporter effects", "all options/plugins/rewriter effects", "cancellation cannot seed partial reusable state", "cross-revision mutation of a real cached nonempty graph"],
+    "tooling": {"dafny_cli":"not installed; no Dafny verification run", "github_issue_24":"not retrieved", "github_pr_39":"not retrieved"}
+  }
+}
