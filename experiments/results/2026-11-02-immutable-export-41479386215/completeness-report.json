@@ -1,0 +1,33 @@
+{
+  "schema": "evidence-bundle-completeness-v1",
+  "script": "check_evidence_bundle.py",
+  "script_version": "1.0.0",
+  "bundle": "experiments/results/2026-11-02-immutable-export-41479386215",
+  "bundle_id": "immutable-export-41479386215",
+  "status": "PASS",
+  "comparison_counts": {
+    "diagnostics": 4,
+    "definition_typed_hover": 4,
+    "terminal_verification": 4
+  },
+  "required_observation_files": 4,
+  "errors": [],
+  "skips": [
+    {
+      "status": "SKIPPED_INCOMPLETE",
+      "bundle": "2026-11-02-semantic-stress-41449269625",
+      "reason": "Differential-only bundle; no terminal verifier observation files."
+    },
+    {
+      "status": "SKIPPED_INCOMPLETE",
+      "bundle": "2026-11-02-controlled-revalidation-41471521253",
+      "reason": "Contains separate diagnostic/semantic and verifier traces but is not fully represented by this config's paired comparison inventory."
+    }
+  ],
+  "caveats": [
+    "Historical archived results; not a run of the current checkout.",
+    "Scope is four revisions of the restricted empty ModuleExportDecl export-summary path.",
+    "Terminal Correct/Error comparisons do not establish VC, SMT, counterexample, resource, or general Dafny equivalence.",
+    "Asynchronous verification progress is retained in raw input; only recognized progress text is excluded from stable hover comparison."
+  ]
+}

@@ -1,0 +1,48 @@
+name: Research evidence integrity gates
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/**"
+      - "experiments/results/**"
+      - "scripts/**"
+      - ".github/workflows/research-evidence-gates.yml"
+  pull_request:
+    paths:
+      - "research/**"
+      - "experiments/results/**"
+      - "scripts/**"
+      - ".github/workflows/research-evidence-gates.yml"
+  workflow_dispatch:
+
+jobs:
+  evidence-integrity:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify source provenance and fixture hashes
+        run: |
+          python3 scripts/validate_provenance_manifest.py
+          python3 scripts/validate_provenance_manifest.py --self-test
+      - name: Verify scoped claims and corrupted-denominator negative control
+        run: python3 scripts/validate_claim_registry.py --self-test
+      - name: Exercise bundle validator negative controls
+        run: python3 -m unittest discover -s scripts -p "test_check_evidence_bundle.py"
+      - name: Verify actual archived restricted-export bundle
+        run: >
+          python3 scripts/check_evidence_bundle.py
+          experiments/results/2026-11-02-immutable-export-41479386215/completeness-config.json
+          --report evidence-completeness-ci.json
+      - name: Verify historical event consistency (not general soundness)
+        run: python3 scripts/check_archived_evidence.py
+      - name: Archive completeness report, including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-evidence-completeness
+          path: evidence-completeness-ci.json
+          if-no-files-found: warn

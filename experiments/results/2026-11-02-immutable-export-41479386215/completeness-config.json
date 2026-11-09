@@ -1,0 +1,29 @@
+{
+  "schema": "evidence-bundle-config-v1",
+  "bundle_id": "immutable-export-41479386215",
+  "bundle_root": ".",
+  "group_glob": "*.json",
+  "ignore_files": ["manifest.json", "immutable-export-report.json", "export-contract-audit.json", "completeness-report.json", "completeness-config.json"],
+  "observations": [
+    {"path":"fresh-semantic-export_summary.json","mode":"fresh-semantic","scenario":"export_summary","revisions":4},
+    {"path":"immutable-export-export_summary.json","mode":"immutable-export","scenario":"export_summary","revisions":4},
+    {"path":"fresh-semantic-verification-export-proof.json","mode":"fresh-semantic","scenario":"export-proof","revisions":4},
+    {"path":"immutable-export-verification-export-proof.json","mode":"immutable-export","scenario":"export-proof","revisions":4}
+  ],
+  "comparisons": [
+    {"left":"fresh-semantic-export_summary.json","right":"immutable-export-export_summary.json","kind":"diagnostics"},
+    {"left":"fresh-semantic-export_summary.json","right":"immutable-export-export_summary.json","kind":"definition_typed_hover"},
+    {"left":"fresh-semantic-verification-export-proof.json","right":"immutable-export-verification-export-proof.json","kind":"terminal_verification"}
+  ],
+  "minimum_comparisons": {"diagnostics":4,"definition_typed_hover":4,"terminal_verification":4},
+  "known_incomplete": [
+    {"bundle":"2026-11-02-semantic-stress-41449269625","reason":"Differential-only bundle; no terminal verifier observation files."},
+    {"bundle":"2026-11-02-controlled-revalidation-41471521253","reason":"Contains separate diagnostic/semantic and verifier traces but is not fully represented by this config's paired comparison inventory."}
+  ],
+  "caveats": [
+    "Historical archived results; not a run of the current checkout.",
+    "Scope is four revisions of the restricted empty ModuleExportDecl export-summary path.",
+    "Terminal Correct/Error comparisons do not establish VC, SMT, counterexample, resource, or general Dafny equivalence.",
+    "Asynchronous verification progress is retained in raw input; only recognized progress text is excluded from stable hover comparison."
+  ]
+}
