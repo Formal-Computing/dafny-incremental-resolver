@@ -139,8 +139,8 @@ jobs:
           --filter 'FullyQualifiedName~VerificationStatusTest.ResearchExportProofOutcomeTrace'
       - name: Strict source and semantic comparison
         run: python3 prototype/scripts/compare_immutable_export.py research-results
-      - name: Calibrate both new stale negative lookup observations
-        run: python3 prototype/scripts/calibrate_differential.py research-results
+      - name: Calibrate stale alias binding against two-mode immutable-export oracle
+        run: python3 prototype/scripts/calibrate_immutable_alias.py research-results
       - name: Archive all evidence even on failure
         if: always()
         uses: actions/upload-artifact@v4
