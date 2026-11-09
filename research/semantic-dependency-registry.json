@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "pinned_upstream": {
+    "repository": "https://github.com/dafny-lang/dafny",
+    "revision": "de36f2ec1f9c530080eff7929ae28229f45da069"
+  },
+  "claim_boundary": "Inventory is intentionally incomplete; complete coverage is not established. A complete key is an obligation, not an established property. Measured means selected finite evidence only. Unknown anchors are explicit.",
+  "entries": [
+    {
+      "id": "successful-name-lookups",
+      "source_anchor": {
+        "files": [
+          "ModuleResolver.cs"
+        ],
+        "csharp_symbol": "ModuleResolver.ResolveModuleDeclaration; ProgramResolver.cs / ProgramResolver module binding and dependency graph"
+      },
+      "adequate_key_requires": "Resolved target identity, scope and visibility path for every successful lookup; ordered binding ambiguity if applicable.",
+      "invalidation_fail_closed": "If any lookup target, scope or visibility view is unknown or changed, invalidate the module and resolve fresh.",
+      "known_counterexample": "Same source text resolves to different imported declarations after binding/roster change.",
+      "evidence_status": "unverified",
+      "evidence_note": "Source and abstract models identify obligation; C# coverage not established."
+    },
+    {
+      "id": "negative-name-lookups",
+      "source_anchor": {
+        "files": [
+          "ModuleResolver.cs"
+        ],
+        "csharp_symbol": "ModuleResolver.ResolveModuleDeclaration (lookup call sites not inventoried)"
+      },
+      "adequate_key_requires": "Names queried and absent, lookup scope, namespace and visibility/export view.",
+      "invalidation_fail_closed": "Any untracked negative lookup or uncertain lookup set forces fresh resolution.",
+      "known_counterexample": "A newly added declaration makes an old failed lookup succeed without changing consumer text.",
+      "evidence_status": "unverified",
+      "evidence_note": "Source and abstract models identify obligation; C# coverage not established."
+    },
+    {
+      "id": "import-export-views",
+      "source_anchor": {
+        "files": [
+          "ModuleResolver.cs"
+        ],
+        "csharp_symbol": "ModuleResolver.ResolveModuleDeclaration; ProgramResolver dependency graph and import/refinement binding"
+      },
+      "adequate_key_requires": "Import edges, selected export set, opened-import visibility, re-export and qualification semantics.",
+      "invalidation_fail_closed": "Changed/unknown view or edge forces dependent fresh resolution.",
+      "known_counterexample": "Export list changes while imported declaration text remains equal.",
+      "evidence_status": "unverified",
+      "evidence_note": "Source and abstract models identify obligation; C# coverage not established."
+    },
+    {
+      "id": "shadowing",
+      "source_anchor": {
+        "files": [
+          "ModuleResolver.cs"
+        ],
+        "csharp_symbol": "unknown: dedicated dedicated shadowing routine anchor not identified"
+      },
+      "adequate_key_requires": "Ordered scope candidates and precedence, including local/module/import shadowing.",
+      "invalidation_fail_closed": "Unknown or changed precedence forces fresh resolution.",
+      "known_counterexample": "Adding a nearer same-name declaration changes the binding.",
+      "evidence_status": "unverified",
+      "evidence_note": "Source and abstract models identify obligation; C# coverage not established."
+    },
+    {
+      "id": "aliases-refinements",
+      "source_anchor": {
+        "files": [
+          "ModuleResolver.cs"
+        ],
+        "csharp_symbol": "ModuleResolver.ResolveModuleDeclaration; ProgramResolver dependency graph; AliasModuleDecl/AbstractModuleDecl branches"
+      },
+      "adequate_key_requires": "Alias target identity, refinement base, substitutions, visible signature and transitive semantic inputs.",
+      "invalidation_fail_closed": "Unknown/changed target, substitution or refinement relation forces fresh resolution.",
+      "known_counterexample": "Alias/refinement target changes with unchanged aliasing module body.",
+      "evidence_status": "unverified",
+      "evidence_note": "Source and abstract models identify obligation; C# coverage not established."
+    },
+    {
+      "id": "source-origins",
+      "source_anchor": {
+        "files": [
+          "ModuleDecl.cs",
+          "CachingResolver.cs"
+        ],
+        "csharp_symbol": "ModuleDecl token/span and clone members; CachingResolver.GetHash"
+      },
+      "adequate_key_requires": "URI, line, column, offset, trivia/token coverage, clone identity, synthetic and multi-file origin.",
+      "invalidation_fail_closed": "Unsafe token coverage retains upstream CloneId; origin mismatch invalidates and resolves fresh.",
+      "known_counterexample": "Text-preserving source shift changes diagnostic locations.",
+      "evidence_status": "measured",
+      "evidence_note": "Pinned audit/selected integration evidence only; not exhaustive."
+    },
+    {
+      "id": "options-builtins",
+      "source_anchor": {
+        "files": [
+          "ProgramResolver.cs",
+          "CachingResolver.cs"
+        ],
+        "csharp_symbol": "ProgramResolver.Resolve; CachingResolver.GetHash; SystemModuleManager builtins hash"
+      },
+      "adequate_key_requires": "All resolver/compiler options and builtin identity/content/version affecting resolution.",
+      "invalidation_fail_closed": "Unknown option or builtin fingerprint forces fresh resolution.",
+      "known_counterexample": "Same source under changed option or builtin set resolves differently.",
+      "evidence_status": "unverified",
+      "evidence_note": "Source and abstract models identify obligation; C# coverage not established."
+    },
+    {
+      "id": "plugins-rewriters",
+      "source_anchor": {
+        "files": [
+          "ProgramResolver.cs"
+        ],
+        "csharp_symbol": "ProgramResolver pre/post rewriters; RewriterCollection.GetRewriters"
+      },
+      "adequate_key_requires": "Plugin identities, versions, configuration, order, state and effects before/after resolution.",
+      "invalidation_fail_closed": "Unknown, stateful or changed rewriter environment forces fresh resolution.",
+      "known_counterexample": "Rewriter changes signature or diagnostics for identical source and graph.",
+      "evidence_status": "unverified",
+      "evidence_note": "Source and abstract models identify obligation; C# coverage not established."
+    },
+    {
+      "id": "cancellation",
+      "source_anchor": {
+        "files": [
+          "ProgramResolver.cs"
+        ],
+        "csharp_symbol": "unknown: dedicated cache insertion interaction not identified"
+      },
+      "adequate_key_requires": "Cancellation state and whether partial resolution, reporter, or cache insertion can occur.",
+      "invalidation_fail_closed": "Cancellation or uncertain completion must never seed reusable entry; restart fresh.",
+      "known_counterexample": "Cancellation during resolution leaves partial mutable state reused on retry.",
+      "evidence_status": "unverified",
+      "evidence_note": "Source and abstract models identify obligation; C# coverage not established."
+    },
+    {
+      "id": "module-roster",
+      "source_anchor": {
+        "files": [
+          "CachingResolver.cs",
+          "ProgramResolver.cs"
+        ],
+        "csharp_symbol": "CachingResolver.GetHash; ProgramResolver module binding/dependency graph"
+      },
+      "adequate_key_requires": "Deterministic complete roster of module names, kinds, identities and relevant additions/removals/renames.",
+      "invalidation_fail_closed": "Unknown or changed roster forces affected modules fresh.",
+      "known_counterexample": "Adding/removing/renaming a declaration changes binding of unchanged consumer.",
+      "evidence_status": "measured",
+      "evidence_note": "Pinned audit/selected integration evidence only; not exhaustive."
+    }
+  ]
+}
