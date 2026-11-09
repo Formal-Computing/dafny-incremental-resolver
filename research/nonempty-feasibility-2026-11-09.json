@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-11-09",
+  "issue": 29,
+  "repository": "Formal-Computing/dafny-incremental-resolver",
+  "branch": "codex/nonempty-01-20261109",
+  "base_branch": "codex/bridge-02-20261109",
+  "base_issue": 37,
+  "stacked_on_issue": 35,
+  "upstream": {
+    "repository": "dafny-lang/dafny",
+    "revision": "de36f2ec1f9c530080eff7929ae28229f45da069",
+    "source_checkout_available": false,
+    "network_source_verification_available": false,
+    "anchor_basis": "repository source-pinned audit documents, source-context-audit.json, source-to-proof-mapping.json, semantic-dependency-registry.json, and patches 0005-0007; not a fresh upstream source inspection"
+  },
+  "dependencies": [17, 18, 21, 22, 25],
+  "recommendation": "NO-GO",
+  "strict_gate": "All genuinely nonempty modules must resolve fresh. Any missing, unknown, changed, or ambiguous semantic input, ownership edge, or observable side effect forces a miss. A key/name/diagnostic match never authorizes skipping resolver work. No nonempty optimization flag is authorized.",
+  "candidate_classes": [
+    {
+      "class": "ModuleExportDecl empty dispatch",
+      "genuinely_nonempty": false,
+      "source_status": "pinned audit artifacts report an empty ModuleResolver dispatch branch; patch 0005 validates empty result contract and reconstructs fresh current-owner wrapper",
+      "feasibility": "existing narrowly scoped empty-branch evidence only; outside this audit's nonempty target"
+    },
+    {
+      "class": "LiteralModuleDecl",
+      "genuinely_nonempty": true,
+      "source_status": "pinned audit artifacts report literalModuleDecl.Resolve and ModuleSignature publication",
+      "feasibility": "NO-GO: result graph and context incomplete; no reconstruction/refinement contract"
+    },
+    {
+      "class": "AliasModuleDecl",
+      "genuinely_nonempty": true,
+      "source_status": "pinned audit artifacts report target/export visibility resolution and Signature update",
+      "feasibility": "NO-GO: target, visibility, imports/refinement and graph ownership unproven"
+    },
+    {
+      "class": "AbstractModuleDecl",
+      "genuinely_nonempty": true,
+      "source_status": "pinned audit artifacts report ResolveExport/MakeAbstractSignature and Signature update",
+      "feasibility": "NO-GO: effects and semantic dependencies unproven"
+    },
+    {
+      "class": "empty-looking or name-equal nonempty module",
+      "genuinely_nonempty": true,
+      "source_status": "patch 0006 observes names after fresh resolve; patch 0007 creates audit-bucket collision only",
+      "feasibility": "NO-GO: finite observation equality is not a resolver side-effect or context contract"
+    }
+  ],
+  "known_obligation_groups": [
+    "successful and failed name lookups",
+    "imports, opened imports, exports, refinements and visibility",
+    "shadowing and ordered scope precedence",
+    "module roster and source/token origins",
+    "all resolver/compiler options and builtins",
+    "plugin and pre/post rewriter identity, order, state and effects",
+    "cancellation, partial resolution and cache insertion",
+    "AST/signature/member/scope/type/token current-compilation ownership",
+    "reporter provenance, diagnostics, bindings, verifier inputs and outcomes",
+    "program graph, cycle, composition and resolver side effects"
+  ],
+  "unknowns": [
+    "complete exact-pinned C# call graph and side-effect trace independently verified in this workspace",
+    "all name-lookup call sites, including failed lookup probes",
+    "complete export/open-import visibility propagation",
+    "all option, builtin and plugin/rewriter semantic inputs",
+    "cancellation and partial-result/cache insertion interaction",
+    "all mutable graph ownership and reporter provenance edges",
+    "whether any narrower genuinely nonempty dispatch branch has an empty side-effect trace"
+  ],
+  "prerequisites": [
+    "re-audit and hash exact pinned C# branch and full call graph",
+    "choose one nonempty branch and enumerate complete positive and negative semantic dependencies",
+    "define sufficient immutable summary/key including context and collision policy",
+    "specify current-compilation reconstruction and reporter/diagnostic/verifier preservation",
+    "establish C#-to-model refinement",
+    "run pinned adversarial differential experiment including a negative lookup becoming positive, context edits, ownership, diagnostics, bindings, cancellation/recovery and terminal verifier results"
+  ],
+  "minimal_experiment": {
+    "mode": "future opt-in audit-only instrumented pinned build after prerequisites 1-5; not run in this work",
+    "inputs": "two adjacent revisions of one smallest candidate nonempty module; preserve candidate source in revision B while changing context so a previously absent lookup becomes present",
+    "assertions": [
+      "candidate resolver-call counter decreases exactly at intended branch on HIT",
+      "every returned object reference belongs to current compilation",
+      "exact diagnostics, bindings/definition targets and terminal verifier outcomes match fresh baseline",
+      "each omitted-context mutation (imports/exports, shadowing, options, rewriter/plugin, cancellation/recovery) is rejected as MISS"
+    ],
+    "evidence": "archive source/input hashes, isolated-process traces and comparison results; a falsification experiment only, not a theorem"
+  },
+  "claims_not_made": [
+    "no nonempty resolver skip implemented",
+    "no new pinned Dafny run claimed",
+    "no theorem claimed",
+    "no end-to-end speedup claimed"
+  ],
+  "artifacts_reviewed": [
+    "docs/main-integration-safety.md",
+    "research/nonempty-real-dafny-eligibility-audit.md",
+    "research/source-to-proof-mapping.json",
+    "research/semantic-dependency-registry.json",
+    "research/source-context-audit.json",
+    "patches/0005-immutable-export-summary-current-graph.patch",
+    "patches/0006-immutable-nonempty-symbol-audit.patch",
+    "patches/0007-audit-only-key-collision-negative-control.patch"
+  ]
+}
