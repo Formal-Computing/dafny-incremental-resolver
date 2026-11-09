@@ -14,17 +14,31 @@ def write_traces(root, corrupt=None, scenarios=SCENARIOS):
         for mode in MODES:
             value = {
                 "mode": mode, "scenario": scenario,
-                "records": [{
+                "records": ([{
+                    "revision": i, "source": f"module X {{ // {i} }}",
+                    "diagnostics": ([{"message": "unresolved", "severity": "Error",
+                                      "code": "R", "source": "dafny",
+                                      "from": [0, 0], "to": [0, 1], "related": []}
+                                     ] if i in (0, 2) else []),
+                    "semantic": ({"hover": "```dafny\nfunction Missing(): int\n```",
+                                  "definitions": [{"uri": "file:///provider.dfy"}]}
+                                 if i in (1, 3) else None)
+                } for i in range(4)] if scenario == "negative" else [{
                     "revision": 0, "source": "module X {}",
                     "diagnostics": [],
                     "semantic": {"hover": "int", "definitions": []}
                     if scenario in QUERIED else None
-                }]
+                }])
             }
             if corrupt == ("diagnostic", mode, scenario):
                 value["records"][0]["diagnostics"] = [{"message": "stale"}]
             if corrupt == ("semantic", mode, scenario):
                 value["records"][0]["semantic"] = {"hover": "bool"}
+            if corrupt == ("absent_semantic", mode, scenario):
+                value["records"] = [{**record, "semantic": None}
+                                    for record in value["records"]]
+            if corrupt == ("negative_diagnostic", mode, scenario):
+                value["records"][0]["diagnostics"] = []
             with open(root / f"{mode}-{scenario}.json", "w") as stream:
                 json.dump(value, stream)
 
@@ -41,6 +55,13 @@ def run():
         ):
             write_traces(path, fault)
             assert any(x["status"] == "DIFFERENCE" for x in compare(path)["comparison"]), fault
+        for fault in (
+            ("absent_semantic", "fresh-semantic", "negative"),
+            ("negative_diagnostic", "fresh-semantic", "negative"),
+        ):
+            write_traces(path, fault)
+            assert any(x["status"].startswith(("UNEXPECTED_NEGATIVE_", "NONINFORMATIVE_"))
+                       for x in compare(path)["comparison"]), fault
         write_traces(path)
         (path / "original-stress_scope.json").unlink()
         assert any(x["status"] == "MISSING" for x in compare(path)["comparison"])

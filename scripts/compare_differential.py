@@ -20,6 +20,8 @@ QUERIED = {
     "dependency", "shadowing", "negative", "fault_probe", "stress_graph",
     "stress_scope", "air_semantic",
 }
+NEGATIVE_DIAGNOSTIC_COUNTS = (1, 0, 1, 0)
+NEGATIVE_SEMANTIC_PRESENT = (False, True, False, True)
 
 def stable_hover(value):
     """Compare language/type markup, not asynchronous verification progress.
@@ -92,7 +94,46 @@ def compare(root: pathlib.Path, scenarios=SCENARIOS):
             report.append({"scenario": scenario, "status": "INPUT_MISMATCH"})
             continue
         counts[scenario] = next(iter(sizes.values()))
+        if scenario == "negative" and next(iter(sizes.values())) != 4:
+            report.append({"scenario": scenario, "status": "WRONG_NEGATIVE_REVISION_COUNT",
+                           "expected": 4, "actual": next(iter(sizes.values()))})
+            continue
         for index, wanted in enumerate(traces["fresh-semantic"]):
+            if scenario == "negative":
+                # This trace is deliberately missing -> resolved -> missing ->
+                # resolved. Check the independent oracle itself against the
+                # expected state, so matching stale traces cannot pass.
+                diagnostic_count = len(wanted.get("diagnostics", []))
+                expected_count = NEGATIVE_DIAGNOSTIC_COUNTS[index]
+                if diagnostic_count != expected_count:
+                    report.append({"scenario": scenario, "revision": index,
+                                   "status": "UNEXPECTED_NEGATIVE_DIAGNOSTIC_COUNT",
+                                   "expected": expected_count, "actual": diagnostic_count})
+                if index in (0, 2) and diagnostic_count == 1:
+                    diagnostic = wanted["diagnostics"][0]
+                    if (not diagnostic.get("message") or not diagnostic.get("severity") or
+                            not diagnostic.get("code") or not diagnostic.get("source") or
+                            diagnostic.get("from") is None or diagnostic.get("to") is None):
+                        report.append({"scenario": scenario, "revision": index,
+                                       "status": "INCOMPLETE_NEGATIVE_DIAGNOSTIC"})
+                semantic_present = wanted.get("semantic") is not None
+                expected_semantic = NEGATIVE_SEMANTIC_PRESENT[index]
+                if semantic_present != expected_semantic:
+                    report.append({"scenario": scenario, "revision": index,
+                                   "status": "UNEXPECTED_NEGATIVE_SEMANTIC_PRESENCE",
+                                   "expected": expected_semantic, "actual": semantic_present})
+                if expected_semantic and semantic_present:
+                    semantic = wanted["semantic"]
+                    if (not semantic.get("definitions") or
+                            not isinstance(semantic.get("hover"), str) or
+                            not re.search(r"\bfunction\s+Missing\s*\(\s*\)\s*:\s*int\b",
+                                          semantic["hover"])):
+                        report.append({"scenario": scenario, "revision": index,
+                                       "status": "INCOMPLETE_NEGATIVE_SEMANTIC_ORACLE"})
+            if scenario == "negative" and index == 2 and len(wanted.get("diagnostics", [])) == 1:
+                if wanted["diagnostics"] != traces["fresh-semantic"][0].get("diagnostics"):
+                    report.append({"scenario": scenario, "revision": index,
+                                   "status": "UNSTABLE_NEGATIVE_DIAGNOSTIC"})
             no_cache = traces["fresh"][index]
             for field in ("diagnostics", "semantic"):
                 if field not in wanted or field not in no_cache:
@@ -101,7 +142,9 @@ def compare(root: pathlib.Path, scenarios=SCENARIOS):
                     continue
                 record(scenario, index, "fresh-vs-fresh-semantic",
                        field, no_cache[field], wanted[field])
-            if scenario in QUERIED and wanted.get("semantic") is None:
+            if (scenario in QUERIED and wanted.get("semantic") is None and
+                    not (scenario == "negative" and
+                         not NEGATIVE_SEMANTIC_PRESENT[index])):
                 report.append({"scenario": scenario, "revision": index,
                                "status": "MISSING_SEMANTIC_QUERY"})
             for mode in CACHED:
@@ -113,6 +156,19 @@ def compare(root: pathlib.Path, scenarios=SCENARIOS):
                         continue
                     record(scenario, index, mode, field,
                            traces[mode][index][field], wanted[field])
+        if scenario == "negative":
+            # A pair of absent queries is noninformative; reject the trace even
+            # when all implementations and fresh oracles agree on None.
+            informative = sum(
+                1 for records in traces.values()
+                for record_value in records
+                if record_value.get("semantic") is not None
+            )
+            if informative != len(MODES) * sum(NEGATIVE_SEMANTIC_PRESENT):
+                report.append({"scenario": scenario,
+                               "status": "NONINFORMATIVE_NEGATIVE_SEMANTIC_COMPARISON",
+                               "expected_present_observations": len(MODES) * sum(NEGATIVE_SEMANTIC_PRESENT),
+                               "actual_present_observations": informative})
     return {"schema": "dafny-differential-v3",
             "scenarios": counts,
             "comparison": report,
