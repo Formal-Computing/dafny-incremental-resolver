@@ -11,9 +11,9 @@ import sys
 
 SCENARIOS = (
     "independent", "dependency", "shadowing", "roster", "recovery", "negative",
-    "fault_probe", "stress_graph", "stress_scope", "air_semantic",
+    "fault_probe", "stress_graph", "stress_scope", "air_semantic", "negative_alias",
 )
-EXTENDED_SCENARIOS = SCENARIOS + ("negative_alias", "air_semantic_662")
+EXTENDED_SCENARIOS = SCENARIOS + ("air_semantic_662",)
 MODES = ("original", "patched-baseline", "experimental", "fresh-semantic", "fresh")
 CACHED = ("original", "patched-baseline", "experimental")
 QUERIED = {

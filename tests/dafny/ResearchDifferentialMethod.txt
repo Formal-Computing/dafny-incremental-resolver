@@ -14,6 +14,7 @@
   [InlineData("roster")]
   [InlineData("recovery")]
   [InlineData("negative")]
+  [InlineData("negative_alias")]
   [InlineData("fault_probe")]
   [InlineData("stress_graph")]
   [InlineData("stress_scope")]
