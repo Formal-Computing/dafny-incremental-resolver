@@ -6,7 +6,8 @@ import sys
 import tempfile
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from compare_differential import EXTENDED_SCENARIOS, MODES, QUERIED, SCENARIOS, compare
+from compare_differential import (EXTENDED_SCENARIOS, MODES, PROVIDER_SHADOWING,
+                                  QUERIED, SCENARIOS, compare)
 
 
 def write_traces(root, corrupt=None, scenarios=SCENARIOS):
@@ -23,12 +24,29 @@ def write_traces(root, corrupt=None, scenarios=SCENARIOS):
                     "semantic": ({"hover": "```dafny\nfunction Missing(): int\n```",
                                   "definitions": [{"uri": "file:///provider.dfy"}]}
                                  if i in (1, 3) else {"hover": None, "definitions": []})
-                } for i in range(4)] if scenario in ("negative", "negative_alias") else [{
+                } for i in range(4)] if scenario in ("negative", "negative_alias") else
+                ([{
+                    "revision": i,
+                    "source": (
+                        "module ProviderA { function Value(): int { 1 } }\nmodule ProviderB { }\n"
+                        "module Consumer { import opened ProviderA\n import opened ProviderB\n function Result(): int { Value() } }\n"
+                    ) if i in (0, 2) else (
+                        "module ProviderA { function Value(): int { 1 } }\nmodule ProviderB { function Value(): int { 2 } }\n"
+                        "module Consumer { import opened ProviderA\n import opened ProviderB\n function Result(): int { Value() } }\n"
+                    ),
+                    "diagnostics": ([{"message": "The name Value ambiguously refers to a static member in one of the modules ProviderA, ProviderB",
+                                      "severity": "Error", "code": "0", "source": "Resolver",
+                                      "from": [2, 47], "to": [2, 52], "related": []}]
+                                    if i == 1 else []),
+                    "semantic": ({"hover": "```dafny\nfunction Value(): int\n```",
+                                  "definitions": [{"uri": "file:///tmp/research-differential-provider_shadowing.dfy", "from": [0, 28], "to": [0, 33]}]}
+                                 if i in (0, 2) else {"hover": None, "definitions": []})
+                } for i in range(3)] if scenario == PROVIDER_SHADOWING else [{
                     "revision": 0, "source": "module X {}",
                     "diagnostics": [],
                     "semantic": {"hover": "int", "definitions": []}
                     if scenario in QUERIED else None
-                }])
+                }]))
             }
             if corrupt == ("diagnostic", mode, scenario):
                 value["records"][0]["diagnostics"] = [{"message": "stale"}]
@@ -56,6 +74,19 @@ def run():
         path = pathlib.Path(dirname)
         write_traces(path)
         assert all(x["status"] == "MATCH" for x in compare(path)["comparison"])
+        write_traces(path, scenarios=SCENARIOS + (PROVIDER_SHADOWING,))
+        assert all(x["status"] == "MATCH" for x in
+                   compare(path, (PROVIDER_SHADOWING,))["comparison"])
+        write_traces(path, scenarios=SCENARIOS + (PROVIDER_SHADOWING,))
+        candidate = path / f"experimental-{PROVIDER_SHADOWING}.json"
+        value = json.loads(candidate.read_text())
+        # Keep diagnostics unchanged; make the restored-provider revision point
+        # at the competing provider's declaration range.
+        value["records"][2]["semantic"]["definitions"] = [
+            {"uri": "file:///tmp/research-differential-provider_shadowing.dfy", "from": [1, 28], "to": [1, 33]}]
+        candidate.write_text(json.dumps(value))
+        injected = compare(path, (PROVIDER_SHADOWING,))["comparison"]
+        assert any(x["status"] != "MATCH" for x in injected), injected
         for fault in (
             ("diagnostic", "experimental", "dependency"),
             ("semantic", "experimental", "stress_graph"),
