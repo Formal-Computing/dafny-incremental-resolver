@@ -116,6 +116,47 @@ conservative fresh-resolution audit mode** and the corresponding tested
 pinned C# implementation, not production readiness or an optimized
 sound incremental cache.
 
+## Executable C# aliasing reference (issue #23)
+
+`tests/reference/NonemptySummaryReference/Program.cs` has a standalone
+regression for the shallow-copy mechanism and a positive ownership control.
+The synthetic `MutableResolutionResult` is a record whose nested
+`Dictionary<string, Dictionary<string, Symbol>>` graph is copied by reference
+by `with { Owner = ... }`. The regression checks that the outer record is new,
+both dictionary levels are the same objects, and mutation through the copy is
+visible through the original. The positive control reconstructs both
+dictionaries for each owner and checks that mutation stays local.
+
+This executable is **synthetic**: it does not instantiate or call Dafny's
+production resolver. Its real-source motivation is the pinned
+[`ModuleResolutionResult` declaration in raw `ModuleResolver.cs`](https://raw.githubusercontent.com/dafny-lang/dafny/de36f2ec1f9c530080eff7929ae28229f45da069/Source/DafnyCore/Resolver/ModuleResolver.cs)
+and the consumers in pinned raw
+[`ProgramResolver.cs`](https://raw.githubusercontent.com/dafny-lang/dafny/de36f2ec1f9c530080eff7929ae28229f45da069/Source/DafnyCore/Resolver/ProgramResolver.cs)
+and [`CachingResolver.cs`](https://raw.githubusercontent.com/dafny-lang/dafny/de36f2ec1f9c530080eff7929ae28229f45da069/Source/DafnyLanguageServer/Language/CachingResolver.cs).
+The pinned result's `ClassMembers` field is a dictionary of dictionaries;
+`CachingResolver` stores/returns module resolution results and
+`ProgramResolver.ProcessDeclarationResolutionResult` installs result data.
+These source facts establish the representation and access path, not a
+demonstrated production failure: no claim is made here that the actual Dafny
+resolver has been proven unsound or that its production result was copied by
+`with` in the tested execution.
+
+The ownership invariants illustrated by the test are:
+
+1. A fresh owner must receive a newly constructed mutable dictionary graph;
+   changing any nested dictionary through one owner's result must not affect
+   another owner's result.
+2. Any reusable cached summary must contain immutable values or otherwise
+   prevent mutation from escaping its ownership boundary.
+3. A shallow copy of a record containing mutable references does not transfer
+   ownership and must not be treated as an independent result.
+
+`tests/formal/MutableReuseAndKeyCompleteness.dfy` remains an abstract heap
+aliasing countermodel; it is separate from both this synthetic executable
+and the pinned C# representation observation. The existing
+`.github/workflows/nonempty-summary-reference.yml` runs the executable with
+`dotnet run`, so no workflow change is needed for this regression.
+
 ## Complete-key refinement theorem (specification only)
 
 The expanded Dafny model includes an injective structural key over source,
