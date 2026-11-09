@@ -14,6 +14,7 @@ SCENARIOS = (
     "fault_probe", "stress_graph", "stress_scope", "air_semantic", "negative_alias",
 )
 EXTENDED_SCENARIOS = SCENARIOS + ("air_semantic_662",)
+PROVIDER_SHADOWING = "provider_shadowing"
 MODES = ("original", "patched-baseline", "experimental", "fresh-semantic", "fresh")
 CACHED = ("original", "patched-baseline", "experimental")
 QUERIED = {
@@ -136,6 +137,59 @@ def compare(root: pathlib.Path, scenarios=SCENARIOS):
             report.append({"scenario": scenario, "status": "INPUT_MISMATCH"})
             continue
         counts[scenario] = next(iter(sizes.values()))
+        if scenario == PROVIDER_SHADOWING:
+            records = traces["fresh-semantic"]
+            if len(records) != 3:
+                report.append({"scenario": scenario,
+                               "status": "WRONG_PROVIDER_SHADOWING_REVISION_COUNT",
+                               "expected": 3, "actual": len(records)})
+                continue
+            consumer_sources = []
+            expected = (
+                ("research-differential-provider_shadowing.dfy", [0, 28], [0, 33], True),
+                (None, None, None, False),
+                ("research-differential-provider_shadowing.dfy", [0, 28], [0, 33], True),
+            )
+            for index, wanted in enumerate(records):
+                source = wanted.get("source", "")
+                marker = "module Consumer {"
+                consumer_start = source.find(marker)
+                consumer_sources.append(source[consumer_start:] if consumer_start >= 0 else "")
+                semantic = wanted.get("semantic")
+                if not isinstance(semantic, dict):
+                    report.append({"scenario": scenario, "revision": index,
+                                   "status": "MISSING_PROVIDER_SHADOWING_SEMANTIC_QUERY"})
+                    continue
+                target_uri, target_from, target_to, resolved = expected[index]
+                definitions = semantic.get("definitions", [])
+                actual_target = (definitions[0] if len(definitions) == 1 else None)
+                target_matches = bool(actual_target and actual_target.get("uri", "").endswith("research-differential-provider_shadowing.dfy") and
+                                      actual_target.get("from") == target_from and
+                                      actual_target.get("to") == target_to)
+                if resolved != bool(definitions) or (resolved and not target_matches) or (
+                        not resolved and definitions):
+                    report.append({"scenario": scenario, "revision": index,
+                                   "mode": "fresh-semantic",
+                                   "status": "UNEXPECTED_PROVIDER_SHADOWING_BINDING",
+                                   "expected": {"target_uri_suffix": target_uri,
+                                                "from": target_from, "to": target_to},
+                                   "actual": definitions})
+                diagnostics = wanted.get("diagnostics", [])
+                ambiguous = any("ambiguously refers" in d.get("message", "") and
+                                "Value" in d.get("message", "") for d in diagnostics)
+                if ambiguous != (index == 1):
+                    report.append({"scenario": scenario, "revision": index,
+                                   "status": "UNEXPECTED_PROVIDER_SHADOWING_AMBIGUITY",
+                                   "actual": diagnostics})
+                if resolved and not re.search(
+                        r"\bfunction\s+Value\s*\(\s*\)\s*:\s*int\b",
+                        semantic.get("hover") or ""):
+                    report.append({"scenario": scenario, "revision": index,
+                                   "status": "INCOMPLETE_PROVIDER_SHADOWING_SIGNATURE"})
+            if not consumer_sources[0] or any(
+                    value != consumer_sources[0] for value in consumer_sources[1:]):
+                report.append({"scenario": scenario,
+                               "status": "CONSUMER_SOURCE_CHANGED_ACROSS_PROVIDER_REVISIONS"})
         if scenario in ("negative", "negative_alias") and next(iter(sizes.values())) != 4:
             report.append({"scenario": scenario, "status": "WRONG_NEGATIVE_REVISION_COUNT",
                            "expected": 4, "actual": next(iter(sizes.values()))})
@@ -234,6 +288,24 @@ def compare(root: pathlib.Path, scenarios=SCENARIOS):
                         continue
                     record(scenario, index, mode, field,
                            traces[mode][index][field], wanted[field])
+                    if scenario == PROVIDER_SHADOWING and field == "semantic":
+                        semantic = traces[mode][index].get("semantic")
+                        expected_target = (([0, 28], [0, 33]) if index in (0, 2)
+                                           else (None, None))
+                        definitions = semantic.get("definitions", []) if isinstance(semantic, dict) else []
+                        binding_ok = (not definitions if index == 1 else
+                                      len(definitions) == 1 and
+                                      definitions[0].get("uri", "").endswith("research-differential-provider_shadowing.dfy") and
+                                      definitions[0].get("from") == expected_target[0] and
+                                      definitions[0].get("to") == expected_target[1])
+                        signature_ok = (index == 1 or (isinstance(semantic, dict) and
+                            bool(re.search(r"\bfunction\s+Value\s*\(\s*\)\s*:\s*int\b",
+                                           semantic.get("hover") or ""))))
+                        if not binding_ok or not signature_ok:
+                            report.append({"scenario": scenario, "revision": index,
+                                           "mode": mode,
+                                           "status": "UNEXPECTED_PROVIDER_SHADOWING_BINDING",
+                                           "actual": definitions})
         if scenario in ("negative", "negative_alias"):
             # A pair of absent queries is noninformative; reject the trace even
             # when all implementations and fresh oracles agree on None.
@@ -258,12 +330,13 @@ def compare(root: pathlib.Path, scenarios=SCENARIOS):
 
 def main():
     if len(sys.argv) not in (2, 4):
-        raise SystemExit("usage: compare_differential.py <trace-dir> [--scenarios air_semantic_662]")
+        raise SystemExit("usage: compare_differential.py <trace-dir> [--scenarios air_semantic_662|provider_shadowing]")
     root = pathlib.Path(sys.argv[1])
     if len(sys.argv) == 4:
-        if sys.argv[2] != "--scenarios" or sys.argv[3] != "air_semantic_662":
-            raise SystemExit("Only the independent 662-clause suite is supported as an override")
-        scenarios = ("air_semantic_662",)
+        if sys.argv[2] != "--scenarios" or sys.argv[3] not in (
+                "air_semantic_662", PROVIDER_SHADOWING):
+            raise SystemExit("Only the isolated 662-clause or provider-shadowing suite is supported")
+        scenarios = (sys.argv[3],)
     else:
         scenarios = SCENARIOS
     data = compare(root, scenarios=scenarios)

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Fail-closed two-mode oracle for the immutable ModuleExportDecl subset."""
 import json
+import re
 from pathlib import Path
 import sys
 
@@ -11,6 +12,7 @@ def compare(folder):
     for category,scenario,suffix in (
         ("differential","export_summary",""),
         ("differential","negative_alias",""),
+        ("differential","provider_shadowing",""),
         ("verification","export-proof","verification-")
     ):
         snapshots={}
@@ -20,7 +22,8 @@ def compare(folder):
                 bad.append([category,mode,"MISSING"])
                 continue
             obj=json.loads(path.read_text())
-            if obj.get("mode")!=mode or obj.get("scenario")!=scenario or len(obj.get("records",[]))!=4:
+            expected_count = 3 if scenario == "provider_shadowing" else 4
+            if obj.get("mode")!=mode or obj.get("scenario")!=scenario or len(obj.get("records",[]))!=expected_count:
                 bad.append([category,mode,"INVALID"])
                 continue
             snapshots[mode]=obj["records"]
@@ -68,6 +71,29 @@ def compare(folder):
                                 not re.search(r"\bfunction\s+Missing\s*\(\s*\)\s*:\s*int\b",
                                               candidate.get("hover", ""))):
                             bad.append([category,i,"INCOMPLETE_CANDIDATE_NEGATIVE_SEMANTIC"])
+                if scenario=="provider_shadowing":
+                    consumer="module Consumer { import opened ProviderA\n import opened ProviderB\n function Result(): int { Value() } }"
+                    if not a.get("source", "").rstrip().endswith(consumer):
+                        bad.append([category,i,"CONSUMER_SOURCE_CHANGED"])
+                    expected_ranges=(([0,28],[0,33]) if i in (0,2) else (None,None))
+                    ambiguous=any("ambiguously refers" in d.get("message","") and
+                                  "Value" in d.get("message","") for d in a.get("diagnostics",[]))
+                    if ambiguous != (i==1):
+                        bad.append([category,i,"UNEXPECTED_AMBIGUITY_OUTCOME"])
+                    for label,query in (("fresh",a.get("semantic")),("safe",b.get("semantic"))):
+                        definitions=query.get("definitions",[]) if isinstance(query,dict) else []
+                        if i==1:
+                            if definitions:
+                                bad.append([category,i,"AMBIGUOUS_NAME_HAS_DEFINITION",label])
+                        elif (len(definitions)!=1 or
+                              not definitions[0].get("uri","").endswith("research-differential-provider_shadowing.dfy") or
+                              definitions[0].get("from")!=expected_ranges[0] or
+                              definitions[0].get("to")!=expected_ranges[1]):
+                            bad.append([category,i,"WRONG_PROVIDER_BINDING_TARGET",label])
+                        elif not re.search(
+                                r"\bfunction\s+Value\s*\(\s*\)\s*:\s*int\b",
+                                query.get("hover", "")):
+                            bad.append([category,i,"INCOMPLETE_PROVIDER_BINDING_SIGNATURE",label])
             else:
                 aa=a.get("verification")
                 bb=b.get("verification")
@@ -86,7 +112,7 @@ def compare(folder):
     (folder/"immutable-export-report.json").write_text(json.dumps(obj,indent=2)+"\n")
     print("Immutable export summary:",matched,"errors",len(bad))
     for row in bad[:15]: print("FAIL",row)
-    return not bad and matched=={"diagnostics":8,"selected_semantic":8,"final_verification":4}
+    return not bad and matched=={"diagnostics":11,"selected_semantic":11,"final_verification":4}
 
 def selftest():
     import tempfile
@@ -112,7 +138,25 @@ def selftest():
                                       "semantic":semantic})
             (root/f"{mode}-negative_alias.json").write_text(json.dumps(
                 {"mode":mode,"scenario":"negative_alias","records":alias_records}))
+            shadow_records=[]
+            for i in range(3):
+                source=("module ProviderA { function Value(): int { 1 } }\nmodule ProviderB { }\n"
+                        "module Consumer { import opened ProviderA\n import opened ProviderB\n function Result(): int { Value() } }\n")
+                if i==1:
+                    source=source.replace("module ProviderB { }",
+                                          "module ProviderB { function Value(): int { 2 } }")
+                shadow_records.append({"revision":i,"source":source,
+                    "diagnostics":[{"message":"The name Value ambiguously refers to ProviderA, ProviderB"}] if i==1 else [],
+                    "semantic":{"definitions":[] if i==1 else [{"uri":"file:///research-differential-provider_shadowing.dfy","from":[0,28],"to":[0,33]}],
+                                "hover":None if i==1 else "```dafny\nfunction Value(): int\n```"}})
+            (root/f"{mode}-provider_shadowing.json").write_text(json.dumps(
+                {"mode":mode,"scenario":"provider_shadowing","records":shadow_records}))
         assert compare(root)
+        p=root/"immutable-export-provider_shadowing.json"
+        obj=json.loads(p.read_text())
+        obj["records"][2]["semantic"]["definitions"][0]["from"]=[1,28]
+        p.write_text(json.dumps(obj))
+        assert not compare(root)
         p=root/"immutable-export-verification-export-proof.json"
         obj=json.loads(p.read_text())
         obj["records"][1]["verification"][0]["outcome"]="Correct"

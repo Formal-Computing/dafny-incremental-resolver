@@ -104,7 +104,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchExportSummaryDifferentialTrace|FullyQualifiedName~CachingTest.ResearchIssue18NegativeAliasTrace'
+          --filter 'FullyQualifiedName~CachingTest.ResearchExportSummaryDifferentialTrace|FullyQualifiedName~CachingTest.ResearchIssue18NegativeAliasTrace|FullyQualifiedName~CachingTest.ResearchProviderShadowingDifferentialTrace'
       - name: Immutable export summary definition and diagnostics
         working-directory: dafny
         env:
@@ -115,7 +115,7 @@ jobs:
         run: >
           dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj
           --no-build -c Debug --nologo
-          --filter 'FullyQualifiedName~CachingTest.ResearchExportSummaryDifferentialTrace|FullyQualifiedName~CachingTest.ResearchIssue18NegativeAliasTrace'
+          --filter 'FullyQualifiedName~CachingTest.ResearchExportSummaryDifferentialTrace|FullyQualifiedName~CachingTest.ResearchIssue18NegativeAliasTrace|FullyQualifiedName~CachingTest.ResearchProviderShadowingDifferentialTrace'
       - name: Fresh terminal verifier outcome oracle
         working-directory: dafny
         env:
