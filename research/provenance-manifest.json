@@ -1,0 +1,81 @@
+{
+  "schema": "dafny-incremental-resolver-provenance-v1",
+  "purpose": "Reproducibility inputs and limitations for issue EVID-01",
+  "repository": {
+    "url": "https://github.com/Formal-Computing/dafny-incremental-resolver",
+    "issue": 25,
+    "branch": "codex/evid-01-20261109",
+    "starting_commit": "ca91cc9a3dbb79809033eca59af994004d77a9f8",
+    "issue_api_query": "not_run: gh issue view failed to connect to api.github.com"
+  },
+  "research_revision": {
+    "current_checkout": "record at run time with git rev-parse HEAD",
+    "historical_differential": "8d374e75c959809744474f874383a2fa4ab608e2",
+    "historical_differential_corrected": "b484785e3b313391f3bdd1e4a8135db87ce4e757",
+    "historical_safe_revalidation": "8c6117d (abbreviated in archived manifest)",
+    "historical_verifier": "2c8c8fa (abbreviated in archived manifest)",
+    "historical_immutable_export": "9729416 (abbreviated in archived manifest)",
+    "note": "Historical archived results are tied to their listed commits; they are not runs of this checkout."
+  },
+  "upstream": {
+    "repository": "https://github.com/dafny-lang/dafny",
+    "commit": "de36f2ec1f9c530080eff7929ae28229f45da069",
+    "submodules": "recursive",
+    "basis": "research/reproduce.md and CI checkout refs"
+  },
+  "patch_chain": [
+    {"path": "patches/0001-experimental-module-token-hashing.patch", "sha256": "f54c1ec1a8c4731c974132bddc55b8f7593036da083cf5238aea21c515fb1397"},
+    {"path": "patches/0002-opt-in-resolver-regions.patch", "sha256": "74226982f4366dadb662a71d33e0564f49e9d9f1499910f8164c9d6bba77345d"},
+    {"path": "patches/0003-research-fresh-semantic-oracle.patch", "sha256": "0e88e6282d30ef88be2d3e82ff2a8bdf65126eaed0fe8bf669baf17f263e17b7"},
+    {"path": "patches/0004-controlled-revalidation-no-mutable-reattachment.patch", "sha256": "edcf355b988c4862bff972e59799ccee890e730c98a7150c9223fb854440866a"},
+    {"path": "patches/0005-immutable-export-summary-current-graph.patch", "sha256": "81545b04e69de8e0e35d0c9304f8f459e1a6ffe1fa6bb75aa79390ee0b8c1fac"},
+    {"path": "patches/0006-immutable-nonempty-symbol-audit.patch", "sha256": "b26ad33a4c35c56b16b7dc1cd5347bf09f2f1a9175b8a174ded9e109275b761f"},
+    {"path": "patches/0007-audit-only-key-collision-negative-control.patch", "sha256": "79fc7a0ae68bc429847c635da347ce7a1baf23ef76a623c13b91fb1f54655815"}
+  ],
+  "fixtures": [
+    {"path": "tests/air/ResearchAirMixedEdits.txt", "sha256": "6cf863b98b9fa0498840c10500964e9ffdf86a8f86abe39825250592535d5148"},
+    {"path": "tests/air/ResearchAirSatlibCaseStudy.txt", "sha256": "f310c27171fcc75c45a5fdd694661100a98d62d20883fda7da6528ce5c04d04b"},
+    {"path": "tests/air/generate_satlib_fixture.py", "sha256": "8c8ea74d7f30d7d02f2d03e287f4997b816eab319f4df6091627a94f16bda2f5"},
+    {"path": "tests/air/satlib_case_study.dfy", "sha256": "15e2d5ecfe2f46795272221bb916202e8e1f3502c173c0b5bdf30361bc727d89"},
+    {"path": "tests/air/satlib_case_study.json", "sha256": "c8897d01aa586e152dab34de284a8b62bfdf390993a8aae94d07d477f3eda184"},
+    {"path": "tests/air/satlib_stress_662.dfy", "sha256": "d0cd5efdb4d040a4c8dd3165aa3a90e10d21cc6f82a8fecf1f48d0d7c986a878"},
+    {"path": "tests/air/satlib_stress_662.json", "sha256": "4145c1d9a4d1ef3302f0a94ec09f6562eb7539d61b5fcbcae8a38607ff3d2f7c"}
+  ],
+  "environment": {
+    "ci_os_image": "ubuntu-24.04 (workflow declaration)",
+    "dotnet_sdk": "8.0.x (setup-dotnet workflow declaration; exact resolved version unknown)",
+    "z3_version": "unknown (workflow installs apt package z3 without pin)",
+    "python_version": "unknown",
+    "git_version": "unknown",
+    "local_dotnet_version": "unknown",
+    "local_z3_version": "unknown",
+    "ci_execution_for_this_manifest": "not_run"
+  },
+  "modes": {
+    "baseline": {"DAFNY_RESEARCH_MODE": "patched-baseline", "DAFNY_EXPERIMENTAL_CONTENT_HASH": "0", "DAFNY_RESEARCH_UNSAFE_CROSS_REVISION_REUSE": "unset"},
+    "experimental": {"DAFNY_RESEARCH_MODE": "experimental", "DAFNY_EXPERIMENTAL_CONTENT_HASH": "1", "DAFNY_RESEARCH_UNSAFE_CROSS_REVISION_REUSE": "1", "DAFNY_RESEARCH_PROFILE_RESOLVER": "1"},
+    "guarded_experiment_request": {"DAFNY_EXPERIMENTAL_CONTENT_HASH": "1", "DAFNY_RESEARCH_UNSAFE_CROSS_REVISION_REUSE": "0"},
+    "fresh_semantic": {"DAFNY_RESEARCH_MODE": "fresh-semantic", "DAFNY_RESEARCH_DISABLE_SEMANTIC_CACHE": "1", "DAFNY_EXPERIMENTAL_CONTENT_HASH": "0"},
+    "unsafe_mode_note": "The experimental CI comparison explicitly enables unsafe cross-revision reuse; do not run it as a production configuration."
+  },
+  "reproduction_commands": [
+    "git clone --recursive https://github.com/dafny-lang/dafny.git dafny",
+    "git -C dafny checkout de36f2ec1f9c530080eff7929ae28229f45da069",
+    "git -C dafny apply --check ../dafny-incremental-resolver/patches/0001-experimental-module-token-hashing.patch",
+    "python3 dafny-incremental-resolver/scripts/install_integration_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs",
+    "python3 dafny-incremental-resolver/scripts/install_differential_test.py dafny/Source/DafnyLanguageServer.Test/Synchronization/CachingTest.cs",
+    "git -C dafny apply ../dafny-incremental-resolver/patches/0001-experimental-module-token-hashing.patch",
+    "cd dafny && dotnet tool restore",
+    "dotnet build Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj -c Debug --nologo",
+    "dotnet test Source/DafnyLanguageServer.Test/DafnyLanguageServer.Test.csproj --no-build -c Debug --nologo --filter 'FullyQualifiedName~CachingTest.ResearchDifferentialTrace'",
+    "python3 scripts/check_archived_evidence.py"
+  ],
+  "existing_evidence_limitations": [
+    "Archived results cover different historical prototype commits and workflows; they are not a fresh execution of this checkout.",
+    "Historical successful diagnostic comparisons concern selected diagnostics and do not establish complete binding, typing, verification, or semantic equivalence.",
+    "Historical safe-audit runs always performed fresh resolution and do not demonstrate optimized reuse.",
+    "No controlled causal performance result is established by this manifest; previously archived timing is exploratory and runner-specific.",
+    "A comparator calibration mutating diagnostics does not demonstrate detection of every faulty resolver/cache behavior.",
+    "Plugin and rewriter dependencies, project setting changes, hidden lookup state, mutable AST aliasing, cross-file includes, and declaration-level incremental resolution remain untested."
+  ]
+}
